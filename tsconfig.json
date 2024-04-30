@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "sourceMap": true,
+    "declaration": true,
+    "declarationDir": "./lib",
+    "baseUrl": "./src/",
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "jsx": "react",
+    "typeRoots": ["./types"]
+  },
+  "include": ["**/*.tsx", "**/*.ts", "@types", "index.ts", "rollup.config.mjs", "types"],
+  "exclude": ["node_modules", "./dist/**/*", "./lib/**/*", "./example/**/*", "rollup.config.mjs"]
+}
