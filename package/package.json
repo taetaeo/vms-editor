@@ -10,7 +10,8 @@
     "start": "npm run exam & npm run watch",
     "build": "rollup -c",
     "watch": "rollup -cw",
-    "exam": "cd example && npm start"
+    "exam": "cd example && npm start",
+    "clean": "rm -rf node_modules & rm -rf package-lock.json & rm -rf lib & rm -rf dist"
   },
   "repository": {
     "type": "git",
@@ -31,16 +32,22 @@
     "@rollup/plugin-image": "^3.0.3",
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-terser": "^0.4.4",
     "@types/classnames": "^2.3.1",
     "@types/react": "^18.3.1",
+    "autoprefixer": "^10.4.19",
     "classnames": "^2.5.1",
     "node-sass": "^9.0.0",
     "postcss": "^8.4.38",
+    "postcss-import": "^16.1.0",
     "postcss-prefixer": "^3.0.0",
     "rollup": "^4.17.1",
+    "rollup-plugin-filesize": "^10.0.0",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-postcss": "^4.0.2",
+    "rollup-plugin-replace": "^2.2.0",
     "rollup-plugin-typescript2": "^0.36.0",
+    "rollup-plugin-uglify": "^6.0.4",
     "typescript": "^5.4.5"
   },
   "peerDependencies": {

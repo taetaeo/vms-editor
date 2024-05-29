@@ -1,9 +1,12 @@
-# node_modules
-node_modules*
+# Example Folder
+/example/package-lock.json
+/example/node_modules/
+/example/yarn.lock
 
-# yarn
-yarn.lock
 
-# build
-dist/
-lib/
+# Pakcage Folder
+/package/package-lock.json
+/pakcage/node_modules/
+/package/yarn.lock
+/package/lib/
+
