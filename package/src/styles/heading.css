@@ -1,0 +1,24 @@
+/* H2 styles */
+.toolbar__h2 {
+  font-size: 18px;
+  padding: 8px;
+  text-align: start;
+}
+
+/* H3 styles */
+.toolbar__h3 {
+  font-size: 14px;
+  font-weight: 400;
+  width: 90%;
+  text-align: start;
+  margin: 8px auto;
+}
+
+/* H5 styles */
+.toolbar__h5 {
+  font-size: 12px;
+  font-weight: 500;
+  width: 100%;
+  text-align: start;
+  margin: 8px auto;
+}

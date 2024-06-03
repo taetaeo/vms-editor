@@ -20,7 +20,7 @@ export function getPlugins(extensions, pkg) {
     peerDepsExternal(),
     postcss({
       extract: "css/index.css",
-      modules: true,
+      modules: false,
       sourceMap: true,
       use: ["sass"],
       plugins: [postcssPrefixer({ prefix: `${pkg.name}__` }), cssimport(), autoprefixer()],

@@ -1,0 +1,11 @@
+.upper-canvas {
+  z-index: 5;
+}
+
+/*  */
+.lower-canvas {
+  z-index: 1;
+}
+
+.canvas_coord::before {
+}

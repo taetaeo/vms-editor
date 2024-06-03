@@ -1,5 +1,5 @@
 import { fabric } from "fabric";
-import { SelectedOptionConfigs } from "types";
+import { ToolbarSelectedOptionConfigs } from "types";
 
 export default class VideoModel extends fabric.Image {
   public objectId?: string;
@@ -25,7 +25,7 @@ export default class VideoModel extends fabric.Image {
       }, {} as Record<string, any>);
   }
 
-  public onUpdateOptions(option: SelectedOptionConfigs) {
+  public onUpdateOptions(option: ToolbarSelectedOptionConfigs) {
     // return (this.selectedOptions = option);
   }
 }

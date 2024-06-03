@@ -1,0 +1,84 @@
+/* 정렬 아이콘 */
+.toolbar__left-sort-icon,
+.toolbar__right-sort-icon,
+.toolbar__center-sort-icon,
+.toolbar__bottom-sort-icon,
+.toolbar__top-sort-icon,
+.toolbar__both-side-icon,
+.toolbar__text-icon,
+.toolbar__image-icon,
+.toolbar__video-icon,
+.toolbar__rect-icon,
+.toolbar__tri-icon,
+.toolbar__circle-icon,
+.toolbar__bold-icon,
+.toolbar__underline-icon,
+.toolbar__down-tri-arrow,
+.toolbar__hamburger-icon {
+  pointer-events: none;
+}
+
+/* 각각의 아이콘 클래스를 위해 SVG 사용 */
+.toolbar__left-sort-icon {
+  content: url("path/to/fa-align-left.svg");
+}
+
+.toolbar__right-sort-icon {
+  content: url("path/to/fa-align-right.svg");
+}
+
+.toolbar__center-sort-icon {
+  content: url("path/to/fa-align-center.svg");
+}
+
+.toolbar__bottom-sort-icon {
+  content: url("path/to/bi-solid-arrow-to-bottom.svg");
+}
+
+.toolbar__top-sort-icon {
+  content: url("path/to/bi-solid-arrow-from-bottom.svg");
+}
+
+.toolbar__both-side-icon {
+  content: url("path/to/fa-align-justify.svg");
+}
+
+.toolbar__text-icon {
+  content: url("path/to/io-text.svg");
+}
+
+.toolbar__image-icon {
+  content: url("path/to/fa-reg-file-image.svg");
+}
+
+.toolbar__video-icon {
+  content: url("path/to/fa-file-video.svg");
+}
+
+.toolbar__rect-icon {
+  content: url("path/to/md-rectangle.svg");
+}
+
+.toolbar__tri-icon {
+  content: url("path/to/io-triangle-sharp.svg");
+}
+
+.toolbar__circle-icon {
+  content: url("path/to/fa-reg-circle.svg");
+}
+
+.toolbar__bold-icon {
+  content: url("path/to/fa-bold.svg");
+}
+
+.toolbar__underline-icon {
+  content: url("path/to/fa-underline.svg");
+}
+
+.toolbar__down-tri-arrow {
+  content: url("path/to/io-md-arrow-dropdown.svg");
+}
+
+.toolbar__hamburger-icon {
+  content: url("path/to/gi-hamburger-menu.svg");
+}

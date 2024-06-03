@@ -49,7 +49,7 @@ export default function useToolbarController<T>() {
    * @param objects
    * @returns
    */
-  const getSelectedObjectFromCallbackFn = (objects: ObjectList) => {
+  const getSelectedObjectFromCallbackFn = (objects?: ObjectList | null) => {
     if (!objects) return;
     setSelectedObjects(objects);
   };

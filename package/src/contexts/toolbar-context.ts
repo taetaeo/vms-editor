@@ -1,6 +1,6 @@
 import { createContext } from "react";
 import { TOOLBAR_CONST_KEY } from "enums";
-import { AnyObject, ChangeHandler, ToolbarSelectedOptionConfigs, ToolbarUiConfig } from "types";
+import { ChangeHandler, ObjectList, ToolbarSelectedOptionConfigs, ToolbarUiConfig } from "types";
 
 export type ToolbarContextType = {
   uiConfigs?: ToolbarUiConfig;
@@ -9,7 +9,7 @@ export type ToolbarContextType = {
 
   isActive?: boolean;
   toggle?: () => void;
-  callbackFn?: (objects: AnyObject) => void;
+  callbackFn?: (objects?: ObjectList | null) => void;
 
   /** 스타일 변경 */
   onchangeObjectBackgroundColor?: ChangeHandler;
