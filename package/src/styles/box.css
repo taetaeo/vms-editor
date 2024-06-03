@@ -1,0 +1,46 @@
+/* ToolbarOptionsBox styles */
+.toolbar__options-box {
+  padding: 8px;
+  width: auto;
+}
+
+/* DummyBox styles */
+.toolbar__dummy-box {
+  background-color: #eaeaea;
+  width: 200px;
+  height: 150px;
+  cursor: grab;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: xx-large;
+  font-weight: bold;
+}
+
+/* PreviewBox styles */
+.toolbar__preview-box {
+  background-color: white;
+  width: 150px;
+  height: 150px;
+  border-radius: 0;
+  box-sizing: border-box;
+  border-style: solid;
+  border-width: 0;
+  border-color: #fff;
+}
+
+.toolbar__preview-box[data-border-style="none"] {
+  border: none;
+}
+
+/* CSS Custom Properties for dynamic values */
+.toolbar__preview-box {
+  --border-width: 0px;
+  --background-color: #fff;
+  --border-style: solid;
+  --border-color: #fff;
+  border-width: var(--border-width);
+  background-color: var(--background-color);
+  border-style: var(--border-style);
+  border-color: var(--border-color);
+}

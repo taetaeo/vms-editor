@@ -14,8 +14,9 @@
     "resolveJsonModule": true,
     "jsx": "react-jsx",
     "typeRoots": ["@types"],
-    "baseUrl": "./src"
+    "baseUrl": ".",
+    "paths": { "@/*": ["src/*"] }
   },
-  "include": ["**/*.tsx", "**/*.ts", "index.ts", "rollup.config.mjs"],
-  "exclude": ["node_modules", "./dist/**/*", "./lib/**/*", "_example/**/*", "_sb/**/*", "_playground/**/*"]
+  "include": ["src", "./rollup.config.mjs"],
+  "exclude": ["node_modules", "./dist/**/*"]
 }

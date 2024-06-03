@@ -1,7 +1,7 @@
 import type { PropsWithChildren } from "react";
-import { useToolbarController } from "controllers";
-import { ToolbarContext } from "contexts";
-import { ToolbarUiConfig, ToolbarSelectedOptionConfigs } from "types";
+import { useToolbarController } from "@/controllers";
+import { ToolbarContext } from "@/contexts";
+import { ToolbarUiConfig, ToolbarSelectedOptionConfigs } from "@/types";
 
 const ToolbarProvider = ({ uiConfigs, children }: PropsWithChildren<{ uiConfigs: ToolbarUiConfig }>) => {
   const {

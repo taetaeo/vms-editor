@@ -6,8 +6,8 @@ import * as CSS from "csstype";
  *  =====================================================
  */
 
-import { ToolbarSelectedOptionConfigs } from "types";
-import { ToolbarModel } from "models";
+import { ToolbarSelectedOptionConfigs } from "@/types";
+import { ToolbarModel } from "@/models";
 
 export default class TextBoxModel extends fabric.Textbox {
   /** 외부 모듈 */

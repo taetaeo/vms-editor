@@ -9,3 +9,15 @@
 
 .canvas_coord::before {
 }
+
+/* GridCanvas styles */
+.toolbar__grid-canvas {
+  position: absolute;
+  transform: translate(-50%, 5%);
+}
+
+/* EditorCanvas styles */
+.toolbar__editor-canvas {
+  box-sizing: border-box;
+  /* border: 1px solid red; */
+}

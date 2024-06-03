@@ -1,0 +1,23 @@
+/* DefaultSpan styles */
+.toolbar__default-span {
+  font-weight: 700;
+}
+
+/* LabelSpan styles */
+.toolbar__label-span {
+  font-weight: 700;
+}
+
+/* ButtonSpan styles */
+.toolbar__button-span {
+  font-weight: 700;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: center;
+  align-items: center;
+}
+
+.toolbar__button-span[data-gap] {
+  gap: attr(data-gap px);
+}

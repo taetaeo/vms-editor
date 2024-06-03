@@ -5,10 +5,10 @@
   "main": "./dist/index.cjs.js",
   "module": "./dist/index.esm.js",
   "browser": "./dist/index.umd.js",
-  "types": "./lib/index.d.ts",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "start": "npm run exam & npm run watch",
-    "build": "rollup -c",
+    "build": "rollup -c && tsc-alias -p tsconfig.json ",
     "watch": "rollup -cw",
     "exam": "cd example && npm start",
     "clean": "rm -rf node_modules & rm -rf package-lock.json & rm -rf lib & rm -rf dist"
@@ -27,6 +27,7 @@
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.24.5",
+    "@rollup/plugin-alias": "^5.1.0",
     "@rollup/plugin-babel": "^6.0.4",
     "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-image": "^3.0.3",
@@ -47,6 +48,7 @@
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-postcss": "^4.0.2",
     "rollup-plugin-replace": "^2.2.0",
+    "rollup-plugin-typescript-paths": "^1.5.0",
     "rollup-plugin-typescript2": "^0.36.0",
     "rollup-plugin-uglify": "^6.0.4",
     "typescript": "^5.4.5"

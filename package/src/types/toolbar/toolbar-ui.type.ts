@@ -1,4 +1,4 @@
-import { ToolbarConfigsBorder, ToolbarConfigsColors, ToolbarConfigsFontSizes } from "configs";
+import { ToolbarConfigsBorder, ToolbarConfigsColors, ToolbarConfigsFontSizes } from "@/configs";
 
 export type ToolbarUiConfig = {
   fontSizeConfigs: ToolbarConfigsFontSizes;

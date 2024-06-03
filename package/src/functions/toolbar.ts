@@ -1,5 +1,5 @@
-import { ToolbarContext } from "contexts";
 import { useContext } from "react";
+import { ToolbarContext } from "@/contexts";
 
 /**
  * @description this is hook for using in Toolbar Compound Component

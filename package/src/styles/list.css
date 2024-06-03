@@ -1,0 +1,15 @@
+/* ToolbarList styles */
+.toolbar__list {
+  width: 97%;
+  display: flex;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+  margin: 8px auto;
+}
+
+/* ToolbarListItem styles */
+.toolbar__list-item {
+  list-style: none;
+  padding: 2px;
+  height: 100%;
+}

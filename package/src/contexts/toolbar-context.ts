@@ -1,6 +1,6 @@
 import { createContext } from "react";
-import { TOOLBAR_CONST_KEY } from "enums";
-import { ChangeHandler, ObjectList, ToolbarSelectedOptionConfigs, ToolbarUiConfig } from "types";
+import { TOOLBAR_CONST_KEY } from "@/enums";
+import { ChangeHandler, ObjectList, ToolbarSelectedOptionConfigs, ToolbarUiConfig } from "@/types";
 
 export type ToolbarContextType = {
   uiConfigs?: ToolbarUiConfig;

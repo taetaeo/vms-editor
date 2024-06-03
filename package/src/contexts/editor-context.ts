@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import { ObjectConfigs } from "configs";
+import { ObjectConfigs } from "@/configs";
 
 export type EditorContextType = {
   editorConfigs?: ObjectConfigs;
