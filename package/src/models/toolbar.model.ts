@@ -1,21 +1,25 @@
+"use strict";
 import * as CSS from "csstype";
 
-import { UtilsModel, CanvasModel } from "@/models";
-
-import { SelectedOptionConfigs, ObjectType } from "@/app/types";
+// Models
+import { CanvasModel } from "models";
+// Types
+import { ToolbarSelectedOptionConfigs, ObjectVariant } from "types";
+// Lib
+import { Utils } from "lib";
 
 type Parameters = {
-  canvas?: CanvasModel;
-  selectedOptions: SelectedOptionConfigs;
+  canvas?: CanvasModel<any, any, any>;
+  selectedOptions: ToolbarSelectedOptionConfigs;
 };
 
 export default class ToolbarModel {
   /** 외부 모듈 */
-  public utils?: UtilsModel;
-  public canvas?: CanvasModel;
+  public utils?: Utils;
+  public canvas?: CanvasModel<any, any, any>;
 
   /** 객체 타입 옵션 */
-  public _type?: ObjectType;
+  public _type?: ObjectVariant;
 
   /** 객체 옵션 */
   public objectWidth?: number;
@@ -34,11 +38,11 @@ export default class ToolbarModel {
   public fontUnderLine?: boolean;
   public fontFamily?: string;
 
-  private selectedOptions: SelectedOptionConfigs;
+  private selectedOptions: ToolbarSelectedOptionConfigs;
 
   constructor(params: Parameters) {
     /** Outer Modules */
-    this.utils = new UtilsModel();
+    this.utils = new Utils();
 
     /** Parameters */
     this.canvas = params.canvas;
@@ -62,11 +66,11 @@ export default class ToolbarModel {
   }
   /**
    * 상태 변화를 위한 함수
-   * @param {SelectedOptionConfigs} selectedOptions
+   * @param {ToolbarSelectedOptionConfigs} selectedOptions
    * @returns {void}
    */
 
-  public onChangeSelectedOption(selectedOptions: SelectedOptionConfigs): void {
+  public onChangeSelectedOption(selectedOptions: ToolbarSelectedOptionConfigs): void {
     this._type = selectedOptions.type;
     this.fontSize = selectedOptions.font.size;
     this.fontColor = selectedOptions.font.color;
@@ -87,7 +91,7 @@ export default class ToolbarModel {
    * @param {HTMLButtonElement | HTMLInputElement} target
    * @returns {void} - 객체 타입 유형 변환
    */
-  public onchangeObjectType(target: HTMLButtonElement | HTMLInputElement, objectId: string) {
+  public onchangeObjectVariant(target: HTMLButtonElement | HTMLInputElement, objectId: string) {
     const { id, value } = target;
 
     const isId = this.utils?.isBeingChecker(id);
@@ -101,14 +105,14 @@ export default class ToolbarModel {
     }
 
     /**
-     * 실행취소. value의 타입이 'ObjectType' 이 아닐 경우.
+     * 실행취소. value의 타입이 'ObjectVariant' 이 아닐 경우.
      */
 
-    if (!this.isValidObjectType(value)) {
+    if (!this.isValidObjectVariant(value)) {
       return;
     }
 
-    this._type = value as ObjectType;
+    this._type = value as ObjectVariant;
 
     this.canvas?.onCreateObject(value, "텍스트를 입력해주세요.", {
       id: objectId,
@@ -495,11 +499,11 @@ export default class ToolbarModel {
   }
 
   /**
-   * ObjectType 에 대한 타입가드 함수
+   * ObjectVariant 에 대한 타입가드 함수
    * @param {string} value
    * @returns
    */
-  private isValidObjectType(value: string): value is ObjectType {
+  private isValidObjectVariant(value: string): value is ObjectVariant {
     return ["rect", "circle", "text", "image", "video"].includes(value);
   }
 }

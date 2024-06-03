@@ -1,61 +1,94 @@
+"use strict";
 import { fabric } from "fabric";
 import * as CSS from "csstype";
-import { CanvasType } from "@/app/types";
-import { ThemeConfigs } from "@/app/interfaces";
-import ToolbarModel from "./toolbar.model";
 
-type TextConfig = ThemeConfigs<CanvasType>["canvas"]["objects"]["text"];
+/** =====================================================
+ *  =====================================================
+ */
+
+import { ToolbarSelectedOptionConfigs } from "types";
+import { ToolbarModel } from "models";
 
 export default class TextBoxModel extends fabric.Textbox {
   /** 외부 모듈 */
 
   public toolbar?: ToolbarModel;
 
-  /** ========================== ==========================
-   *  ========================== ==========================
-   */
-
   // 추가적인 커스텀 속성이나 메소드를 정의
-  private textConfig?: TextConfig;
   public objectId?: string;
   public size?: number = 100;
   public color: CSS.Properties["color"] = "#fff";
   public fontWeight: CSS.Properties["fontWeight"] = 400;
 
-  constructor(text: string, options?: any, configs?: TextConfig) {
+  public pointer: { start: number; end: number } = { start: 0, end: 0 };
+
+  private selectedOptions?: ToolbarSelectedOptionConfigs;
+
+  constructor(text: string, options?: any) {
     super(text, options); // 부모 클래스의 생성자를 호출
     // 여기에서 커스텀 초기화 코드를 추가
     // this.toolbar = new ToolbarModel();
-
-    this.textConfig = configs;
-    this.size = this.textConfig?.size;
 
     this.objectId = options.id;
     this.color = options.fill;
     this.fontWeight = options.fontWeight;
     this.backgroundColor = options.backgroundColor;
     this.borderColor = options.stroke;
+    this.canvas = options.canvas;
 
     this.on("scaling", this.onResizeScaling);
-    this.on("selection:created", function () {
-      console.log("객체 선택함 1 ");
-    });
-    this.on("mouse:down", function () {
-      console.log("객체 선택함 2 ");
-    });
 
-    this.on("object:selected", function () {
-      console.log("객체 선택함 3");
+    this.on("mousedown:before", function (e) {
+      // 마우스가 내려오기전
+      console.log("🟦 \t\t mousedown:before :", e);
     });
-
+    this.on("mousedown", function (e) {
+      // 마우스가 내려올때
+      console.log("🟦 \t\t mousedown : ", e);
+    });
+    this.on("mouseup:before", function (e) {
+      // 마우스가 올라오기전
+      console.log("🟦 \t\t mouseup:before :", e);
+    });
     this.on("mouseup", (e) => {
-      // console.log("객체 이벤트", e);
-      // console.log("객체 선택함 4", this.objectId);
+      // 마우스가 올라올때
+      console.log("🟦 \t\t mouseup : ", e);
+    });
+    this.on("mouseover", function (e) {
+      // 마우스가 객체에 접근했을때,
+      // console.log("🟦 \t\t mouseover : ", e);
+    });
+    this.on("mouseout", function (e) {
+      // 마우스가 객체에서 벗어날때
+      // console.log("🟦 \t\t mouseout : ", e);
+    });
+    this.on("skewing", function (e) {
+      console.log("🟦 \t\t skewing : ", e);
+    });
+    this.on("selection:created", function (e) {
+      // const selectedText = e.target.text.slice(e.target.selectionStart, e.target.selectionEnd);
+      console.log("🟦 \t\t selection:created : ", e);
+    });
+    this.on("selection:changed", (e) => {
+      console.log("🟦 \t\t 선택한 모델의 ID : ", this.objectId);
+
+      const start = this.selectionStart; // 선택 시작
+      const end = this.selectionEnd; // 선택 마지막
+
+      if (!start || !end) return;
+
+      this.pointer.start = start;
+      this.pointer.end = end;
     });
   }
 
-  public onChangeStyle(key: string, value: unknown) {
-    this.set(key as any, value);
+  public onUpdateOptions(option: ToolbarSelectedOptionConfigs) {
+    return (this.selectedOptions = option);
+  }
+
+  public onChangeStyle(type: "font" | "object", key: string, value: unknown) {
+    if (type === "font") return this.setSelectionStyles({ [key]: value }, this.selectionStart, this.selectionEnd || this._text.length);
+    else if (type === "object") return this.set(key as any, value);
   }
 
   /**
@@ -77,7 +110,9 @@ export default class TextBoxModel extends fabric.Textbox {
   /**
    * 객체 리사이즈시에 변경된 값처리
    */
-  private onResizeScaling = () => {
+  private onResizeScaling = (e: fabric.IEvent<MouseEvent>) => {
+    console.log("🟦 \t\t Resize :", e);
+
     const newWidth: number = this.getScaledWidth();
     const newHeight: number = this.getScaledHeight();
     const scalingFactor: number = this.scaleX || 1;
@@ -92,12 +127,7 @@ export default class TextBoxModel extends fabric.Textbox {
     
     `);
 
-    this.set({ fontSize: newFontSize } as object);
+    this.setSelectionStyles({ fontSize: newFontSize }, 0, this._text.length);
     this.setCoords();
   };
-
-  // private onChangeBorder = (e: any) => {
-  //   const { selectedObject } = e.target;
-  //   this.set({ selectionBorderColor: "green" } as object);
-  // };
 }

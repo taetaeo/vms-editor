@@ -1,9 +1,39 @@
-export type { CanvasType } from "./canvas.type";
-export type { Theme } from "./theme.type";
-export type { Colors } from "./color.type";
-export type { Border } from "./border.type";
-export type { Size } from "./size.type";
-export type { Coordinate } from "./coord.type";
-export type { ObjectOptionStyle, ObjectStyle, ObjectType, InputObject } from "./object.type";
-export type { SelectedOptionConfigs, UiConfigs } from "./config.type";
-export type { FontStyle } from "./font.type";
+/**
+ * =============================================================================
+ *                              Canvas Objects
+ * =============================================================================
+ */
+export type { CanvasObject, AnyObject, ObjectList } from "./canvas/canvas.type";
+
+/**
+ * =============================================================================
+ *                                Theme Styles
+ * =============================================================================
+ */
+export type { Theme } from "./theme/indexype";
+
+/**
+ * =============================================================================
+ *                               Object Styles
+ * =============================================================================
+ */
+export type { ObjectColors } from "./objects/object-color.type";
+export type { ObjectBorder } from "./objects/object-border.type";
+export type { ObjectSize } from "./objects/object-size.type";
+export type { ObjectCoordinate } from "./objects/object-coord.type";
+export type { ObjectFontStyle } from "./objects/object-font.type";
+export type { ObjectOptionStyle, ObjectStyleProps } from "./objects/index.type.ts";
+export type { ObjectVariant } from "./objects/object-variant.type";
+/**
+ * =============================================================================
+ *                                  Toolbar
+ * =============================================================================
+ */
+export type { ToolbarSelectedOptionConfigs } from "./toolbar/index.type";
+export type { ToolbarUiConfig } from "./toolbar/toolbar-ui.type";
+/**
+ * =============================================================================
+ *                                  Event Handler
+ * =============================================================================
+ */
+export type { ChangeHandler } from "./events";
