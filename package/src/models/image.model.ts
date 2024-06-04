@@ -1,6 +1,6 @@
 "use strict";
 import { fabric } from "fabric";
-import { ToolbarSelectedOptionConfigs } from "@/types";
+import { ToolbarSelectedOptionConfigs } from "../types";
 
 export default class ImageModel extends fabric.Image {
   public objectId?: string;

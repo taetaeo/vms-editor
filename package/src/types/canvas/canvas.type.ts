@@ -1,4 +1,4 @@
-import { ImageModel, TextBoxModel, TextModel, VideoModel } from "@/models";
+import { ImageModel, TextBoxModel, TextModel, VideoModel } from "../../models";
 
 export type CanvasObject = fabric.Object;
 export type AnyObject = TextModel | TextBoxModel | ImageModel | VideoModel;

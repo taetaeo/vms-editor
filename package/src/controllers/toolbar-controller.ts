@@ -1,8 +1,8 @@
 import React from "react";
-import { TOOLBAR_CONST_KEY } from "@/enums";
-import { ObjectList, ToolbarSelectedOptionConfigs } from "@/types";
-import { CanvasModel, TextBoxModel } from "@/models";
-import { useMultiState } from "@/functions";
+import { TOOLBAR_CONST_KEY } from "../enums";
+import { ObjectList, ToolbarSelectedOptionConfigs } from "../types";
+import { CanvasModel, TextBoxModel } from "../models";
+import { useMultiState } from "../functions";
 
 export default function useToolbarController<T>() {
   const [isActive, setIsActive] = React.useState<boolean>(false);

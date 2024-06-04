@@ -1,5 +1,5 @@
 /* ToolbarList styles */
-.toolbar__list {
+.vms-editor__list {
   width: 97%;
   display: flex;
   flex-wrap: wrap;
@@ -8,7 +8,7 @@
 }
 
 /* ToolbarListItem styles */
-.toolbar__list-item {
+.vms-editor__list-item {
   list-style: none;
   padding: 2px;
   height: 100%;

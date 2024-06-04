@@ -1,9 +1,9 @@
 import { createContext } from "react";
-import { TOOLBAR_CONST_KEY } from "@/enums";
-import { ChangeHandler, ObjectList, ToolbarSelectedOptionConfigs, ToolbarUiConfig } from "@/types";
+import { TOOLBAR_CONST_KEY } from "../enums";
+import { ChangeHandler, ObjectList, ToolbarSelectedOptionConfigs, ToolbarUiConfig } from "../types";
 
 export type ToolbarContextType = {
-  uiConfigs?: ToolbarUiConfig;
+  toolbarUiConfig?: ToolbarUiConfig;
   selectedOptions?: ToolbarSelectedOptionConfigs;
   onchangeValue?: (name: TOOLBAR_CONST_KEY, value: unknown) => void;
 
@@ -25,7 +25,7 @@ export type ToolbarContextType = {
 };
 
 const ToolbarContext = createContext<ToolbarContextType>({
-  uiConfigs: undefined,
+  toolbarUiConfig: undefined,
   selectedOptions: undefined,
   onchangeValue: () => {},
   isActive: true,

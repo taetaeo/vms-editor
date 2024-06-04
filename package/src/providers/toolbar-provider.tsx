@@ -1,9 +1,9 @@
 import type { PropsWithChildren } from "react";
-import { useToolbarController } from "@/controllers";
-import { ToolbarContext } from "@/contexts";
-import { ToolbarUiConfig, ToolbarSelectedOptionConfigs } from "@/types";
+import { useToolbarController } from "../controllers";
+import { ToolbarContext } from "../contexts";
+import { ToolbarUiConfig, ToolbarSelectedOptionConfigs } from "../types";
 
-const ToolbarProvider = ({ uiConfigs, children }: PropsWithChildren<{ uiConfigs: ToolbarUiConfig }>) => {
+const ToolbarProvider = ({ toolbarUiConfig, children }: PropsWithChildren<{ toolbarUiConfig: ToolbarUiConfig }>) => {
   const {
     isActive,
     toggle,
@@ -25,7 +25,7 @@ const ToolbarProvider = ({ uiConfigs, children }: PropsWithChildren<{ uiConfigs:
   return (
     <ToolbarContext.Provider
       value={{
-        uiConfigs,
+        toolbarUiConfig,
         isActive,
         toggle,
         selectedOptions,

@@ -1,5 +1,5 @@
 /* Flex styles */
-.toolbar__flex {
+.vms-editor__flex {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -12,109 +12,109 @@
   padding-bottom: 0;
 }
 
-.toolbar__flex.direction-row {
+.vms-editor__flex.direction-row {
   flex-direction: row;
 }
 
-.toolbar__flex.direction-column {
+.vms-editor__flex.direction-column {
   flex-direction: column;
 }
 
-.toolbar__flex.wrap-nowrap {
+.vms-editor__flex.wrap-nowrap {
   flex-wrap: nowrap;
 }
 
-.toolbar__flex.wrap-wrap {
+.vms-editor__flex.wrap-wrap {
   flex-wrap: wrap;
 }
 
-.toolbar__flex.justify-start {
+.vms-editor__flex.justify-start {
   justify-content: flex-start;
 }
 
-.toolbar__flex.justify-end {
+.vms-editor__flex.justify-end {
   justify-content: flex-end;
 }
 
-.toolbar__flex.justify-center {
+.vms-editor__flex.justify-center {
   justify-content: center;
 }
 
-.toolbar__flex.justify-between {
+.vms-editor__flex.justify-between {
   justify-content: space-between;
 }
 
-.toolbar__flex.justify-around {
+.vms-editor__flex.justify-around {
   justify-content: space-around;
 }
 
-.toolbar__flex.align-start {
+.vms-editor__flex.align-start {
   align-items: flex-start;
 }
 
-.toolbar__flex.align-end {
+.vms-editor__flex.align-end {
   align-items: flex-end;
 }
 
-.toolbar__flex.align-center {
+.vms-editor__flex.align-center {
   align-items: center;
 }
 
-.toolbar__flex.align-baseline {
+.vms-editor__flex.align-baseline {
   align-items: baseline;
 }
 
-.toolbar__flex.align-stretch {
+.vms-editor__flex.align-stretch {
   align-items: stretch;
 }
 
-.toolbar__flex.gap-0 {
+.vms-editor__flex.gap-0 {
   gap: 0px;
 }
 
-.toolbar__flex.gap-4 {
+.vms-editor__flex.gap-4 {
   gap: 4px;
 }
 
-.toolbar__flex.pl-0 {
+.vms-editor__flex.pl-0 {
   padding-left: 0px;
 }
 
-.toolbar__flex.pl-10 {
+.vms-editor__flex.pl-10 {
   padding-left: 10px;
 }
-.toolbar__flex.pl-16 {
+.vms-editor__flex.pl-16 {
   padding-left: 16px;
 }
-.toolbar__flex.pr-0 {
+.vms-editor__flex.pr-0 {
   padding-right: 0px;
 }
 
-.toolbar__flex.pr-10 {
+.vms-editor__flex.pr-10 {
   padding-right: 10px;
 }
-.toolbar__flex.pr-16 {
+.vms-editor__flex.pr-16 {
   padding-right: 16px;
 }
 
-.toolbar__flex.pt-0 {
+.vms-editor__flex.pt-0 {
   padding-top: 0px;
 }
 
-.toolbar__flex.pt-10 {
+.vms-editor__flex.pt-10 {
   padding-top: 10px;
 }
-.toolbar__.pt-16 {
+.vms-editor__.pt-16 {
   padding-top: 16px;
 }
 
-.toolbar__flex.pb-0 {
+.vms-editor__flex.pb-0 {
   padding-bottom: 0px;
 }
 
-.toolbar__flex.pb-10 {
+.vms-editor__flex.pb-10 {
   padding-bottom: 10px;
 }
-.toolbar__flex.pb-16 {
+.vms-editor__flex.pb-16 {
   padding-bottom: 10px;
 }

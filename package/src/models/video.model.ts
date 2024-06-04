@@ -1,5 +1,5 @@
 import { fabric } from "fabric";
-import { ToolbarSelectedOptionConfigs } from "@/types";
+import { ToolbarSelectedOptionConfigs } from "../types";
 
 export default class VideoModel extends fabric.Image {
   public objectId?: string;

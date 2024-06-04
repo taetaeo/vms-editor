@@ -1,11 +1,11 @@
 /* ToolbarOptionsBox styles */
-.toolbar__options-box {
+.vms-editor__options-box {
   padding: 8px;
   width: auto;
 }
 
 /* DummyBox styles */
-.toolbar__dummy-box {
+.vms-editor__dummy-box {
   background-color: #eaeaea;
   width: 200px;
   height: 150px;
@@ -18,7 +18,7 @@
 }
 
 /* PreviewBox styles */
-.toolbar__preview-box {
+.vms-editor__preview-box {
   background-color: white;
   width: 150px;
   height: 150px;
@@ -29,12 +29,12 @@
   border-color: #fff;
 }
 
-.toolbar__preview-box[data-border-style="none"] {
+.vms-editor__preview-box[data-border-style="none"] {
   border: none;
 }
 
 /* CSS Custom Properties for dynamic values */
-.toolbar__preview-box {
+.vms-editor__preview-box {
   --border-width: 0px;
   --background-color: #fff;
   --border-style: solid;

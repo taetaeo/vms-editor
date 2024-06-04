@@ -1,11 +1,11 @@
 /* DefaultWrapper styles */
-.toolbar__default-wrapper {
+.vms-editor__default-wrapper {
   /* position: relative; */
   margin: auto;
 }
 
 /* ToolbarWrapper styles */
-.toolbar__toolbar-wrapper {
+.vms-editor__toolbar-wrapper {
   width: 360px;
   height: 100vh;
   overflow-y: scroll;
@@ -20,36 +20,36 @@
   transition: width 0.3s ease, background-color 0.3s ease;
 }
 
-.toolbar__toolbar-wrapper.inactive {
+.vms-editor__toolbar-wrapper.inactive {
   width: 50px;
   background-color: none;
 }
 
 /* Custom scrollbar */
-.toolbar__toolbar-wrapper::-webkit-scrollbar {
+.vms-editor__toolbar-wrapper::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
-.toolbar__toolbar-wrapper::-webkit-scrollbar-track {
+.vms-editor__toolbar-wrapper::-webkit-scrollbar-track {
   background: #f1f1f1;
 }
 
-.toolbar__toolbar-wrapper::-webkit-scrollbar-thumb {
+.vms-editor__toolbar-wrapper::-webkit-scrollbar-thumb {
   background: #888;
   border-radius: 4px;
 }
 
-.toolbar__toolbar-wrapper::-webkit-scrollbar-thumb:hover {
+.vms-editor__toolbar-wrapper::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
 
 /* EditorWrapper styles */
-.toolbar__editor-wrapper {
+.vms-editor__editor-wrapper {
 }
 
 /* MainWrapper styles */
-.toolbar__main-wrapper {
+.vms-editor__main-wrapper {
   display: flex;
   justify-content: space-between;
   flex: 1;
@@ -59,16 +59,16 @@
 }
 
 /* BottomWrapper styles */
-.toolbar__bottom-wrapper {
+.vms-editor__bottom-wrapper {
 }
 
 /* TransitionWrapper styles */
-.toolbar__transition-wrapper {
+.vms-editor__transition-wrapper {
   transition: opacity 0.5s ease-in-out;
   opacity: 1;
   overflow: hidden;
 }
 
-.toolbar__transition-wrapper.inactive {
+.vms-editor__transition-wrapper.inactive {
   opacity: 0;
 }

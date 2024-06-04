@@ -2,11 +2,11 @@
 import * as CSS from "csstype";
 
 // Models
-import { CanvasModel } from "@/models";
+import { CanvasModel } from "../models";
 // Types
-import { ToolbarSelectedOptionConfigs, ObjectVariant } from "@/types";
+import { ToolbarSelectedOptionConfigs, ObjectVariant } from "../types";
 // Lib
-import { Utils } from "@/lib";
+import { Utils } from "../lib";
 
 type Parameters = {
   canvas?: CanvasModel<any, any, any>;

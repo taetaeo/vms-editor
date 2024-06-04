@@ -1,11 +1,11 @@
 "use strict";
 import { fabric } from "fabric";
-import { type CanvasConfigs, ObjectConfigs } from "@/configs";
-import { Utils } from "@/lib";
-import { ObjectConfigState } from "@/states";
-import { CanvasObject, ObjectList, ObjectVariant, ToolbarSelectedOptionConfigs } from "@/types";
-import { ImageModel, TextBoxModel, TextModel, VideoModel } from "@/models";
-import { GridLayout } from "@/layouts";
+import { type CanvasConfigs, ObjectConfigs } from "../configs";
+import { Utils } from "../lib";
+import { ObjectConfigState } from "../states";
+import { CanvasObject, ObjectList, ObjectVariant, ToolbarSelectedOptionConfigs } from "../types";
+import { ImageModel, TextBoxModel, TextModel, VideoModel } from "../models";
+import { GridLayout } from "../layouts";
 
 type CallbackFunction = (objects?: ObjectList | null) => void;
 
