@@ -1,4 +1,4 @@
-# 🚀 Boilerplate 2024 Express with TypeScript
+# 🚀 VMS Server 
 
 ## 📁 Project Structure
 
@@ -40,3 +40,17 @@
 └── server.ts
 
 ```
+
+
+## API
+
+### Form
+
+| Method | URL                    | Description                     | Options |
+| ------ | ---------------------- | ------------------------------- | ----------- |
+| GET    | /api/vms/form/:formId  | FormId에 따라 form을 조회       | form-1(params) |
+| GET    | /api//vms/form/object/ | Form에 속한 객체를 조회하는 api | formId, objectId (Query)|
+
+
+
+
