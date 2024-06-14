@@ -1,6 +1,9 @@
 import type { CSSProperties, Dispatch, PropsWithChildren, SetStateAction } from "react";
 import React from "react";
 import { CanvasModel, ObjectConfigsImageObject, ObjectConfigsTextObject, ObjectConfigsVideoObject, canvasConfigs, objectConfigs, useToolbar } from "vms-editor";
+import GridCanvasContainer from "../canvas/gridCanvas";
+import MainCanvasContainer from "../canvas/mainCanvas";
+import ToolbarContainer from "../toolbar/mainToolbar";
 
 type CanvasProps = CanvasModel<ObjectConfigsTextObject, ObjectConfigsImageObject, ObjectConfigsVideoObject> | null;
 type Props = {
@@ -56,9 +59,21 @@ const VmsContainer = ({ canvas = null, setCanvas = () => {}, children, ...rest }
   }, []);
 
   return (
-    <div style={ContainerStyle}>
-      <main className="toolbar__main-wrapper"></main>
-    </div>
+    <>
+      <div style={ContainerStyle}>
+        <button className="vms-editor__color-button" style={{ background: "white", width: "auto" }}>
+          데이터 추출
+        </button>
+      </div>
+      <main className="vms-editor____main-wrapper">
+        <section className="vms-editor__default-wrapper">
+          <GridCanvasContainer id="grid-canvas" theme={"dark"} width={window.innerWidth * 0.7} height={window.innerHeight * 0.7} />
+          <MainCanvasContainer id="fabric-canvas" ref={canvasRef!} />
+        </section>
+
+        <ToolbarContainer canvas={canvas} />
+      </main>
+    </>
   );
 };
 

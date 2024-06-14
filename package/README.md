@@ -27,3 +27,5 @@ yarn run watch
 yarn run build
 
 ```
+
+- `/dist` 폴더가 생겼다면, 이제 모든 준비가 끝이 났습니다.

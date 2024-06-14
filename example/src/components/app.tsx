@@ -1,10 +1,9 @@
 import React, { ReactNode } from "react";
 
-import { toolbarConfigs, objectConfigs } from "vms-editor";
+import { objectConfigs, CanvasModel, toolbarConfigs } from "vms-editor";
+import { ToolbarProvider, EditorProvider } from "vms-editor";
 
-import { ToolbarProvider, ObjectFontStyle, EditorProvider } from "vms-editor";
-import VmsContainer from "./vms-container";
-import { CanvasModel } from "vms-editor/src/models";
+import VmsContainer from "./vms/vms-container";
 
 const App = (): ReactNode => {
   const [canvas, setCanvas] = React.useState<CanvasModel<any, any, any> | null>(null); // canvas 상태 추가
@@ -12,8 +11,8 @@ const App = (): ReactNode => {
   return (
     <>
       {/* Toolbar Configs */}
-      <ToolbarProvider uiConfigs={toolbarConfigs}>
-        <EditorProvider editorConfig={objectConfigs}>
+      <ToolbarProvider toolbarUiConfig={toolbarConfigs}>
+        <EditorProvider editorConfigs={objectConfigs}>
           <VmsContainer canvas={canvas!} setCanvas={setCanvas} />
         </EditorProvider>
       </ToolbarProvider>

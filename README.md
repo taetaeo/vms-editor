@@ -1,8 +1,8 @@
 # VMS Editor
 
-## 실행방법
+## /Package
 
-1. package 설치
+### package 설치
 
 ```bash
 cd package
@@ -13,7 +13,7 @@ yarn run watch
 
 ```
 
-2. example 실행
+## /example
 
 ```bash
 
@@ -21,3 +21,14 @@ yarn
 
 yarn run start
 ```
+
+## /server 실행
+
+```bash
+yarn
+
+yarn run dev
+
+```
+
+api - `http://localhost:8080/api/vms/form/form-1`
