@@ -1,0 +1,36 @@
+[
+  {
+    "vmsFormId": "form-1",
+    "vmsModlKind": "a",
+    "vmsFormType": "테스트 a",
+    "vmsFormNm": "폼 테스트 a",
+    "dsplEff": "테스트 효과 a",
+    "dsplHr": 1000,
+    "backClr": "#000",
+    "vmsFormImg": "테스트 blob",
+    "rgstrId": "오태권",
+    "regDt": "2024-06-13",
+    "chngrId": "오태권",
+    "chgDt": "2024-06-13",
+    "objects": [
+      "c130106b-5034-589b-e205-c04b07f510b2",
+      "e255799e-9a35-5430-56f8-c59da62b1dc1",
+      "118600b6-a769-8852-211a-cc2cc455f4e7"
+    ]
+  },
+  {
+    "vmsFormId": "form-2",
+    "vmsModlKind": "b",
+    "vmsFormType": "테스트 b",
+    "vmsFormNm": "폼 테스트 b",
+    "dsplEff": "테스트 효과 b",
+    "dsplHr": 1000,
+    "backClr": "#000",
+    "vmsFormImg": "테스트 blob",
+    "rgstrId": "오태권",
+    "regDt": "2024-06-13",
+    "chngrId": "오태권",
+    "chgDt": "2024-06-13",
+    "objects": []
+  }
+]

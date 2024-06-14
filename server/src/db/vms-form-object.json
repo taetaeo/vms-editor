@@ -1,0 +1,107 @@
+[
+  {
+    "vmsFormId": "form-1",
+    "sn": 1,
+    "vmsFormObjKind": "txt",
+    "vmsFormObjId": "c130106b-5034-589b-e205-c04b07f510b2",
+    "backClr": "#000",
+    "formObjPstnX": 200,
+    "formObjPstnY": 500,
+    "formObjDsplWdth": 400,
+    "formObjDsplHght": 400,
+    "formObjBlnkYn": "Y",
+    "style": {
+      "txtAlgnMthd": "center",
+      "fontClr": "#fff",
+      "fontType": "Arial",
+      "fontSz": 40,
+      "fontThck": "B",
+      "vmsTextItemId": "c130106b-5034-589b-e205-c04b07f510b2-1",
+      "dsplTxt": "테스트 메시지 1"
+    }
+  },
+  {
+    "vmsFormId": "form-1",
+    "sn": 2,
+    "vmsFormObjKind": "txt",
+    "vmsFormObjId": "e255799e-9a35-5430-56f8-c59da62b1dc1",
+    "backClr": "#000",
+    "formObjPstnX": 400,
+    "formObjPstnY": 600,
+    "formObjDsplWdth": 500,
+    "formObjDsplHght": 200,
+    "formObjBlnkYn": "Y",
+    "style": {
+      "txtAlgnMthd": "center",
+      "fontClr": "#fff",
+      "fontType": "Arial",
+      "fontSz": 30,
+      "fontThck": "B",
+      "vmsTextItemId": "e255799e-9a35-5430-56f8-c59da62b1dc1-1",
+      "dsplTxt": "테스트 메시지 2"
+    }
+  },
+  {
+    "vmsFormId": "form-1",
+    "sn": 3,
+    "vmsFormObjKind": "txt",
+    "vmsFormObjId": "118600b6-a769-8852-211a-cc2cc455f4e7",
+    "backClr": "#000",
+    "formObjPstnX": 500,
+    "formObjPstnY": 700,
+    "formObjDsplWdth": 200,
+    "formObjDsplHght": 300,
+    "formObjBlnkYn": "Y",
+    "style": {
+      "txtAlgnMthd": "center",
+      "fontClr": "blue",
+      "fontType": "Arial",
+      "fontSz": 48,
+      "fontThck": "B",
+      "vmsTextItemId": "118600b6-a769-8852-211a-cc2cc455f4e7-1",
+      "dsplTxt": "테스트 메시지 3"
+    }
+  },
+  {
+    "vmsFormId": "form-1",
+    "sn": 4,
+    "vmsFormObjKind": "txt",
+    "vmsFormObjId": "74fb3fe6-5aa0-0675-2628-ca37d774032a",
+    "backClr": "#000",
+    "formObjPstnX": 200,
+    "formObjPstnY": 600,
+    "formObjDsplWdth": 200,
+    "formObjDsplHght": 300,
+    "formObjBlnkYn": "Y",
+    "style": {
+      "txtAlgnMthd": "center",
+      "fontClr": "red",
+      "fontType": "Arial",
+      "fontSz": 62,
+      "fontThck": "B",
+      "vmsTextItemId": "74fb3fe6-5aa0-0675-2628-ca37d774032a-1",
+      "dsplTxt": "테스트 메시지 4"
+    }
+  },
+  {
+    "vmsFormId": "form-1",
+    "sn": 5,
+    "vmsFormObjKind": "txt",
+    "vmsFormObjId": "ab0c8602-da99-93f3-cf34-6e5ae9af8249",
+    "backClr": "#000",
+    "formObjPstnX": 250,
+    "formObjPstnY": 600,
+    "formObjDsplWdth": 200,
+    "formObjDsplHght": 300,
+    "formObjBlnkYn": "Y",
+    "style": {
+      "txtAlgnMthd": "center",
+      "fontClr": "#fff",
+      "fontType": "Arial",
+      "fontSz": 92,
+      "fontThck": "B",
+      "vmsTextItemId": "ab0c8602-da99-93f3-cf34-6e5ae9af8249-1",
+      "dsplTxt": "테스트 메시지 5"
+    }
+  }
+]
