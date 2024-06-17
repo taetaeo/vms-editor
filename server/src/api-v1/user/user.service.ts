@@ -1,7 +1,7 @@
 import { StatusCodes } from 'http-status-codes';
 
-import { User } from '@/api/user/user.model';
-import { userRepository } from '@/api/user/user.repository';
+import { User } from '@/api-v1/user/user.model';
+import { userRepository } from '@/api-v1/user/user.repository';
 import { ResponseStatus, ServiceResponse } from '@/common/models/serviceResponse';
 import { logger } from '@/server';
 

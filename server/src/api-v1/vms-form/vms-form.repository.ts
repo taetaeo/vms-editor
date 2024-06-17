@@ -1,4 +1,4 @@
-import { VmsForm } from '@/api/vms-form/vms-form.model';
+import { VmsForm } from '@/api-v1/vms-form/vms-form.model';
 import { vmsFormDB } from '@/db';
 import { logger } from '@/server';
 

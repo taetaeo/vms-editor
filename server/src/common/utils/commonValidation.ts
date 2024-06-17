@@ -13,4 +13,7 @@ export const commonValidations = {
 
   objectId: z.string().transform(String),
   // ... Object's Id
+
+  formObjectKind: z.string().transform(String),
+  // ... Objects depending on object kind
 };

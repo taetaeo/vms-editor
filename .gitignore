@@ -1,12 +1,16 @@
-# Example Folder
+# Example
 /example/package-lock.json
 /example/node_modules/
 /example/yarn.lock
 
 
-# Pakcage Folder
+# Pakcage
 /package/package-lock.json
 /pakcage/node_modules/
 /package/yarn.lock
 /package/lib/
 
+# Server
+/package/package-lock.json
+/pakcage/node_modules/
+/package/yarn.lock

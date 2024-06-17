@@ -1,8 +1,8 @@
 import { StatusCodes } from 'http-status-codes';
 
-import { VmsForm } from '@/api/vms-form/vms-form.model';
-import { vmsFormRepository } from '@/api/vms-form/vms-form.repository';
-import { vmsFormObjectRepository } from '@/api/vms-form-object/vms-form-object.repository';
+import { VmsForm } from '@/api-v1/vms-form/vms-form.model';
+import { vmsFormRepository } from '@/api-v1/vms-form/vms-form.repository';
+import { vmsFormObjectRepository } from '@/api-v1/vms-form-object/vms-form-object.repository';
 import { ResponseStatus, ServiceResponse } from '@/common/models/serviceResponse';
 import { logger } from '@/server';
 

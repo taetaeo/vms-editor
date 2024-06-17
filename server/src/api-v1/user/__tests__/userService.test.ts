@@ -1,9 +1,9 @@
 import { StatusCodes } from 'http-status-codes';
 import { Mock } from 'vitest';
 
-import { User } from '@/api/user/user.model';
+import { User } from '@/api-v1/user/user.model';
 import { userRepository } from '@/api/user/userRepository';
-import { userService } from '@/api/user/user.service';
+import { userService } from '@/api-v1/user/user.service';
 
 vi.mock('@/api/user/userRepository');
 vi.mock('@/server', () => ({

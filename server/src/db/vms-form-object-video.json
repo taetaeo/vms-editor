@@ -1,0 +1,27 @@
+[
+  {
+    "vmsFormId": "form-2",
+    "sn": 10,
+    "vmsFormObjKind": "pict",
+    "vmsFormObjId": "c130106b-5034-589b-e205-c04b07f510b2",
+    "backClr": "#000",
+    "formObjPstnX": 200,
+    "formObjPstnY": 500,
+    "formObjDsplWdth": 400,
+    "formObjDsplHght": 400,
+    "formObjBlnkYn": "Y",
+    "style": {
+      "vmsPictItemId": "SG-0000013",
+      "pcitNm": "[LCS] 감",
+      "pictWdth": 32,
+      "pictHght": 32,
+      "pictDataSz": 3126,
+      "pictData": "(BLOB)",
+      "pictType": "B",
+      "rgstrId": "superadmin",
+      "rgDt": "23/10/23",
+      "chngrId": null,
+      "chgDt": null
+    }
+  }
+]

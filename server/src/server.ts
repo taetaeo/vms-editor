@@ -3,14 +3,11 @@ import express, { Express } from 'express';
 import helmet from 'helmet';
 import { pino } from 'pino';
 
-import { healthCheckRouter } from '@/api/healthCheck/healthCheckRouter';
-import { userRouter } from '@/api/user/user.router';
-import { vmsFormRouter } from '@/api/vms-form/vms-form.router';
 import { openAPIRouter } from '@/api-docs/openAPIRouter';
-import errorHandler from '@/common/middleware/errorHandler';
 import rateLimiter from '@/common/middleware/rateLimiter';
 import requestLogger from '@/common/middleware/requestLogger';
 import { env } from '@/common/utils/envConfig';
+import { routers } from '@/routes';
 
 const logger = pino({ name: 'server start' });
 const app: Express = express();
@@ -26,14 +23,8 @@ app.use(rateLimiter);
 // Request logging
 app.use(requestLogger);
 
-// Routes
-app.use('/api/health-check', healthCheckRouter);
-app.use('/api/users', userRouter);
-app.use('/api/vms/form/', vmsFormRouter);
-// Swagger UI
+// API Routers
+app.use('/api/v1', routers);
 app.use(openAPIRouter);
-
-// Error handlers
-app.use(errorHandler());
 
 export { app, logger };

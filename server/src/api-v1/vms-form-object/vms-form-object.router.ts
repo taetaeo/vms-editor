@@ -17,7 +17,7 @@ export const vmsFormObjectRouter: Router = (() => {
 
   vmsFormObjectRegistry.registerPath({
     method: HttpMethods.GET,
-    path: '/vms/form/object/',
+    path: '/api/v1/vms/form/object/',
     tags: ['VmsFormObject'],
     request: { query: GetVmsFormObjectSchema.shape.query },
     responses: createApiResponse(VmsFormObjectScheme, 'Success'),

@@ -1,10 +1,16 @@
 import { OpenApiGeneratorV3, OpenAPIRegistry } from '@asteasolutions/zod-to-openapi';
 
-import { healthCheckRegistry } from '@/api/healthCheck/healthCheckRouter';
-import { userRegistry } from '@/api/user/user.router';
+import { vmsFormRegistry } from '@/api-v1/vms-form/vms-form.router';
+import { vmsFormObjectRegistry } from '@/api-v1/vms-form-object/vms-form-object.router';
+import { vmsFormPictObjectRegistry } from '@/api-v1/vms-form-object-pict/vms-form-object-pict.router';
 
 export function generateOpenAPIDocument() {
-  const registry = new OpenAPIRegistry([healthCheckRegistry, userRegistry]);
+  const registry = new OpenAPIRegistry([
+    // healthCheckRegistry, userRegistry,
+    vmsFormRegistry,
+    vmsFormObjectRegistry,
+    vmsFormPictObjectRegistry,
+  ]);
   const generator = new OpenApiGeneratorV3(registry.definitions);
 
   return generator.generateDocument({
