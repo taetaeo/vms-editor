@@ -1,5 +1,5 @@
 import type { PropsWithChildren } from "react";
-import { useToolbarController } from "../controllers";
+import { use_toolbar_controller } from "../controllers";
 import { ToolbarContext } from "../contexts";
 import { ToolbarUiConfig, ToolbarSelectedOptionConfigs } from "../types";
 
@@ -21,7 +21,7 @@ const ToolbarProvider = ({ toolbarUiConfig, children }: PropsWithChildren<{ tool
     onchangeObjectHeight,
     onchangeObjectCoordX,
     onchangeObjectCoordY,
-  } = useToolbarController<ToolbarSelectedOptionConfigs>();
+  } = use_toolbar_controller<ToolbarSelectedOptionConfigs>();
   return (
     <ToolbarContext.Provider
       value={{
