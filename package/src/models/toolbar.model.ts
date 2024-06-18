@@ -114,7 +114,7 @@ export default class ToolbarModel {
 
     this._type = value as ObjectVariant;
 
-    this.canvas?.onCreateObject(value, "텍스트를 입력해주세요.", {
+    this.canvas?.createObjectByType(value, "텍스트를 입력해주세요.", {
       id: objectId,
       left: this.objectCoordX, // x 축
       top: this.objectCoordY, // Y축

@@ -28,7 +28,7 @@ export default class TextModel extends fabric.Textbox {
     // 여기에서 커스텀 초기화 코드를 추가
     // this.toolbar = new ToolbarModel();
 
-    this.objectId = options.id;
+    this.objectId = options.id || options.objectId || "";
     this.color = options.fill;
     this.fontWeight = options.fontWeight;
     this.backgroundColor = options.backgroundColor;

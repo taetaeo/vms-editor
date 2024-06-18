@@ -17,33 +17,8 @@ export default class ImageModel extends fabric.Image {
     this.image = options.image;
   }
 
-  public getObject() {
-    const { image, ...rest } = this;
-    image?.set<any>("objectId", rest?.objectId);
-    return image;
-  }
-
   public getImageElement() {
     this.image && this.image.getElement();
-  }
-
-  /**
-   * @event 이미지변환 - Url로부터 이미지를 불러오는 이벤트
-   * @returns {Promise | undefined} - 불러온 이미지에 대해 Promise를 반환합니다.
-   */
-  public createImageFromUrl() {
-    if (!this.src) return;
-
-    return new Promise((resolve, reject) => {
-      fabric.Image.fromURL(this.src!, (image) => {
-        if (image) {
-          this.image = image as fabric.Image;
-          resolve(image);
-        } else {
-          reject(new Error("이미지 로드 실패"));
-        }
-      });
-    });
   }
 
   /**

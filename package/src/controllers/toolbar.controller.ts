@@ -58,74 +58,6 @@ export default function useToolbarController<T>() {
     setSelectedObjects(objects);
   };
 
-  /**
-   * =======================================================================
-   *
-   *                               style Change Event
-   *
-   * =======================================================================
-   */
-
-  const onchangeObjectFontBold = <T extends object, I extends object, V extends object>(canvas: CanvasModel<T, I, V>, value: unknown) => {
-    private_update_style("font", "fontWeight", value);
-    private_rerender(canvas);
-  };
-
-  const onchangeObjectFontColor = <T extends object, I extends object, V extends object>(canvas: CanvasModel<T, I, V>, value: unknown) => {
-    private_update_style("font", "fill", value);
-    private_rerender(canvas);
-  };
-
-  const onchangeObjectFontSize = <T extends object, I extends object, V extends object>(canvas: CanvasModel<T, I, V>, value: unknown) => {
-    private_update_style("font", "fontSize", value);
-    private_rerender(canvas);
-  };
-
-  const onchangeObjectFontUnderline = <T extends object, I extends object, V extends object>(canvas: CanvasModel<T, I, V>, value: unknown) => {
-    private_update_style("font", "underline", value);
-    private_rerender(canvas);
-  };
-
-  const onchangeObjectBackgroundColor = <T extends object, I extends object, V extends object>(canvas: CanvasModel<T, I, V>, value: unknown) => {
-    private_update_style("object", "backgroundColor", value);
-    private_rerender(canvas);
-  };
-
-  const onchangeObjectBorderWidth = <T extends object, I extends object, V extends object>(canvas: CanvasModel<T, I, V>, value: unknown) => {};
-
-  const onchangeObjectWidth = <T extends object, I extends object, V extends object>(canvas: CanvasModel<T, I, V>, value: unknown) => {
-    private_update_style("object", "width", value);
-    private_rerender(canvas);
-  };
-
-  const onchangeObjectHeight = <T extends object, I extends object, V extends object>(canvas: CanvasModel<T, I, V>, value: unknown) => {
-    private_update_style("object", "height", value);
-    private_rerender(canvas);
-  };
-
-  const onchangeObjectCoordX = <T extends object, I extends object, V extends object>(canvas: CanvasModel<T, I, V>, value: unknown) => {
-    private_update_style("object", "left", value);
-    private_rerender(canvas);
-  };
-  const onchangeObjectCoordY = <T extends object, I extends object, V extends object>(canvas: CanvasModel<T, I, V>, value: unknown) => {
-    private_update_style("object", "top", value);
-    private_rerender(canvas);
-  };
-
-  /**
-   * ===================================================================================================================
-   *                                          Private Functions
-   * ===================================================================================================================
-   */
-
-  const private_update_style = (type: "font" | "object", key: string, value: unknown) => {
-    selectedObjects?.map((object, _) => (object as TextBoxModel).onChangeStyle(type, key, value));
-  };
-
-  const private_rerender = <T extends object, I extends object, V extends object>(canvas: CanvasModel<T, I, V>) => {
-    canvas?.requestRenderAll();
-  };
-
   useEffect(() => {
     const snapshot = selectedOptions as AnyToolbarType<T>;
 
@@ -142,6 +74,74 @@ export default function useToolbarController<T>() {
       onchangeValue(TOOLBAR_CONST_KEY.FONT, { ...snapshot.font, size: style.fontSz });
     }
   }, [selectedData]);
+
+  /**
+   * =======================================================================
+   *
+   *                               style Change Event
+   *
+   * =======================================================================
+   */
+
+  const onchangeObjectFontBold = <T extends object, I extends object, V extends object>(canvas: CanvasModel<T, I, V>, value: unknown) => {
+    _updateStyle("font", "fontWeight", value);
+    _rerender(canvas);
+  };
+
+  const onchangeObjectFontColor = <T extends object, I extends object, V extends object>(canvas: CanvasModel<T, I, V>, value: unknown) => {
+    _updateStyle("font", "fill", value);
+    _rerender(canvas);
+  };
+
+  const onchangeObjectFontSize = <T extends object, I extends object, V extends object>(canvas: CanvasModel<T, I, V>, value: unknown) => {
+    _updateStyle("font", "fontSize", value);
+    _rerender(canvas);
+  };
+
+  const onchangeObjectFontUnderline = <T extends object, I extends object, V extends object>(canvas: CanvasModel<T, I, V>, value: unknown) => {
+    _updateStyle("font", "underline", value);
+    _rerender(canvas);
+  };
+
+  const onchangeObjectBackgroundColor = <T extends object, I extends object, V extends object>(canvas: CanvasModel<T, I, V>, value: unknown) => {
+    _updateStyle("object", "backgroundColor", value);
+    _rerender(canvas);
+  };
+
+  const onchangeObjectBorderWidth = <T extends object, I extends object, V extends object>(canvas: CanvasModel<T, I, V>, value: unknown) => {};
+
+  const onchangeObjectWidth = <T extends object, I extends object, V extends object>(canvas: CanvasModel<T, I, V>, value: unknown) => {
+    _updateStyle("object", "width", value);
+    _rerender(canvas);
+  };
+
+  const onchangeObjectHeight = <T extends object, I extends object, V extends object>(canvas: CanvasModel<T, I, V>, value: unknown) => {
+    _updateStyle("object", "height", value);
+    _rerender(canvas);
+  };
+
+  const onchangeObjectCoordX = <T extends object, I extends object, V extends object>(canvas: CanvasModel<T, I, V>, value: unknown) => {
+    _updateStyle("object", "left", value);
+    _rerender(canvas);
+  };
+  const onchangeObjectCoordY = <T extends object, I extends object, V extends object>(canvas: CanvasModel<T, I, V>, value: unknown) => {
+    _updateStyle("object", "top", value);
+    _rerender(canvas);
+  };
+
+  /**
+   * ===================================================================================================================
+   *                                          Private Functions
+   * ===================================================================================================================
+   */
+
+  const _updateStyle = (type: "font" | "object", key: string, value: unknown) => {
+    selectedObjects?.map((object, _) => (object as TextBoxModel).onChangeStyle(type, key, value));
+  };
+
+  const _rerender = <T extends object, I extends object, V extends object>(canvas: CanvasModel<T, I, V>) => {
+    canvas?.requestRenderAll();
+  };
 
   return {
     isActive,

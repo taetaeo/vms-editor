@@ -1,12 +1,14 @@
 import { useEffect, useRef } from "react";
 // Configs
-import { type ObjectConfigs, canvasConfigs } from "../configs";
+import { ObjectConfigs, canvasConfigs } from "@/configs";
 // Context
-import { useCanvasContext, useFormContext, useToolbarContext } from "../functions";
+import { useCanvasContext, useFormContext, useImageSelectorContext, useToolbarContext } from "@/functions";
+// Lib
+import { Utils } from "@/lib";
 // Models
-import { CanvasModel, ImageModel, TextBoxModel } from "../models";
-import { CanvasModelType } from "../types";
-import { Utils } from "../lib";
+import { CanvasModel, ImageModel, TextBoxModel } from "@/models";
+// Types
+import { CanvasModelType } from "@/types";
 
 type EditorControllerProps = {
   editorConfigs?: ObjectConfigs;
@@ -18,12 +20,8 @@ export default function useEditorController({ editorConfigs }: EditorControllerP
 
   const { canvas, onchange, setCanvas } = useCanvasContext();
   const { vmsFormObjectList } = useFormContext();
+  const { src } = useImageSelectorContext();
   const { callbackFn } = useToolbarContext();
-
-  const handleKeyDown = (event: KeyboardEvent) => {
-    if (!canvas) return;
-    onchange?.keyDown(canvas, event);
-  };
 
   useEffect(() => {
     if (!canvasRef.current) return;
@@ -38,7 +36,7 @@ export default function useEditorController({ editorConfigs }: EditorControllerP
 
     canvasModel.getCanvasContext();
 
-    canvasModel.onSettingConfig(editorConfigs);
+    canvasModel.updateEditorConfig(editorConfigs);
 
     onchange?.addKeydownEventListener(canvasModel as CanvasModelType);
 
@@ -46,17 +44,19 @@ export default function useEditorController({ editorConfigs }: EditorControllerP
     return () => {
       if (canvas) {
         onchange?.removeKeydownEventListener(canvas);
-        canvas.onDismissCanvas();
+        canvas.clearCanvas();
         setCanvas(null);
       }
     };
   }, [canvasRef]);
 
+  /** 패칭된 데이터를 Canvas에 적용 */
   useEffect(() => {
     if (vmsFormObjectList && canvas) {
       vmsFormObjectList.map((data, _) => {
+        console.log("패칭", data);
         if (data._kind === "txt") {
-          const objectModel = canvas.onCreateObject("textBox", data.style.dsplTxt || "", {
+          const objectModel = canvas.createObjectByType("textBox", data.style.dsplTxt || "", {
             id: data._id,
             width: data.w,
             height: data.h,
@@ -68,16 +68,16 @@ export default function useEditorController({ editorConfigs }: EditorControllerP
           canvas.add(objectModel as TextBoxModel);
         } else if (data._kind === "pict") {
           utils
-            .createImageFromUrl(`data:image/png;base64,${data.style.pictData}`)
+            .onLoadImageFromUrl(`data:image/png;base64,${data.style.pictData}`)
             ?.then((image) => {
               const imageModel = new ImageModel(`data:image/png;base64,${data.style.pictData}`, {
-                objectId: data._id,
-                image: image as fabric.Image,
-                width: data.w,
-                height: data.h,
-                left: data.coordX,
-                top: data.coordY,
-                ...data.style,
+                objectId: data._id, // 아이디
+                image: image as fabric.Image, // Image 객체
+                width: data.w, // 너비
+                height: data.h, // 높이
+                left: data.coordX, // X축
+                top: data.coordY, // Y축
+                options: data.style,
               });
 
               canvas.add(imageModel);
@@ -100,3 +100,35 @@ export default function useEditorController({ editorConfigs }: EditorControllerP
     canvasRef,
   };
 }
+//   useEffect(() => {
+//     console.log("변경된 데이터", canvas?.selectedObjects);
+//     if (!canvas || !canvas.selectedObjects || canvas.selectedObjects.length === 0) return;
+//     const [object, ...rest] = canvas.selectedObjects!;
+
+//     if (!vmsFormObjectList?.length) return;
+//     const foundObject = vmsFormObjectList.find((formObject) => formObject._id === (object as any)?.objectId);
+//   }, [canvas?.selectedObjects]);
+
+//     useEffect(() => {
+//     if (!canvas || utils.isEmptyObject(data.selectedData)) return;
+
+//     const { selectedData } = data;
+
+//     // 선택한 데이터의 아이디와 일치하는 경우에 대해서 필터
+//     const targetObject = canvas.getAllObjects().filter((object: AnyObjectType<any>, _) => object.id === selectedData?._id);
+
+//     // 필터된 데이터를 새롭게 활성상태로 변경뒤 랜더링
+//     canvas.onChangeActive(targetObject[0] as AnyModelType);
+
+//     // eslint-disable-next-line react-hooks/exhaustive-deps
+//   }, [data]);
+
+//   useEffect(() => {
+//     if (!canvas || utils.isEmptyObject(selectedData)) return;
+
+//     // 선택한 데이터의 아이디와 일치하는 경우에 대해서 필터
+//     const targetObject = canvas.getAllObjects().filter((object: AnyObjectType<any>, _) => object.id === selectedData?._id);
+
+//     // 필터된 데이터를 새롭게 활성상태로 변경뒤 랜더링
+//     canvas.onChangeActive(targetObject[0] as AnyModelType);
+//   }, [selectedData]);

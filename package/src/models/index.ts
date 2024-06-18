@@ -9,6 +9,8 @@ export { default as TextModel } from "./text.model";
 export { default as TextBoxModel } from "./tex-box.model";
 export { default as VideoModel } from "./video.model";
 export { default as ImageModel } from "./image.model";
+export { default as PictureModel } from "./picture.model";
+export { default as KlassModel } from "./klass.model";
 /**
  *  Toolbar 모델
  */
