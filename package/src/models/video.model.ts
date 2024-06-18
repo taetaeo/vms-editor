@@ -1,14 +1,17 @@
 import { fabric } from "fabric";
-import { ToolbarSelectedOptionConfigs } from "../types";
 
 export default class VideoModel extends fabric.Image {
-  public objectId?: string;
+  private element?: HTMLVideoElement;
+  private objectId?: string;
+  private options?: { [key in string]: any };
 
-  constructor(text: string, options: any) {
-    super(text, options);
-    this.objectId = options.id;
+  constructor(element: HTMLVideoElement, options: any = {}) {
+    super(element, options);
+    new fabric.Image(this.element!, { ...this.options });
+    this.element = element;
+    this.objectId = options.objectId || options.id || options.vmsPictItemId;
+    this.options = options;
   }
-
   /**
    * Config옵션에 맞게 원하는 데이터 가져오기
    * @returns
@@ -23,9 +26,5 @@ export default class VideoModel extends fabric.Image {
         object[key] = this[key as keyof this];
         return object;
       }, {} as Record<string, any>);
-  }
-
-  public onUpdateOptions(option: ToolbarSelectedOptionConfigs) {
-    // return (this.selectedOptions = option);
   }
 }

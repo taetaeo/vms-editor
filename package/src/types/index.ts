@@ -3,15 +3,23 @@
  *                              Canvas Objects
  * =============================================================================
  */
-export type { CanvasObject, AnyObject, ObjectList } from "./canvas/canvas.type";
-
+export type { CanvasModelType, SetActionCanvasModelType } from "./canvas/canvas-model.type.ts";
 /**
  * =============================================================================
  *                                Theme Styles
  * =============================================================================
  */
-export type { Theme } from "./theme/indexype";
+export type { Theme } from "./theme/index.type.ts";
+/**
+ * =============================================================================
+ *                               Some Types
+ * =============================================================================
+ */
 
+export type { AnyToolbarType } from "./any/any-toolbar.type.ts";
+export type { AnyObjectType } from "./any/any-object.type.ts";
+export type { AnyModelType, AnyModelListType } from "./any/any-model.type.ts";
+export type { ImageObject } from "./any/any-image.type.ts";
 /**
  * =============================================================================
  *                               Object Styles
@@ -37,3 +45,16 @@ export type { ToolbarUiConfig } from "./toolbar/toolbar-ui.type";
  * =============================================================================
  */
 export type { ChangeHandler } from "./events";
+/**
+ * =============================================================================
+ *                                  Event Handler
+ * =============================================================================
+ */
+export type { SelectedImage, Image } from "./images";
+/**
+ * =============================================================================
+ *                                  ProsAndCons
+ * =============================================================================
+ */
+export type { ProsAndConsIs } from "./pros-cons/pros-cons-is.type.ts";
+export type { ProsAndConsYN } from "./pros-cons/pros-cons-yn.type.ts";

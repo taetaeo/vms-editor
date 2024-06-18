@@ -87,8 +87,12 @@ export default class TextBoxModel extends fabric.Textbox {
   }
 
   public onChangeStyle(type: "font" | "object", key: string, value: unknown) {
-    if (type === "font") return this.setSelectionStyles({ [key]: value }, this.selectionStart, this.selectionEnd || this._text.length);
-    else if (type === "object") return this.set(key as any, value);
+    console.log("여기2", type, key, value);
+    if (type === "font") {
+      return this.setSelectionStyles({ [key]: value }, this.selectionStart, this.selectionEnd || this._text.length);
+    } else if (type === "object") {
+      return this.set(key as any, value);
+    }
   }
 
   /**

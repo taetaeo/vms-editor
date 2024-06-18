@@ -1,68 +1,100 @@
 "use strict";
 import { fabric } from "fabric";
-import { type CanvasConfigs, ObjectConfigs } from "../configs";
+import * as v4 from "uuid";
+
+import { ObjectConfigs, ObjectConfigsImageObject, ObjectConfigsTextObject, ObjectConfigsVideoObject, type CanvasConfigs } from "../configs";
 import { Utils } from "../lib";
 import { ObjectConfigState } from "../states";
-import { CanvasObject, ObjectList, ObjectVariant, ToolbarSelectedOptionConfigs } from "../types";
+import { AnyModelType, AnyModelListType, ObjectVariant, SelectedImage, ToolbarSelectedOptionConfigs, Image } from "../types";
 import { ImageModel, TextBoxModel, TextModel, VideoModel } from "../models";
 import { GridLayout } from "../layouts";
 
-type CallbackFunction = (objects?: ObjectList | null) => void;
+type CallbackFunction = (objects?: AnyModelListType | null) => void;
 
 type Parameters = {
   current: HTMLCanvasElement;
   configs: CanvasConfigs;
   selectedUpdatedFn: CallbackFunction;
 };
-
 export default class CanvasModel<T extends object, I extends object, V extends object> extends fabric.Canvas {
   public context: CanvasRenderingContext2D | null; // Canvas's context
-  public selectedObjects?: ObjectList | null;
+  public selectedObjects?: AnyModelListType | null;
+  public selectedImage?: SelectedImage;
 
   private needObjectList: unknown[]; // 데이터를 추출하고자 하는 객체 리스트
   private utils?: Utils; // 공통으로 사용할 함수
   private configs?: ObjectConfigState<T, I, V> | null;
 
   private selectedOptions?: ToolbarSelectedOptionConfigs;
+  private callbackFn?: () => void;
 
   constructor(params: Parameters) {
     super(params.current, params.configs);
     this.context = null;
 
-    /** Private */
     this.needObjectList = [];
     this.utils = new Utils();
     this.configs = null;
 
-    /** Event Trigger */
-    this.on("dragenter", function (e) {
+    this.on("dragenter", (e) => {
       // Drag로 접근했을때
-      console.log("🟥 \t dragenter : ", e);
+      // console.log("🟥 \t dragenter : ", this.selectedImage);
     });
-    this.on("dragover", function (e) {
+    this.on("dragover", (e) => {
       // Drag로 위에 올라와있을 때
-      console.log("🟥 \t dragover : ", e);
+      // console.log("🟥 \t dragover : ", this.selectedImage);
     });
-    this.on("dragleave", function (e) {
+    this.on("dragleave", (e) => {
       // Drag가 사라졌을 때
-      console.log("🟥 \t dragleave : ", e);
+      // console.log("🟥 \t dragleave : ", this.selectedImage);
     });
-    this.on("drop:before", function (e) {
+    this.on("drop:before", (e) => {
       // Drag가 끝나고 Drop을 시작하기 전
-      console.log("🟥 \t drop:before : ", e);
+      // console.log("🟥 \t drop:before : ", this.selectedImage);
     });
-    this.on("drop", function (e) {
+    this.on("drop", async (e) => {
       // Drop 전단계가 끝나고 Drop이 완료되었을 때
-      console.log("🟥 \t drop : ", e);
+      if (!this.selectedImage?.src) return;
+
+      const src = this.selectedImage.src!;
+
+      /**
+       * @description 이미지 변환 처리를 위한 utils에서 ImageModel을 추가
+       */
+      this.utils
+        ?.createImageFromUrl(src)
+        ?.then((image) => {
+          const imageModel = this.create_image(src, {
+            objectId: v4(),
+            image: image as fabric.Image,
+          });
+
+          if (!imageModel) return;
+
+          this.add(imageModel); // 이미지 객체 모델 추가
+        })
+        .catch((error: Error) => {
+          console.error("Error loading image: ", error); // 에러 발생시 에러 메시지
+        })
+        .finally(() => {
+          this.requestRenderAll(); // 결과를 마친 후 다시 그리기
+        });
+
+      this.clear_selected_image();
+
+      if (this.callbackFn && typeof this.callbackFn === "function") {
+        this.callbackFn();
+      }
+      // console.log("🟥 \t drop : ", this.selectedImage);
     });
 
     this.on("selection:created", ({ e, selected }) => {
       console.log("🟥 \t selection:created : ", { e, selected });
 
       if (this.utils?.isEmptyArray(selected!)) return null;
-      params?.selectedUpdatedFn(selected! as ObjectList);
+      params?.selectedUpdatedFn(selected! as AnyModelListType);
 
-      this.get_selected_objects(selected! as ObjectList);
+      this.get_selected_objects(selected! as AnyModelListType);
     });
 
     this.on("object:selected", (e) => {
@@ -72,27 +104,31 @@ export default class CanvasModel<T extends object, I extends object, V extends o
     this.on("selection:updated", ({ deselected, e, selected }) => {
       console.log("🟥 \t selection:updated :", selected);
 
-      /** 선택한 객체가 없을 경우 */
       if (this.utils?.isEmptyArray(selected!)) return null;
-      params?.selectedUpdatedFn(selected! as ObjectList);
+      params?.selectedUpdatedFn(selected! as AnyModelListType);
 
-      this.get_selected_objects(selected! as ObjectList);
-      return selected;
+      this.get_selected_objects(selected! as AnyModelListType);
     });
 
     this.on("mouseup", (e) => {
-      console.log("🟥 \t mouseup :", e);
+      // console.log("🟥 \t mouseup :", e);
       // this.selectedObjects = e.target;
     });
 
     this.on("mouse:down", (e) => {
-      console.log("🟥 \t mouse:down :", e);
+      // console.log("🟥 \t mouse:down :", e);
       // 아무런 객체가 없을 경우
       if (!e.target) {
-        this.selectedObjects = undefined;
-      } else {
-        console.log("🟥 \t 객체가 있습니다. : ", e.target);
+        return (this.selectedObjects = undefined);
       }
+      const selectedObject = e.target;
+
+      // console.log("🟥 \t 객체가 있습니다. : ", selectedObject);
+
+      return (this.selectedObjects = [selectedObject]);
+    });
+    this.on("after:render", (e) => {
+      // console.log("🟦🟥🟫🟩🟨🟩 \t after:render :", e);
     });
   }
 
@@ -101,6 +137,7 @@ export default class CanvasModel<T extends object, I extends object, V extends o
    *                           public Methods
    * ====================================================================
    */
+
   /**
    * @event GET - Canvas의 Context를 호출하는 이벤트
    */
@@ -109,22 +146,22 @@ export default class CanvasModel<T extends object, I extends object, V extends o
     return this.context;
   }
   /**
-   * @event GET - Canvas에 있는 객체들 전부 가져오는 이벤트
+   * @event GET - Canvas내에 있는 객체들 전부 가져오는 이벤트
    */
 
-  public getObjectsFromCanvas() {
+  public getAllObjects() {
     return this._objects;
   }
 
   /**
    * @event GET - Canvas에 있는 객체들 중, Config에따라 필요한 데이터만 추출
    */
-  public onGetObjectFromConfigs(): ObjectList | null {
-    const rawDataList = this.getObjectsFromCanvas();
+  public getObjectFromConfigs(): AnyModelListType | null {
+    // 데이터 리스트 얕은 복사
+    const rawDataList = [...this.getAllObjects()];
 
     // 빈 배열일 경우
     if (this.utils?.isEmptyArray(rawDataList)) return null;
-
     // 스택을 통한 데이터 추출 및 가공
     while (!this.utils?.isEmptyArray(rawDataList)) {
       // 1. 객체 꺼내기
@@ -175,9 +212,34 @@ export default class CanvasModel<T extends object, I extends object, V extends o
         } else {
           this.needObjectList.push(needToKnowData);
         }
+      } // 3-5. Kclass 객체 가져오기
+      else if (this.utils?.whatInstance(poppedObject, fabric.Image)) {
+        const { objectId, width, height, aCoords, fill, ...rest } = poppedObject as { [key in string]: any };
+
+        const cheangedKclass = { objectId, width, height, aCoords, fill };
+
+        const foundIndex = this.utils.getUniqueElement(this.needObjectList, cheangedKclass?.objectId);
+        if (foundIndex !== -1) {
+          this.needObjectList[foundIndex] = cheangedKclass;
+        } else {
+          this.needObjectList.push(cheangedKclass);
+        }
       }
     }
-    return this.needObjectList as ObjectList;
+    return this.needObjectList as AnyModelListType;
+  }
+
+  /**
+   * @event GET - 선택한 이미지 객체 가져오기
+   */
+  public getSelectedImage(src: string, alt: string, callbackFn: () => void): void | null {
+    const draggedImage: Image = { src, alt };
+
+    console.log("🟫🟩🟨🟩🟢🔵🟣🟤 \t 드래그중인 이미지 객체", draggedImage);
+    if (!draggedImage.src) return null;
+    const snapshot = { ...this.selectedImage, ...draggedImage };
+    this.selectedImage = snapshot;
+    this.callbackFn = callbackFn;
   }
 
   /**
@@ -189,19 +251,38 @@ export default class CanvasModel<T extends object, I extends object, V extends o
     if (this.selectedOptions.type) return;
 
     /**
-     * 🟡 수정 예정 - 모든 객체 모델 완성 후
-     * 변경 전 any
-     * 변경 후 AnyObject
+     * @event 업데이트 - 객체 모델의 스타일을 업데이트하는 이벤트
      */
     this.selectedObjects?.map((object: any, _: number) => {
       return object.setSelectionStyles({ fill: options.font.color }, object.pointer.start, object.pointer.end);
     });
   }
 
+  public onChangeActive(object: AnyModelType) {
+    if (this.utils?.isEmptyObject(object)) return;
+    this.setActiveObject(object);
+    this.renderAll();
+  }
+
+  /**
+   * @event 업데이트 - 선택한 객체 리스트 변경
+   */
+  public onChangeSelectedObject(object: AnyModelType[], { isActive = false }) {
+    this.selectedObjects = object;
+
+    if (!isActive) return;
+
+    this.selectedObjects.forEach((object) => {
+      this.setActiveObject(object);
+    });
+    this.renderAll();
+  }
+
   /**
    * @event 추가 - Canvas안에 객체(텍스트, 이미지, 비디오 등)을 추가 이벤트
+   * @param {AnyModelType} object - 객체 모델로서, Text, Image, Video Model 등
    */
-  public onAddObject(object: CanvasObject) {
+  public onAddObject(object: AnyModelType) {
     return this.add(object);
   }
 
@@ -211,6 +292,7 @@ export default class CanvasModel<T extends object, I extends object, V extends o
   public onDeleteSelectedObjects(): void {
     return this.selectedObjects?.forEach((object, _) => this.remove(object));
   }
+
   /**
    * @event 취소및해제 - 캔버스 취소 및 해제 이벤트
    */
@@ -230,12 +312,16 @@ export default class CanvasModel<T extends object, I extends object, V extends o
    * @event 설정 - 추출하길 원하는 객체의 인스턴스값을 위한 Config 설정 이벤트
    */
   public onSettingConfig(config = {}) {
-    const { textObjectConfigs, imageObjectConfig, videoObjectConfig } = config as ObjectConfigs;
-    const objectConfigState = new ObjectConfigState<T, I, V>({ ...config });
+    const { textObjectConfig, imageObjectConfig, videoObjectConfig } = config as ObjectConfigs;
+    const objectConfigState = new ObjectConfigState<ObjectConfigsTextObject, ObjectConfigsImageObject, ObjectConfigsVideoObject>({
+      textObjectConfig,
+      imageObjectConfig,
+      videoObjectConfig,
+    });
 
     if (!objectConfigState) return (this.configs = null);
 
-    return (this.configs = objectConfigState!);
+    return (this.configs = objectConfigState as any);
   }
 
   /**
@@ -245,13 +331,14 @@ export default class CanvasModel<T extends object, I extends object, V extends o
    * @param options - 객체의 추가적으로 들어갈 option값에 해당한다.
 
    */
-  public onCreateObject(type: ObjectVariant, value: string, options = {}): object | null | undefined {
+  public onCreateObject(type: ObjectVariant, value: string, options: any = {}): object | null | undefined | void {
     if (type === "text") return this.create_text(value, options);
     else if (type === "textBox") return this.create_textBox(value, options);
     else if (type === "image") return null;
+    else if (type === "pict") return this.create_image(value, options);
+    else if (type === "video") return this.utils?.isClickCurrent(options.current);
     else if (type === "circle") return null;
     else if (type === "rect") return null;
-    else if (type === "video") return null;
   }
 
   /**
@@ -292,6 +379,18 @@ export default class CanvasModel<T extends object, I extends object, V extends o
   }
 
   /**
+   * @event 추가 - 비디오 추가하기 이벤트
+   */
+
+  public onUploadVideoElement(videoElement: HTMLVideoElement, option = {}) {
+    return this.create_video(videoElement, option);
+  }
+
+  public onRequestAnimFrame() {
+    fabric.util?.requestAnimFrame(this.onRequestAnimFrame);
+  }
+
+  /**
    * ========================================================================================
    *                                    Private Methods
    * ========================================================================================
@@ -311,8 +410,6 @@ export default class CanvasModel<T extends object, I extends object, V extends o
   private create_textBox(text: string, options = {}): object | null {
     if (!this.context) return null;
 
-    console.log("🟡\t Toolbar's option at.CanvasModel : ", options);
-
     const { fontSize, fontFamily, fill, underline, backgroundColor, ...rest } = options as { [key: string]: unknown };
 
     const newTextBox = new TextBoxModel(text, options);
@@ -327,7 +424,7 @@ export default class CanvasModel<T extends object, I extends object, V extends o
   /**
    * @description 이미지 객체 생성
    */
-  private create_image(url: string, options = {}): object | null {
+  private create_image(url: string, options = {}): ImageModel | null {
     if (!this.context) return null;
     return new ImageModel(url, options);
   }
@@ -335,23 +432,30 @@ export default class CanvasModel<T extends object, I extends object, V extends o
   /**
    * @description 비디오 객체 생성
    */
-  private create_video(url: string, options = {}): object | null {
+  private create_video(element: HTMLVideoElement, options = {}): VideoModel | null {
     if (!this.context) return null;
-    return new VideoModel(url, options);
+    return new VideoModel(element, options);
   }
 
   /**
    * @description 캔버스로부터 모든 객체 가져오기
    */
-  private get_object_from_canvas(type?: string): Object[] {
+  private get_object_from_canvas(type?: string): unknown[] | [] {
     return this.getObjects(type) || [];
   }
 
   /**
    * @description 캔버스로부터 선택한 객체 가져오기
    */
-  private get_selected_objects(objects: ObjectList) {
-    if (!objects) return (this.selectedObjects = null);
+  private get_selected_objects(objects: AnyModelListType) {
+    if (!objects.length) return (this.selectedObjects = null);
     this.selectedObjects = objects;
+  }
+
+  /**
+   * @description 선택한 이미지 객체 비우기
+   */
+  private clear_selected_image() {
+    this.selectedImage = { src: "", alt: "", createdAt: "" };
   }
 }

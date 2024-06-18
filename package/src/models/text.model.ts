@@ -39,19 +39,19 @@ export default class TextModel extends fabric.Textbox {
 
     this.on("mousedown:before", function (e) {
       // 마우스가 내려오기전
-      console.log("🟦 \t\t mousedown:before :", e);
+      // console.log("🟦 \t\t mousedown:before :", e);
     });
     this.on("mousedown", function (e) {
       // 마우스가 내려올때
-      console.log("🟦 \t\t mousedown : ", e);
+      // console.log("🟦 \t\t mousedown : ", e);
     });
     this.on("mouseup:before", function (e) {
       // 마우스가 올라오기전
-      console.log("🟦 \t\t mouseup:before :", e);
+      // console.log("🟦 \t\t mouseup:before :", e);
     });
     this.on("mouseup", (e) => {
       // 마우스가 올라올때
-      console.log("🟦 \t\t mouseup : ", e);
+      // console.log("🟦 \t\t mouseup : ", e);
     });
     this.on("mouseover", function (e) {
       // 마우스가 객체에 접근했을때,
@@ -62,14 +62,14 @@ export default class TextModel extends fabric.Textbox {
       // console.log("🟦 \t\t mouseout : ", e);
     });
     this.on("skewing", function (e) {
-      console.log("🟦 \t\t skewing : ", e);
+      // console.log("🟦 \t\t skewing : ", e);
     });
     this.on("selection:created", function (e) {
       // const selectedText = e.target.text.slice(e.target.selectionStart, e.target.selectionEnd);
-      console.log("🟦 \t\t selection:created : ", e);
+      // console.log("🟦 \t\t selection:created : ", e);
     });
     this.on("selection:changed", (e) => {
-      console.log("🟦 \t\t 선택한 모델의 ID : ", this.objectId);
+      // console.log("🟦 \t\t 선택한 모델의 ID : ", this.objectId);
 
       const start = this.selectionStart; // 선택 시작
       const end = this.selectionEnd; // 선택 마지막
@@ -85,7 +85,9 @@ export default class TextModel extends fabric.Textbox {
     return (this.selectedOptions = option);
   }
 
-  public onChangeStyle(key: string, value: unknown, type: "font" | "object") {
+  public onChangeStyle(type: "font" | "object", key: string, value: unknown) {
+    console.log("여기2", type, key, value);
+
     if (type === "font") return this.setSelectionStyles({ [key]: value }, this.selectionStart, this.selectionEnd || this._text.length);
     else if (type === "object") return this.set(key as any, value);
   }
