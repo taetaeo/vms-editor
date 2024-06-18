@@ -6,7 +6,6 @@ import { vmsFormPictObjectRegistry } from '@/api-v1/vms-form-object-pict/vms-for
 
 export function generateOpenAPIDocument() {
   const registry = new OpenAPIRegistry([
-    // healthCheckRegistry, userRegistry,
     vmsFormRegistry,
     vmsFormObjectRegistry,
     vmsFormPictObjectRegistry,

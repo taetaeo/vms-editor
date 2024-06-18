@@ -3,7 +3,6 @@ import express, { Express } from 'express';
 import helmet from 'helmet';
 import { pino } from 'pino';
 
-import { openAPIRouter } from '@/api-docs/openAPIRouter';
 import rateLimiter from '@/common/middleware/rateLimiter';
 import requestLogger from '@/common/middleware/requestLogger';
 import { env } from '@/common/utils/envConfig';
@@ -25,6 +24,5 @@ app.use(requestLogger);
 
 // API Routers
 app.use('/api/v1', routers);
-app.use(openAPIRouter);
 
 export { app, logger };
