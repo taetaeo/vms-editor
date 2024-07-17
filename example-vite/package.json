@@ -1,0 +1,42 @@
+{
+  "name": "vite-ts-boilerplate",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "sideEffects": false,
+  "scripts": {
+    "clean": "rm -rf node_modules & rm -rf package-lock.json",
+    "prepare:build": "rm -rf dist",
+    "dev": "vite --host",
+    "build": "npm run prepare:build && tsc && vite build",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview --host --port 8080"
+  },
+  "dependencies": {
+    "antd": "^5.16.5",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.7",
+    "@types/react": "^18.2.66",
+    "@types/react-dom": "^18.2.22",
+    "@typescript-eslint/eslint-plugin": "^7.2.0",
+    "@typescript-eslint/parser": "^7.2.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "axios": "^1.6.8",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.6",
+    "react-router-dom": "^6.23.1",
+    "typescript": "^5.2.2",
+    "vite": "^5.2.0",
+    "vite-tsconfig-paths": "^4.3.2"
+  },
+  "exports": {
+    ".": {
+      "import": "./index.mjs",
+      "require": "./index.js"
+    }
+  }
+}
