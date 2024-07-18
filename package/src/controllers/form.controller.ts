@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { plainToClass } from "class-transformer";
 
 // Types
-import type { AnyModelType } from "../types";
+import type { AnyModelType, KeyAble } from "../types";
 // Handlers
 import { useCanvasCtxHandler } from "../shared/handlers";
 // DTO
@@ -69,7 +69,7 @@ export default function useFormController<T>(fetchData: FormControllerProps) {
     if (!canvas || utils.isEmptyObject(data.selectedData)) return;
 
     // 선택한 데이터의 아이디와 일치하는 경우에 대해서 필터
-    const targetObjects = [...canvas.getAllObjects()].filter((object, _) => (object as keyAble).objectId === data.selectedData?._id);
+    const targetObjects = [...canvas.getAllObjects()].filter((object, _) => (object as KeyAble<any>).objectId === data.selectedData?._id);
 
     canvas.updateSelectedObjects(targetObjects as AnyModelType[]);
   }, [data]);

@@ -3,7 +3,7 @@ import { fabric } from "fabric";
 import uuid from "react-uuid";
 // Types
 import type { ObjectConfigs, ObjectConfigsImageObject, ObjectConfigsTextObject, ObjectConfigsVideoObject, CanvasConfigs } from "../configs";
-import type { AnyModelType, AnyModelListType, ObjectVariant, SelectedImage, ToolbarSelectedOptionConfigs, Image } from "../types";
+import type { AnyModelType, AnyModelListType, ObjectVariant, SelectedImage, ToolbarSelectedOptionConfigs, Image, KeyAble } from "../types";
 // Models
 import { ImageModel, TextBoxModel, TextModel, VideoModel, GridDrawModel } from "../models";
 // Utils
@@ -13,7 +13,7 @@ import { ObjectConfigState } from "../shared/lib/states";
 
 type CallbackFunction = (objects?: AnyModelListType | null) => void;
 
-type Parameters = { current: HTMLCanvasElement; configs: CanvasConfigs | keyAble; selectedUpdatedFn: CallbackFunction };
+type Parameters = { current: HTMLCanvasElement; configs: CanvasConfigs | KeyAble<string>; selectedUpdatedFn: CallbackFunction };
 
 export default class CanvasModel<T extends object, I extends object, V extends object> extends fabric.Canvas {
   public error: Error | null;
@@ -203,10 +203,10 @@ export default class CanvasModel<T extends object, I extends object, V extends o
    * @event 생성 - Canvas를 통하여 객체 생성 이벤트
    * @param {ObjectVariant} type - 어떤 객체를 불러올지에대한 Key에 해당한다.
    * @param {string} value - text, textBox일 경우 글자에 들어갈 내용, image, video일 경우 url에 해당한다.
-   * @param {keyAble} options - 객체의 추가적으로 들어갈 option값에 해당한다.
+   * @param {KeyAble<string>} options - 객체의 추가적으로 들어갈 option값에 해당한다.
 
    */
-  public createObjectByType(type: ObjectVariant, value: string, options: keyAble = {}): object | null | void {
+  public createObjectByType(type: ObjectVariant, value: string, options: KeyAble<any> = {}): object | null | void {
     switch (type) {
       case "text":
         return this._createTextModel(value, options);
@@ -330,7 +330,7 @@ export default class CanvasModel<T extends object, I extends object, V extends o
 
         // 3-3. 정제된 데이터 배열에 넣기 - 중복된 ID를 가진 요소를 찾아서 최신 값으로 덮어 씌움
 
-        const foundIndex = this.utils.findIndexById(this.needObjectList as keyAble[], needToKnowData?.objectId, "objectId");
+        const foundIndex = this.utils.findIndexById(this.needObjectList as KeyAble<string>[], needToKnowData?.objectId, "objectId");
 
         if (foundIndex !== -1) {
           this.needObjectList[foundIndex] = needToKnowData;
@@ -341,7 +341,7 @@ export default class CanvasModel<T extends object, I extends object, V extends o
       // 3-2. 텍스트 객체 가져오기
       else if (this.utils?.whatInstance(poppedObject, TextModel)) {
         const needToKnowData = poppedObject.getObjectData<T, TextModel>(this.configs?.textObjectConfig);
-        const foundIndex = this.utils.findIndexById(this.needObjectList as keyAble[], needToKnowData?.objectId, "objectId");
+        const foundIndex = this.utils.findIndexById(this.needObjectList as KeyAble<string>[], needToKnowData?.objectId, "objectId");
         if (foundIndex !== -1) {
           this.needObjectList[foundIndex] = needToKnowData;
         } else {
@@ -351,7 +351,7 @@ export default class CanvasModel<T extends object, I extends object, V extends o
       // 3-3. 이미지 객체 가져오기
       else if (this.utils?.whatInstance(poppedObject, ImageModel)) {
         const needToKnowData = poppedObject.getObjectData<I, ImageModel>(this.configs?.imageObjectConfig);
-        const foundIndex = this.utils.findIndexById(this.needObjectList as keyAble[], needToKnowData?.objectId, "objectId");
+        const foundIndex = this.utils.findIndexById(this.needObjectList as KeyAble<string>[], needToKnowData?.objectId, "objectId");
         if (foundIndex !== -1) {
           this.needObjectList[foundIndex] = needToKnowData;
         } else {
@@ -361,7 +361,7 @@ export default class CanvasModel<T extends object, I extends object, V extends o
       // 3-4 비디오 객체 가져오기
       else if (this.utils?.whatInstance(poppedObject, VideoModel)) {
         const needToKnowData = poppedObject.getObjectData<V, VideoModel>(this.configs?.videoObjectConfig);
-        const foundIndex = this.utils.findIndexById(this.needObjectList as keyAble[], needToKnowData?.objectId, "objectId");
+        const foundIndex = this.utils.findIndexById(this.needObjectList as KeyAble<string>[], needToKnowData?.objectId, "objectId");
         if (foundIndex !== -1) {
           this.needObjectList[foundIndex] = needToKnowData;
         } else {
@@ -373,7 +373,7 @@ export default class CanvasModel<T extends object, I extends object, V extends o
 
         const cheangedKclass = { objectId, width, height, aCoords, fill };
 
-        const foundIndex = this.utils.findIndexById(this.needObjectList as keyAble[], cheangedKclass?.objectId, "objectId");
+        const foundIndex = this.utils.findIndexById(this.needObjectList as KeyAble<string>[], cheangedKclass?.objectId, "objectId");
         if (foundIndex !== -1) {
           this.needObjectList[foundIndex] = cheangedKclass;
         } else {
