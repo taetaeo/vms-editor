@@ -7,7 +7,7 @@ import type { AnyModelType, AnyModelListType, ObjectVariant, SelectedImage, Tool
 // Models
 import { ImageModel, TextBoxModel, TextModel, VideoModel, GridDrawModel } from "../models";
 // Utils
-import { Utils } from "../shared/lib";
+import { Utils } from "../shared/lib/utils";
 // State
 import { ObjectConfigState } from "../shared/lib/states";
 

@@ -1,6 +1,8 @@
 import { fabric } from "fabric";
-
 import { useEffect, useRef } from "react";
+
+// Lib
+import { Utils } from "../shared/lib/utils";
 // Configs
 import { ObjectConfigs } from "../configs";
 // Types
@@ -11,8 +13,6 @@ import { CanvasModel, ImageModel, TextBoxModel } from "../models";
 import LineLayoutModel from "../models/line-layout.model";
 // Handler
 import { useCanvasCtxHandler, useFormCtxHandler, useImageCtxHandler, useToolbarCtxHandler, useVmsTabCtxHandler } from "../shared/handlers";
-// Lib
-import { Utils } from "../shared/lib";
 
 type EditorControllerProps = { editorConfigs?: ObjectConfigs };
 
@@ -34,8 +34,8 @@ export default function useEditorController({ editorConfigs }: EditorControllerP
       current: canvasRef.current,
       configs: {
         backgroundColor: "transparent",
-        width: toolbarCtx.selectedOptions?.editorSize.w,
-        height: toolbarCtx.selectedOptions?.editorSize.h,
+        width: toolbarCtx.selectedOptions?.editorSize.w || 500,
+        height: toolbarCtx.selectedOptions?.editorSize.h || 500,
       },
       selectedUpdatedFn: toolbarCtx.callbackFn as <T>(objects: T) => void,
     });

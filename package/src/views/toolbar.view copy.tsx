@@ -1,11 +1,10 @@
 import { fabric } from "fabric";
 import { type FC, type ChangeEvent, type MouseEvent, useRef } from "react";
 import uuid from "react-uuid";
-import { ColorPicker, ColorPickerChangeEvent } from "primereact/colorpicker";
+// import { ColorPicker, ColorPickerChangeEvent } from "primereact/colorpicker";
 
-import { toolbarConfigs } from "@/configs";
 // Lib
-import { Utils } from "../shared/lib";
+import { Utils } from "../shared/lib/utils";
 
 // Functions
 import { useToolbarCtxHandler, useVideoCtxHandler, useCanvasCtxHandler } from "../shared/handlers";

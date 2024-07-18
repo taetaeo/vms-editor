@@ -8,7 +8,7 @@ import { useCanvasCtxHandler } from "../shared/handlers";
 // DTO
 import { VmsFormDTO, VmsFormObjectDTO } from "../shared/dto";
 // lib
-import { Utils } from "../shared/lib";
+import { Utils } from "../shared/lib/utils";
 // Hooks
 import { useMultiState } from "../shared/hooks";
 // Constants

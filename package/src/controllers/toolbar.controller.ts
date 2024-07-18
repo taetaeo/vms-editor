@@ -5,7 +5,7 @@ import type { AnyModelListType, AnyToolbarType } from "../types";
 // Models
 import { CanvasModel, TextBoxModel } from "../models";
 // Utils
-import { Utils } from "../shared/lib";
+import { Utils } from "../shared/lib/utils";
 // Handler
 import { useFormCtxHandler } from "../shared/handlers";
 // Hooks
