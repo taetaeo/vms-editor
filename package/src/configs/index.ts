@@ -11,3 +11,5 @@ export { default as objectConfigs } from "./object.config";
 
 /** Object Configs for Outter values's types */
 export type { ObjectConfigs, ObjectConfigsTextObject, ObjectConfigsTextBoxObject, ObjectConfigsImageObject, ObjectConfigsVideoObject } from "./object.config";
+
+export { default as vmsConfigs, type BackgroundTheme, type VmsConfigs } from "./vms.config";

@@ -8,10 +8,10 @@ import * as CSS from "csstype";
 
 import { ToolbarSelectedOptionConfigs } from "../types";
 import { ToolbarModel } from "../models";
+import { ObjectOriginState } from "../shared/lib/states";
 
 export default class TextBoxModel extends fabric.Textbox {
   /** 외부 모듈 */
-
   public toolbar?: ToolbarModel;
 
   // 추가적인 커스텀 속성이나 메소드를 정의
@@ -19,13 +19,14 @@ export default class TextBoxModel extends fabric.Textbox {
   public size?: number = 100;
   public color: CSS.Properties["color"] = "#fff";
   public fontWeight: CSS.Properties["fontWeight"] = 400;
+  public originState?: ObjectOriginState;
 
   public pointer: { start: number; end: number } = { start: 0, end: 0 };
 
   private selectedOptions?: ToolbarSelectedOptionConfigs;
 
   constructor(text: string, options?: any) {
-    super(text, options); // 부모 클래스의 생성자를 호출
+    super(text, { ...options, padding: 4, lineHeight: 1.1 }); // 부모 클래스의 생성자를 호출
     // 여기에서 커스텀 초기화 코드를 추가
     // this.toolbar = new ToolbarModel();
 
@@ -36,23 +37,27 @@ export default class TextBoxModel extends fabric.Textbox {
     this.borderColor = options.stroke;
     this.canvas = options.canvas;
 
+    const origin = { width: this.width, height: this.height, coordX: this.left, coordY: this.top };
+
+    // this.originState = origin
+
     this.on("scaling", this.onResizeScaling);
 
     this.on("mousedown:before", function (e) {
       // 마우스가 내려오기전
-      console.log("🟦 \t\t mousedown:before :", e);
+      // console.log("🟦 \t\t mousedown:before :", e);
     });
     this.on("mousedown", function (e) {
       // 마우스가 내려올때
-      console.log("🟦 \t\t mousedown : ", e);
+      // console.log("🟦 \t\t mousedown : ", e);
     });
     this.on("mouseup:before", function (e) {
       // 마우스가 올라오기전
-      console.log("🟦 \t\t mouseup:before :", e);
+      // console.log("🟦 \t\t mouseup:before :", e);
     });
     this.on("mouseup", (e) => {
       // 마우스가 올라올때
-      console.log("🟦 \t\t mouseup : ", e);
+      // console.log("🟦 \t\t mouseup : ", e);
     });
     this.on("mouseover", function (e) {
       // 마우스가 객체에 접근했을때,
@@ -63,15 +68,13 @@ export default class TextBoxModel extends fabric.Textbox {
       // console.log("🟦 \t\t mouseout : ", e);
     });
     this.on("skewing", function (e) {
-      console.log("🟦 \t\t skewing : ", e);
+      // console.log("🟦 \t\t skewing : ", e);
     });
     this.on("selection:created", function (e) {
       // const selectedText = e.target.text.slice(e.target.selectionStart, e.target.selectionEnd);
       console.log("🟦 \t\t selection:created : ", e);
     });
     this.on("selection:changed", (e) => {
-      console.log("🟦 \t\t 선택한 모델의 ID : ", this.objectId);
-
       const start = this.selectionStart; // 선택 시작
       const end = this.selectionEnd; // 선택 마지막
 
@@ -80,6 +83,12 @@ export default class TextBoxModel extends fabric.Textbox {
       this.pointer.start = start;
       this.pointer.end = end;
     });
+
+    this.on("changed", (e) => {
+      // const { width: canvasWidth, height: canvasHeight } = this.canvas!;
+      // this.width = this.dynamicMinWidth;
+      // this.canvas?.renderAll();
+    });
   }
 
   public onUpdateOptions(option: ToolbarSelectedOptionConfigs) {
@@ -87,8 +96,11 @@ export default class TextBoxModel extends fabric.Textbox {
   }
 
   public onChangeStyle(type: "font" | "object", key: string, value: unknown) {
-    console.log("여기2", type, key, value);
     if (type === "font") {
+      if (key === "textAlign") {
+        return this.set("textAlign", value as any);
+      }
+
       return this.setSelectionStyles({ [key]: value }, this.selectionStart, this.selectionEnd || this._text.length);
     } else if (type === "object") {
       return this.set(key as any, value);

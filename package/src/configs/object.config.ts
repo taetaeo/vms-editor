@@ -1,4 +1,4 @@
-const textObjectConfigs = {
+const textObjectConfig = {
   objectId: true, // 객체 아이디
   width: true, // 너비
   height: true, // 높이
@@ -17,18 +17,37 @@ const textObjectConfigs = {
   styles: true,
 };
 
-const imageObjectConfig = { width: true, height: true, src: true, styles: true };
-const videoObjectConfig = { width: true, height: true, url: true, styles: true };
+const imageObjectConfig = {
+  objectId: true, // 객체 아이디
+  width: true,
+  height: true,
+  src: true,
+  styles: true,
+};
+const videoObjectConfig = {
+  objectId: true, // 객체 아이디
+  width: true, // 너비
+  height: true, // 노비
+  src: true, // 파일 경로
+  styles: true, // 스타일
+  aCoords: true, //
+  fill: true, // 색상
+  angle: true, //각도
+  stroke: true, // 윤곽선
+  cacheWidth: true, // 캐시 너비
+  cacheHeight: true, // 캐시 높이
+  opacity: true,
+};
 
 const objectConfigs = {
-  textObjectConfigs,
+  textObjectConfig,
   imageObjectConfig,
   videoObjectConfig,
 };
 export default objectConfigs;
 
 export type ObjectConfigs = typeof objectConfigs;
-export type ObjectConfigsTextObject = ObjectConfigs["textObjectConfigs"];
-export type ObjectConfigsTextBoxObject = ObjectConfigs["textObjectConfigs"];
+export type ObjectConfigsTextObject = ObjectConfigs["textObjectConfig"];
+export type ObjectConfigsTextBoxObject = ObjectConfigs["textObjectConfig"];
 export type ObjectConfigsImageObject = ObjectConfigs["imageObjectConfig"];
 export type ObjectConfigsVideoObject = ObjectConfigs["videoObjectConfig"];

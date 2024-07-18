@@ -1,0 +1,81 @@
+/*  VMS Zoom Area */
+.vms-editor-zoom-area {
+  transform-origin: top left;
+  width: 200%;
+  height: 200%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.scale-0\.1 {
+  transform: scale(0.1);
+}
+
+.scale-0\.2 {
+  transform: scale(0.2);
+}
+
+.scale-0\.3 {
+  transform: scale(0.3);
+}
+
+.scale-0\.4 {
+  transform: scale(0.4);
+}
+
+.scale-0\.5 {
+  transform: scale(0.5);
+}
+
+.scale-0\.6 {
+  transform: scale(0.6);
+}
+.scale-0\.7 {
+  transform: scale(0.7);
+}
+.scale-0\.8 {
+  transform: scale(0.8);
+}
+.scale-0\.9 {
+  transform: scale(0.9);
+}
+
+.scale-1 {
+  transform: scale(1);
+}
+
+.scale-1\.5 {
+  transform: scale(1.5);
+}
+
+.scale-2 {
+  transform: scale(2);
+}
+
+/* Mouse Drop Down Menu */
+.mouse-dropdown-menu {
+  position: fixed;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.mouse-dropdown-menu.visible {
+  display: block;
+}
+
+.mouse-dropdown-menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.mouse-dropdown-menu-item {
+  padding: 8px 24px;
+  cursor: pointer;
+}
+
+.mouse-dropdown-menu-item:hover {
+  background-color: #ddd;
+}

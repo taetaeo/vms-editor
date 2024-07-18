@@ -1,0 +1,23 @@
+/* Canvas Wrapper */
+.vms-editor-canvas-wrapper {
+  position: relative;
+  width: 100%;
+  min-height: 450px;
+  max-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #444442;
+  padding: 8px;
+  overflow: auto;
+  box-sizing: border-box;
+}
+
+.vms-editor-info-box-wrapper {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+}

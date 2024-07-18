@@ -1,7 +1,25 @@
+# node_modules
+node_modules
+*node_modules
+node_modules/
+
+# yarn
+yarn.lock
+*yarn.lock
+
+# dist
+dist/
+*dist
+dist
+
 # Example
-/example/package-lock.json
-/example/node_modules/
-/example/yarn.lock
+/example-webpack/package-lock.json
+/example-webpack/node_modules/
+/example-webpack/yarn.lock
+
+/example-vite/package-lock.json
+/example-vite/node_modules/
+/example-vite/yarn.lock
 
 
 # Pakcage

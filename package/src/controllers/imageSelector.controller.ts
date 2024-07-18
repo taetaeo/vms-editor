@@ -1,21 +1,18 @@
 import { useEffect } from "react";
 
-// Functions - Contexts, hooks
-import { useCanvasContext, useMultiState } from "../functions";
-
-// Constants
-import { IMAGE_SELECTOR_CONST_KEY } from "../enums";
-
 // Types
-import { ImageObject } from "../types";
+import type { ImageObject } from "../types";
+// Handler
+import { useCanvasCtxHandler } from "../shared/handlers";
+// Hooks
+import { useMultiState } from "../shared/hooks";
+// Constants
+import { IMAGE_SELECTOR_CONST_KEY } from "../shared/enums";
 
 export default function useImageSelectorController<T>() {
-  const { canvas } = useCanvasContext();
+  const { canvas } = useCanvasCtxHandler();
 
-  const [imageObject, setValue] = useMultiState<ImageObject<T>>({
-    src: "",
-    alt: "",
-  });
+  const [imageObject, setValue] = useMultiState<ImageObject<T>>({ src: "", alt: "" });
 
   /**
    * @event 업데이트 imageObject 상태관리 이벤트
@@ -30,8 +27,8 @@ export default function useImageSelectorController<T>() {
    * @event 삭제 imageObject 상태관리 삭제 이벤트
    */
   const onclearValue = () => {
-    private_clear_src();
-    private_clear_alt();
+    _clearSrc();
+    _clearAlt();
   };
 
   /**
@@ -39,23 +36,21 @@ export default function useImageSelectorController<T>() {
    */
 
   useEffect(() => {
-    const { src, alt } = imageObject;
+    if (!imageObject.src) return;
 
-    if (!src) return;
+    const { src, alt } = imageObject;
 
     canvas?.getSelectedImage(src, alt || "", onclearValue!);
   }, [imageObject]);
 
   /**
-   * ==============================================================================
-   *                                    Private
-   * ==============================================================================
+   * =================================== < Inner Functions > ===================================
    */
 
   /**
    * @description 삭제 -  src 상태
    */
-  const private_clear_src = () => {
+  const _clearSrc = () => {
     setValue({ name: IMAGE_SELECTOR_CONST_KEY.src, value: "" });
   };
 
@@ -63,9 +58,13 @@ export default function useImageSelectorController<T>() {
    * @description 삭제 -  alt 상태
    */
 
-  const private_clear_alt = () => {
+  const _clearAlt = () => {
     setValue({ name: IMAGE_SELECTOR_CONST_KEY.alt, value: "" });
   };
+
+  /**
+   * =================================== </ Inner Functions > ===================================
+   */
 
   return {
     imageObject,

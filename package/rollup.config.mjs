@@ -13,7 +13,7 @@ const extensions = [".js", ".jsx", ".ts", ".tsx", ".scss", ".css", ".sss", ".pcs
 process.env.BABEL_ENV = "production";
 
 export default {
-  input: "./index.ts",
+  input: "./src/index.ts",
   output: getOutputOptions(pkg),
   assetFileNames: "assets/[name]-[hash][extname]",
   watch: {

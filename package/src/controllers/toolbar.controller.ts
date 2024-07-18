@@ -1,44 +1,34 @@
 import React, { useEffect } from "react";
-import { TOOLBAR_CONST_KEY } from "../enums";
-import { AnyModelListType, AnyToolbarType } from "../types";
+
+// Types
+import type { AnyModelListType, AnyToolbarType } from "../types";
+// Models
 import { CanvasModel, TextBoxModel } from "../models";
-import { useFormContext, useMultiState } from "../functions";
-import { Utils } from "@/lib";
+// Utils
+import { Utils } from "../shared/lib";
+// Handler
+import { useFormCtxHandler } from "../shared/handlers";
+// Hooks
+import { useMultiState } from "../shared/hooks";
+// Constants
+import { TOOLBAR_CONST_KEY } from "../shared/enums";
+
+const utils = new Utils();
 
 export default function useToolbarController<T>() {
-  const utils = new Utils();
+  const { selectedData } = useFormCtxHandler();
+
   const [isActive, setIsActive] = React.useState<boolean>(false);
 
   const [selectedObjects, setSelectedObjects] = React.useState<AnyModelListType | null>(null);
 
-  const { selectedData } = useFormContext();
-
   const [selectedOptions, setValue] = useMultiState<T>({
+    pixel: 16,
+    editorSize: { w: 416, h: 320 },
     type: undefined,
-    font: {
-      size: 48,
-      color: "#fff",
-      bold: 400,
-      underLine: false,
-      family: "Arial",
-    },
-    object: {
-      size: { w: 200, h: 200 },
-      coord: { x: 500, y: 500 },
-      style: {
-        background: "#000",
-        border: { width: 1, style: "solid", color: "black" },
-      },
-    },
+    font: { size: 48, color: "#fff", bold: 400, underLine: false, family: "Arial", align: "left" },
+    object: { size: { w: 0, h: 0 }, coord: { x: 0, y: 0 }, style: { background: "#000", border: { width: 1, style: "solid", color: "black" } } },
   });
-
-  /**
-   * =======================================================================
-   *
-   *                             State Functions
-   *
-   * =======================================================================
-   */
 
   const onchangeValue = (name: TOOLBAR_CONST_KEY, value: unknown) => setValue({ name, value });
 
@@ -76,20 +66,11 @@ export default function useToolbarController<T>() {
   }, [selectedData]);
 
   /**
-   * =======================================================================
-   *
-   *                               style Change Event
-   *
-   * =======================================================================
+   * =================================== < Outer Functions > ===================================
    */
 
   const onchangeObjectFontBold = <T extends object, I extends object, V extends object>(canvas: CanvasModel<T, I, V>, value: unknown) => {
     _updateStyle("font", "fontWeight", value);
-    _rerender(canvas);
-  };
-
-  const onchangeObjectFontColor = <T extends object, I extends object, V extends object>(canvas: CanvasModel<T, I, V>, value: unknown) => {
-    _updateStyle("font", "fill", value);
     _rerender(canvas);
   };
 
@@ -100,6 +81,16 @@ export default function useToolbarController<T>() {
 
   const onchangeObjectFontUnderline = <T extends object, I extends object, V extends object>(canvas: CanvasModel<T, I, V>, value: unknown) => {
     _updateStyle("font", "underline", value);
+    _rerender(canvas);
+  };
+
+  const onchangeObjectFontAlign = <T extends object, I extends object, V extends object>(canvas: CanvasModel<T, I, V>, value: unknown) => {
+    _updateStyle("font", "textAlign", value);
+    _rerender(canvas);
+  };
+
+  const onchangeObjectFontColor = <T extends object, I extends object, V extends object>(canvas: CanvasModel<T, I, V>, value: unknown) => {
+    _updateStyle("font", "fill", value);
     _rerender(canvas);
   };
 
@@ -130,9 +121,11 @@ export default function useToolbarController<T>() {
   };
 
   /**
-   * ===================================================================================================================
-   *                                          Private Functions
-   * ===================================================================================================================
+   * =================================== </ Outer Functions > ===================================
+   */
+
+  /**
+   * =================================== < Inner Functions > ===================================
    */
 
   const _updateStyle = (type: "font" | "object", key: string, value: unknown) => {
@@ -143,6 +136,10 @@ export default function useToolbarController<T>() {
     canvas?.requestRenderAll();
   };
 
+  /**
+   * =================================== </ Inner Functions > ===================================
+   */
+
   return {
     isActive,
     toggle,
@@ -152,10 +149,13 @@ export default function useToolbarController<T>() {
 
     onchangeObjectBackgroundColor,
     onchangeObjectBorderWidth,
+    // 텍스트 객체 설정
     onchangeObjectFontBold,
-    onchangeObjectFontColor,
     onchangeObjectFontSize,
     onchangeObjectFontUnderline,
+    onchangeObjectFontAlign,
+    onchangeObjectFontColor,
+    // 일반 객체 설정
     onchangeObjectWidth,
     onchangeObjectHeight,
     onchangeObjectCoordX,

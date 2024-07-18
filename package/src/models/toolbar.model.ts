@@ -1,509 +1,306 @@
-"use strict";
-import * as CSS from "csstype";
+import { MouseEvent, ChangeEvent } from "react";
+import uuid from "react-uuid";
+import { fabric } from "fabric";
+import { TextInteractiveModel } from ".";
+import type { TOOLBAR_CONST_KEY } from "../shared/enums";
+import type { Align, Direction, ObjectVariant } from "../types";
+import { useCanvasCtxHandler, useToolbarCtxHandler, useVideoCtxHandler } from "@/shared/handlers";
 
-// Models
-import { CanvasModel } from "../models";
-// Types
-import { ToolbarSelectedOptionConfigs, ObjectVariant } from "../types";
-// Lib
-import { Utils } from "../lib";
+class ToolbarModel {
+  videoCtx: ReturnType<typeof useVideoCtxHandler>;
+  canvasCtx: ReturnType<typeof useCanvasCtxHandler>;
+  toolbarCtx: ReturnType<typeof useToolbarCtxHandler>;
 
-type Parameters = {
-  canvas?: CanvasModel<any, any, any>;
-  selectedOptions: ToolbarSelectedOptionConfigs;
-};
-
-export default class ToolbarModel {
-  /** 외부 모듈 */
-  public utils?: Utils;
-  public canvas?: CanvasModel<any, any, any>;
-
-  /** 객체 타입 옵션 */
-  public _type?: ObjectVariant;
-
-  /** 객체 옵션 */
-  public objectWidth?: number;
-  public objectHeight?: number;
-  public objectCoordX?: number;
-  public objectCoordY?: number;
-  public objectBackgroundColor: CSS.Properties["backgroundColor"];
-  public objectBorderWidth: number;
-  public objectBorderStyle: CSS.Properties["borderStyle"];
-  public objectBorderColor: CSS.Properties["borderColor"];
-
-  /** 폰트 옵션 */
-  public fontSize?: number;
-  public fontColor: CSS.Properties["color"];
-  public fontBold?: number;
-  public fontUnderLine?: boolean;
-  public fontFamily?: string;
-
-  private selectedOptions: ToolbarSelectedOptionConfigs;
-
-  constructor(params: Parameters) {
-    /** Outer Modules */
-    this.utils = new Utils();
-
-    /** Parameters */
-    this.canvas = params.canvas;
-    this.selectedOptions = params.selectedOptions;
-
-    /** State */
-    this._type = this.selectedOptions.type; // 객체 타입
-    this.fontSize = this.selectedOptions.font.size; // 폰트 사이즈
-    this.fontColor = this.selectedOptions.font.color; // 폰트 색상
-    this.fontBold = this.selectedOptions.font.bold; // 굵은 글씨
-    this.fontUnderLine = this.selectedOptions.font.underLine; // 밑줄 글씨
-    this.fontFamily = this.selectedOptions.font.family; // 폰트 스타일
-    this.objectWidth = this.selectedOptions.object.size.w; // 객체 너비
-    this.objectHeight = this.selectedOptions.object.size.h; // 객체 높이
-    this.objectCoordX = this.selectedOptions.object.coord.x; // 객체 X좌표
-    this.objectCoordY = this.selectedOptions.object.coord.y; // 객체 Y좌표
-    this.objectBackgroundColor = this.selectedOptions.object.style.background; // 객체 배경색
-    this.objectBorderWidth = this.selectedOptions.object.style.border.width; // 객체 테두리 굵기
-    this.objectBorderStyle = this.selectedOptions.object.style.border.style; // 객체 테두리 스타일
-    this.objectBorderColor = this.selectedOptions.object.style.border.color; // 객체 테두리 색상
-  }
-  /**
-   * 상태 변화를 위한 함수
-   * @param {ToolbarSelectedOptionConfigs} selectedOptions
-   * @returns {void}
-   */
-
-  public onChangeSelectedOption(selectedOptions: ToolbarSelectedOptionConfigs): void {
-    this._type = selectedOptions.type;
-    this.fontSize = selectedOptions.font.size;
-    this.fontColor = selectedOptions.font.color;
-    this.fontBold = selectedOptions.font.bold;
-    this.fontUnderLine = selectedOptions.font.underLine;
-    this.objectWidth = selectedOptions.object.size.w;
-    this.objectHeight = selectedOptions.object.size.h;
-    this.objectCoordX = selectedOptions.object.coord.x;
-    this.objectCoordY = selectedOptions.object.coord.y;
-    this.objectBackgroundColor = selectedOptions.object.style.background;
-    this.objectBorderWidth = selectedOptions.object.style.border.width;
-    this.objectBorderStyle = selectedOptions.object.style.border.style;
-    this.objectBorderColor = selectedOptions.object.style.border.color;
+  constructor(
+    videoCtx: ReturnType<typeof useVideoCtxHandler>,
+    canvasCtx: ReturnType<typeof useCanvasCtxHandler>,
+    toolbarCtx: ReturnType<typeof useToolbarCtxHandler>
+  ) {
+    this.videoCtx = videoCtx;
+    this.canvasCtx = canvasCtx;
+    this.toolbarCtx = toolbarCtx;
   }
 
-  /**
-   * 객체 타입 설정 이벤트 핸들러
-   * @param {HTMLButtonElement | HTMLInputElement} target
-   * @returns {void} - 객체 타입 유형 변환
-   */
-  public onchangeObjectVariant(target: HTMLButtonElement | HTMLInputElement, objectId: string) {
-    const { id, value } = target;
+  handleChangePixel = (e: MouseEvent<HTMLButtonElement>) => {
+    const { id, value } = e.target as HTMLButtonElement;
+    if (id !== "pixel" || !value) return;
+    const pixel = Number(value);
 
-    const isId = this.utils?.isBeingChecker(id);
-    const isValue = this.utils?.isBeingChecker(value);
-
-    /**
-     * 실행취소. id 또는 value가 없을 경우.
-     */
-    if (!isId || !isValue) {
-      return;
-    }
-
-    /**
-     * 실행취소. value의 타입이 'ObjectVariant' 이 아닐 경우.
-     */
-
-    if (!this.isValidObjectVariant(value)) {
-      return;
-    }
-
-    this._type = value as ObjectVariant;
-
-    this.canvas?.createObjectByType(value, "텍스트를 입력해주세요.", {
-      id: objectId,
-      left: this.objectCoordX, // x 축
-      top: this.objectCoordY, // Y축
-      width: this.objectWidth, // 너비
-      height: this.objectHeight, // 높이
-      fontSize: this.fontSize || 14, // 폰트 사이즈
-      fill: this.fontColor, // 폰트 색상
-      fontWeight: this.fontBold, // 굵기
-      underline: this.fontUnderLine, // 밑줄
-      fontFamily: this.fontFamily, // 폰트 스타일
-      backgroundColor: this.objectBackgroundColor, // 배경색
-      selectionBorderColor: this.objectBorderColor,
-    });
-  }
-
-  /**
-   * 폰트 굵기 이벤트 핸들러
-   * @param {HTMLButtonElement | HTMLInputElement} target
-   * @returns {void} - 굵기 사이즈 변환 (number)
-   */
-  public onchangeFontBold(target: HTMLButtonElement | HTMLInputElement) {
-    const { id, value } = target;
-
-    const isId = this.utils?.isBeingChecker(id);
-    const isValue = this.utils?.isBeingChecker(value);
-
-    /**
-     * 실행취소. id 또는 value가 없을 경우.
-     */
-    if (!isId || !isValue) {
-      return;
-    }
-
-    const [font, bold] = this.idSplitHelper(id);
-    const isFont = this.utils?.isBeingChecker(font);
-    const isBold = this.utils?.isBeingChecker(bold);
-
-    /**
-     * 실행취소. font 또는 bold 가 없을 경우.
-     */
-    if (!isFont || !isBold) {
-      return;
-    }
-
-    /**
-     * 예외처리. value를 number로 형변환시 NaN일 경우.
-     */
-    let NEW_Font_Bold: number = Number(value);
-    if (Number.isNaN(Number(NEW_Font_Bold))) {
-      NEW_Font_Bold = 400; // 기본값 설정
-    }
-
-    this.fontBold = NEW_Font_Bold === 700 ? 400 : 700;
-  }
-
-  /**
-   * 폰트 사이즈 이벤트 핸들러
-   * @param {HTMLSelectElement} target
-   * @returns {void} - 사이즈 px 변환 (number)
-   */
-  public onchangeFontSize(target: HTMLSelectElement) {
-    const { id, value } = target;
-
-    const isId = this.utils?.isBeingChecker(id);
-    const isValue = this.utils?.isBeingChecker(value);
-
-    /**
-     * 실행취소. id 또는 value가 없을 경우.
-     */
-    if (!isId || !isValue) {
-      return;
-    }
-
-    const [font, size] = this.idSplitHelper(id);
-
-    const isFont = this.utils?.isBeingChecker(font);
-    const isSize = this.utils?.isBeingChecker(size);
-
-    if (!isFont || !isSize) {
-      return;
-    }
-
-    /**
-     * 예외처리. value를 number로 형변환시 NaN일 경우.
-     */
-
-    let NEW_FontSize: number = Number(value);
-    if (Number.isNaN(NEW_FontSize)) {
-      NEW_FontSize = 12; // 기본값 설정
-    }
-    this.fontSize = NEW_FontSize;
-  }
-
-  /**
-   * 폰트 밑줄 이벤트 핸들러
-   * @param {HTMLButtonElement | HTMLInputElement} target
-   * @returns {void} - 밑줄 활성화 변환 (boolean)
-   */
-  public onchangeFontUnderLine = (target: HTMLButtonElement | HTMLInputElement) => {
-    const { id, value } = target;
-
-    const isId = this.utils?.isBeingChecker(id);
-    const isValue = this.utils?.isBeingChecker(value);
-
-    /**
-     * 실행취소. id 또는 value가 없을 경우.
-     */
-    if (!isId || !isValue) {
-      return;
-    }
-
-    const [font, underline] = this.idSplitHelper(id);
-
-    const isFont = this.utils?.isBeingChecker(font);
-    const isUnderLine = this.utils?.isBeingChecker(underline);
-
-    /**
-     * 실행취소. font 또는 underline이 없을 경우.
-     */
-
-    if (!isFont || !isUnderLine) {
-      return;
-    }
-
-    /**
-     * 예외처리. value를 number로 형변환시 NaN일 경우.
-     */
-    let NEW_Font_Underline: number = Number(value);
-    if (Number.isNaN(NEW_Font_Underline)) {
-      NEW_Font_Underline = 1; // 기본값 설정
-    }
-
-    this.fontUnderLine = NEW_Font_Underline === 1 ? false : true;
+    this.toolbarCtx.onchangeValue?.(id as TOOLBAR_CONST_KEY, pixel);
+    this.canvasCtx.canvas?.updatePixel(pixel);
   };
 
-  /**
-   * 객체 사이즈 이벤트 핸들러
-   * @param {HTMLButtonElement | HTMLInputElement} target
-   * @returns {void} - 너비(w) 높이(h) 변환
-   */
-  public onchangeObjectSize(target: HTMLButtonElement | HTMLInputElement) {
-    const { id, value } = target;
+  handleChangeEditorSize = (e: MouseEvent<HTMLButtonElement>) => {
+    const { id, value } = e.target as HTMLButtonElement;
+    const [h, w] = value.split("_");
+    if (!h || !w) return;
+    const width = Number(w);
+    const height = Number(h);
 
-    const isId = this.utils?.isBeingChecker(id);
-    const isValue = this.utils?.isBeingChecker(value);
+    this.toolbarCtx.onchangeValue?.(id as TOOLBAR_CONST_KEY, { w: width, h: height });
+    this.canvasCtx.canvas?.updateWh("w", width);
+    this.canvasCtx.canvas?.updateWh("h", height);
+    this.canvasCtx.canvas?.clearCanvas();
+  };
 
-    /**
-     * 실행취소. id 또는 value가 없을 경우.
-     */
-    if (!isId || !isValue) {
-      return;
+  handleChangeObjectType = (e: MouseEvent<HTMLButtonElement>) => {
+    const { id, value } = e.target as HTMLButtonElement;
+    this.toolbarCtx.onchangeValue?.(id as TOOLBAR_CONST_KEY, this.toolbarCtx.selectedOptions?.type === "image" ? undefined : value);
+
+    const interactiveText = new TextInteractiveModel("텍스트를 입력", {
+      left: this.toolbarCtx.selectedOptions?.object.coord.x,
+      top: this.toolbarCtx.selectedOptions?.object.coord.y,
+      width: 120,
+      height: 320,
+      fontSize: this.toolbarCtx.selectedOptions?.font.size || 14,
+      fill: this.toolbarCtx.selectedOptions?.font.color,
+      fontWeight: this.toolbarCtx.selectedOptions?.font.bold,
+      underline: this.toolbarCtx.selectedOptions?.font.underLine,
+      fontFamily: this.toolbarCtx.selectedOptions?.font.family,
+      backgroundColor: this.toolbarCtx.selectedOptions?.object.style.background,
+    });
+
+    const textObject = this.canvasCtx.canvas?.createObjectByType(value as ObjectVariant, "텍스트입력", {
+      id: uuid(),
+      left: this.toolbarCtx.selectedOptions?.object.coord.x,
+      top: this.toolbarCtx.selectedOptions?.object.coord.y,
+      width: this.toolbarCtx.selectedOptions?.object.size.w,
+      height: this.toolbarCtx.selectedOptions?.object.size.h,
+      fontSize: this.toolbarCtx.selectedOptions?.font.size || 14,
+      fill: this.toolbarCtx.selectedOptions?.font.color,
+      fontWeight: this.toolbarCtx.selectedOptions?.font.bold,
+      underline: this.toolbarCtx.selectedOptions?.font.underLine,
+      fontFamily: this.toolbarCtx.selectedOptions?.font.family,
+      backgroundColor: this.toolbarCtx.selectedOptions?.object.style.background,
+      selectionBorderColor: this.toolbarCtx.selectedOptions?.object.style.border.color,
+    });
+
+    if (textObject) {
+      this.canvasCtx.canvas?.add(textObject as fabric.Object);
+      this.toolbarCtx.onchangeValue?.(id as TOOLBAR_CONST_KEY, undefined);
+    }
+  };
+
+  handleChangeFontBold = (e: MouseEvent<HTMLButtonElement>) => {
+    if (!this.canvasCtx.canvas) return;
+    const { id, value } = e.target as HTMLButtonElement;
+    const targetValue = Number(value) === 700 ? 400 : 700;
+    if (this.canvasCtx.canvas.selectedObjects) {
+      this.checkFunctionAfterExecute(this.toolbarCtx.onchangeObjectFontBold, this.canvasCtx.canvas, targetValue);
+    }
+    this.checkFunctionAfterExecute(this.toolbarCtx.onchangeValue, id as TOOLBAR_CONST_KEY, { ...this.toolbarCtx.selectedOptions?.font, bold: targetValue });
+  };
+
+  handleChangeFontSize = (e: ChangeEvent<HTMLSelectElement>) => {
+    if (!this.canvasCtx.canvas) return;
+    const { id, value } = e.target;
+    const targetValue = Number(value);
+    if (this.canvasCtx.canvas.selectedObjects) {
+      this.checkFunctionAfterExecute(this.toolbarCtx.onchangeObjectFontSize, this.canvasCtx.canvas, targetValue);
+    }
+    this.checkFunctionAfterExecute(this.toolbarCtx.onchangeValue, id as TOOLBAR_CONST_KEY, { ...this.toolbarCtx.selectedOptions?.font, size: targetValue });
+  };
+
+  handleChangeFontUnderline = (e: MouseEvent<HTMLButtonElement>) => {
+    const { id, value } = e.target as HTMLButtonElement;
+    const targetValue = Number(value) === 1 ? false : true;
+    if (this.canvasCtx.canvas!.selectedObjects) {
+      this.checkFunctionAfterExecute(this.toolbarCtx.onchangeObjectFontUnderline, this.canvasCtx.canvas!, targetValue);
+    }
+    this.checkFunctionAfterExecute(this.toolbarCtx.onchangeValue, id as TOOLBAR_CONST_KEY, {
+      ...this.toolbarCtx.selectedOptions?.font,
+      underLine: targetValue,
+    });
+  };
+
+  handleChangeFontAlign = (e: MouseEvent<HTMLButtonElement>) => {
+    const { id, value } = e.target as HTMLButtonElement;
+    const [font, align] = id.split("_");
+    if (!font || !align) return;
+    if (this.canvasCtx.canvas!.selectedObjects) {
+      this.checkFunctionAfterExecute(this.toolbarCtx.onchangeObjectFontAlign, this.canvasCtx.canvas!, value);
+    }
+    this.checkFunctionAfterExecute(this.toolbarCtx.onchangeValue, font as TOOLBAR_CONST_KEY, { ...this.toolbarCtx.selectedOptions?.font, color: value });
+  };
+
+  handleChangeFontColor = (e: MouseEvent<HTMLButtonElement>) => {
+    const { id, value } = e.target as HTMLButtonElement;
+    const [font, color] = id.split("_");
+    if (!font || !color) return;
+    if (this.canvasCtx.canvas!.selectedObjects) {
+      this.checkFunctionAfterExecute(this.toolbarCtx.onchangeObjectFontColor, this.canvasCtx.canvas!, value);
+    }
+    this.checkFunctionAfterExecute(this.toolbarCtx.onchangeValue, font as TOOLBAR_CONST_KEY, { ...this.toolbarCtx.selectedOptions?.font, color: value });
+  };
+
+  handleChangeObjectSize = (e: ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+    const [object, size, wh] = id.split("_");
+    const targetValue = Number(value);
+
+    // 너비 설정
+    if (wh === "w") {
+      if (this.canvasCtx.canvas!.selectedObjects) {
+        this.checkFunctionAfterExecute(this.toolbarCtx.onchangeObjectWidth, this.canvasCtx.canvas!, value);
+      }
+      this.checkFunctionAfterExecute(this.toolbarCtx.onchangeValue, object as TOOLBAR_CONST_KEY, {
+        ...this.toolbarCtx.selectedOptions?.object,
+        size: { ...this.toolbarCtx.selectedOptions?.object.size, w: targetValue },
+      });
+    } else if (wh === "h") {
+      if (this.canvasCtx.canvas!.selectedObjects) {
+        this.checkFunctionAfterExecute(this.toolbarCtx.onchangeObjectHeight, this.canvasCtx.canvas!, value);
+      }
+      this.checkFunctionAfterExecute(this.toolbarCtx.onchangeValue, object as TOOLBAR_CONST_KEY, {
+        ...this.toolbarCtx.selectedOptions?.object,
+        size: { ...this.toolbarCtx.selectedOptions?.object.size, h: targetValue },
+      });
+    }
+  };
+
+  handleChangeObjectCoord = (e: ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+    const [object, size, coord] = id.split("_");
+    const targetValue = Number(value);
+
+    // X좌표
+    if (coord === "x") {
+      if (this.canvasCtx.canvas!.selectedObjects) {
+        this.checkFunctionAfterExecute(this.toolbarCtx.onchangeObjectCoordX, this.canvasCtx.canvas!, targetValue);
+      }
+      this.checkFunctionAfterExecute(this.toolbarCtx.onchangeValue, object as TOOLBAR_CONST_KEY, {
+        ...this.toolbarCtx.selectedOptions?.object,
+        coord: { ...this.toolbarCtx.selectedOptions?.object.coord, x: targetValue },
+      });
+    }
+    // Y좌표
+    else if (coord === "y") {
+      if (this.canvasCtx.canvas!.selectedObjects) {
+        this.checkFunctionAfterExecute(this.toolbarCtx.onchangeObjectCoordY, this.canvasCtx.canvas!, targetValue);
+      }
+      this.checkFunctionAfterExecute(this.toolbarCtx.onchangeValue, object as TOOLBAR_CONST_KEY, {
+        ...this.toolbarCtx.selectedOptions?.object,
+        coord: { ...this.toolbarCtx.selectedOptions?.object.coord, y: targetValue },
+      });
+    }
+  };
+
+  handleChangeObjectBgColor = (e: MouseEvent<HTMLButtonElement>) => {
+    const { id, value } = e.target as HTMLButtonElement;
+    const [object, style, background, color] = id.split("_");
+
+    if (this.canvasCtx.canvas!.selectedObjects) {
+      this.checkFunctionAfterExecute(this.toolbarCtx.onchangeObjectBackgroundColor, this.canvasCtx.canvas!, color);
     }
 
-    const [obj, size, unknownValue] = this.idSplitHelper(id);
+    this.checkFunctionAfterExecute(this.toolbarCtx.onchangeValue, object as TOOLBAR_CONST_KEY, {
+      ...this.toolbarCtx.selectedOptions?.object,
+      style: { ...this.toolbarCtx.selectedOptions?.object.style, background: color },
+    });
+  };
 
-    const isObj = this.utils?.isBeingChecker(obj);
-    const isSize = this.utils?.isBeingChecker(size);
-    const isUnknownValue = this.utils?.isBeingChecker(unknownValue);
+  handleChangeObjectBorderColor = (e: MouseEvent<HTMLButtonElement>) => {
+    const { id, value } = e.target as HTMLButtonElement;
+    const [object, style, border, color] = id.split("_");
 
-    /**
-     * 실행취소. object 또는 size 또는 w/h가 없을 경우.
-     */
-
-    if (!isObj || !isSize || !isUnknownValue) {
-      return;
+    if (this.toolbarCtx.onchangeValue && typeof this.toolbarCtx.onchangeValue === "function") {
+      this.toolbarCtx.onchangeValue(object as TOOLBAR_CONST_KEY, {
+        ...this.toolbarCtx.selectedOptions?.object,
+        style: {
+          ...this.toolbarCtx.selectedOptions?.object.style,
+          border: {
+            ...this.toolbarCtx.selectedOptions?.object.style.border,
+            color,
+          },
+        },
+      });
     }
+  };
 
-    /**
-     * 예외처리. value를 number로 형변환시 NaN일 경우.
-     */
-    let NEW_UNKNOWN_VALUE: number = Number(value);
-    if (Number.isNaN(NEW_UNKNOWN_VALUE)) {
-      NEW_UNKNOWN_VALUE = 200; // 기본값 설정
+  handleChangeObjectBorderStyle = (e: MouseEvent<HTMLButtonElement>) => {
+    const { id, value } = e.target as HTMLButtonElement;
+    const [object, style, border, borderStyle] = id.split("_");
+
+    if (this.toolbarCtx.onchangeValue && typeof this.toolbarCtx.onchangeValue === "function") {
+      this.toolbarCtx.onchangeValue(object as TOOLBAR_CONST_KEY, {
+        ...this.toolbarCtx.selectedOptions?.object,
+        style: {
+          ...this.toolbarCtx.selectedOptions?.object.style,
+          border: {
+            ...this.toolbarCtx.selectedOptions?.object.style.border,
+            style: borderStyle,
+          },
+        },
+      });
     }
+  };
 
-    if (unknownValue === "w") {
-      this.objectWidth = NEW_UNKNOWN_VALUE; // 너비
-    } else if (unknownValue === "h") {
-      this.objectHeight = NEW_UNKNOWN_VALUE; // 높이
+  handleChangeObjectWidth = (e: ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+
+    const [object, border, width] = id.split("_");
+
+    if (this.toolbarCtx.onchangeValue && typeof this.toolbarCtx.onchangeValue === "function") {
+      this.toolbarCtx.onchangeValue(object as TOOLBAR_CONST_KEY, {
+        ...this.toolbarCtx.selectedOptions?.object,
+        style: {
+          ...this.toolbarCtx.selectedOptions?.object.style,
+          border: {
+            ...this.toolbarCtx.selectedOptions?.object.style.border,
+            width: Number(value),
+          },
+        },
+      });
     }
-  }
+  };
 
-  /**
-   * 객체 좌표 이벤트 핸들러
-   * @param {HTMLButtonElement | HTMLInputElement} target
-   * @returns {void} - x(가로축) y(세로축) 변환
-   */
-  public onchangeObjectCoord(target: HTMLButtonElement | HTMLInputElement) {
-    const { id, value } = target;
+  handleChangeObjectSorting = (e: MouseEvent<HTMLButtonElement>) => {
+    const { id, value } = e.target as HTMLButtonElement;
 
-    const isId = this.utils?.isBeingChecker(id);
-    const isValue = this.utils?.isBeingChecker(value);
+    const [obj, align, direction] = id.split("_") as [string, Align, Direction];
 
-    /**
-     * 실행취소. id 또는 value가 없을 경우.
-     */
-    if (!isId || !isValue) {
-      return;
+    if (!align || !direction) return;
+
+    if (align === "horizon") {
+      // Left
+      if (direction === "left") {
+        const directionList = this.canvasCtx.canvas!.getSelectedAlignDirections();
+        console.log(directionList);
+      }
+      // Right
+      else if (direction === "right") {
+        const directionList = this.canvasCtx.canvas!.getSelectedAlignDirections();
+        console.log(directionList);
+      }
+      // Center
+      else if (direction === "center") {
+        const directionList = this.canvasCtx.canvas!.getSelectedAlignDirections();
+        console.log(directionList);
+      }
+    } else if (align === "vertical") {
+      // Top
+      if (direction === "top") {
+        const directionList = this.canvasCtx.canvas!.getSelectedAlignDirections();
+        console.log(directionList);
+      }
+      // Bottom
+      else if (direction === "bottom") {
+        const directionList = this.canvasCtx.canvas!.getSelectedAlignDirections();
+        console.log(directionList);
+      }
+      // Center
+      else if (direction === "center") {
+        const directionList = this.canvasCtx.canvas!.getSelectedAlignDirections();
+        console.log(directionList);
+      }
     }
-    const [obj, coord, unknownValue] = this.idSplitHelper(id);
+  };
 
-    const isObj = this.utils?.isBeingChecker(obj);
-    const isCoord = this.utils?.isBeingChecker(coord);
-    const isUnknownValue = this.utils?.isBeingChecker(unknownValue);
-
-    /**
-     * 실행취소. object 또는 size 또는 w/h가 없을 경우.
-     */
-
-    if (!isObj || !isCoord || !isUnknownValue) {
-      return;
+  private checkFunctionAfterExecute<T extends (...args: any[]) => void>(func: T | undefined, ...args: Parameters<T>) {
+    if (func && typeof func === "function") {
+      func(...args);
     }
-
-    /**
-     * 예외처리. value를 number로 형변환시 NaN일 경우.
-     */
-    let NEW_UNKNOWN_VALUE: number = Number(value);
-    if (Number.isNaN(NEW_UNKNOWN_VALUE)) {
-      NEW_UNKNOWN_VALUE = 10; // 기본값 설정
-    }
-    if (unknownValue === "x") {
-      this.objectWidth = NEW_UNKNOWN_VALUE; // x 좌표
-    } else if (unknownValue === "y") {
-      this.objectHeight = NEW_UNKNOWN_VALUE; // y 좌표
-    }
-  }
-  /**
-   * 객체 배경 색상 이벤트 핸들러 (1) - 색상
-   * @param {HTMLButtonElement | HTMLInputElement} target
-   * @returns {void} - 배경색상 변환
-   */
-  public onchangeObjectBackgroundColor(target: HTMLButtonElement | HTMLInputElement) {
-    const { id, value } = target;
-
-    const isId = this.utils?.isBeingChecker(id);
-    const isValue = this.utils?.isBeingChecker(value);
-
-    /**
-     * 실행취소. id 또는 value가 없을 경우.
-     */
-    if (!isId || !isValue) {
-      return;
-    }
-
-    const [obj, background, color] = this.idSplitHelper(id);
-
-    const isObj = this.utils?.isBeingChecker(obj);
-    const isBackground = this.utils?.isBeingChecker(background);
-    const isColor = this.utils?.isBeingChecker(color);
-
-    /**
-     * 실행취소. object 또는 border 또는 color가 없을 경우.
-     */
-    if (!isObj || !isBackground || !isColor) {
-      return;
-    }
-
-    this.objectBackgroundColor = value;
-  }
-
-  /**
-   * 객체 윤곽선 이벤트 핸들러
-   * @param {HTMLButtonElement | HTMLInputElement} target
-   * @returns {void} - 윤곽선 색상 변환
-   */
-  public onchangeObjectBorderColor(target: HTMLButtonElement | HTMLInputElement) {
-    const { id, value } = target;
-
-    const isId = this.utils?.isBeingChecker(id);
-    const isValue = this.utils?.isBeingChecker(value);
-
-    /**
-     * 실행취소. id 또는 value가 없을 경우.
-     */
-    if (!isId || !isValue) {
-      return;
-    }
-
-    const [obj, border, color] = this.idSplitHelper(id);
-
-    const isObj = this.utils?.isBeingChecker(obj);
-    const isBorder = this.utils?.isBeingChecker(border);
-    const isColor = this.utils?.isBeingChecker(color);
-
-    /**
-     * 실행취소. object 또는 border 또는 color가 없을 경우.
-     */
-    if (!isObj || !isBorder || !isColor) {
-      return;
-    }
-  }
-  /**
-   * 객체 윤곽선 이벤트 핸들러 (2) - 스타일
-   * @param {HTMLButtonElement | HTMLInputElement} target
-   * @returns {void} - 윤곽선 스타일 변환
-   */
-  public onchangeObjectBorderStyle(target: HTMLButtonElement | HTMLInputElement) {
-    const { id, value } = target;
-
-    const isId = this.utils?.isBeingChecker(id);
-    const isValue = this.utils?.isBeingChecker(value);
-
-    /**
-     * 실행취소. id 또는 value가 없을 경우.
-     */
-    if (!isId || !isValue) {
-      return;
-    }
-
-    const [obj, border, style] = this.idSplitHelper(id);
-
-    const isObj = this.utils?.isBeingChecker(obj);
-    const isBorder = this.utils?.isBeingChecker(border);
-    const isStyle = this.utils?.isBeingChecker(style);
-
-    /**
-     * 실행취소. object 또는 border 또는 style가 없을 경우.
-     */
-    if (!isObj || !isBorder || !isStyle) {
-      return;
-    }
-
-    this.objectBorderStyle = value;
-  }
-
-  /**
-   * 객체 윤곽선 이벤트 핸들러 (3) - 굵기
-   * @param {HTMLButtonElement | HTMLInputElement} target
-   * @returns {void} - 윤곽선 스타일 변환
-   */
-  public onchangeObjectBorderWidth(target: HTMLButtonElement | HTMLInputElement) {
-    const { id, value } = target;
-
-    const isId = this.utils?.isBeingChecker(id);
-    const isValue = this.utils?.isBeingChecker(value);
-
-    /**
-     * 실행취소. id 또는 value가 없을 경우.
-     */
-    if (!isId || !isValue) {
-      return;
-    }
-
-    const [obj, border, width] = this.idSplitHelper(id);
-
-    const isObj = this.utils?.isBeingChecker(obj);
-    const isBorder = this.utils?.isBeingChecker(border);
-    const isWidth = this.utils?.isBeingChecker(width);
-
-    /**
-     * 실행취소. object 또는 border 또는 width가 없을 경우.
-     */
-    if (!isObj || !isBorder || !isWidth) {
-      return;
-    }
-
-    /**
-     * 예외처리. value를 number로 형변환시 NaN일 경우.
-     */
-    let NEW_OBJ_WIDTH: number = Number(value);
-    if (Number.isNaN(NEW_OBJ_WIDTH)) {
-      NEW_OBJ_WIDTH = 10; // 기본값 설정
-    }
-
-    this.objectBorderWidth = NEW_OBJ_WIDTH;
-  }
-
-  /**
-   * =================================================
-   *                  P R V A T E
-   * =================================================
-   */
-
-  /**
-   * DOM의 ID의 문자열을 '_' 기준으로 분할하여 배열로 만드는 함수
-   * @param {string} str
-   * @returns {string[]}
-   */
-
-  private idSplitHelper(str: string): string[] {
-    return str.split("_");
-  }
-
-  /**
-   * ObjectVariant 에 대한 타입가드 함수
-   * @param {string} value
-   * @returns
-   */
-  private isValidObjectVariant(value: string): value is ObjectVariant {
-    return ["rect", "circle", "text", "image", "video"].includes(value);
   }
 }
+
+export default ToolbarModel;

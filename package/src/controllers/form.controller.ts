@@ -1,16 +1,18 @@
 import { useEffect } from "react";
 import { plainToClass } from "class-transformer";
 
-// Functions
-import { useCanvasContext, useMultiState } from "@/functions";
-// DTO
-import { VmsFormDTO, VmsFormObjectDTO } from "@/dto";
-// lib
-import { Utils } from "@/lib";
 // Types
-import { AnyModelType } from "@/types";
+import type { AnyModelType } from "../types";
+// Handlers
+import { useCanvasCtxHandler } from "../shared/handlers";
+// DTO
+import { VmsFormDTO, VmsFormObjectDTO } from "../shared/dto";
+// lib
+import { Utils } from "../shared/lib";
+// Hooks
+import { useMultiState } from "../shared/hooks";
 // Constants
-import { FORM_SELECTOR_CONST_KEY } from "@/enums";
+import { FORM_SELECTOR_CONST_KEY } from "../shared/enums";
 
 type FormControllerProps = {
   data?: any;
@@ -25,7 +27,7 @@ export interface VmsStateType {
 const utils = new Utils();
 
 export default function useFormController<T>(fetchData: FormControllerProps) {
-  const { canvas, setCanvas } = useCanvasContext();
+  const { canvas, setCanvas } = useCanvasCtxHandler();
 
   // ----- Fetched Vms Form Data -----
   const [vmsForm, dispatchVmsForm] = useMultiState<VmsStateType>({
@@ -55,7 +57,6 @@ export default function useFormController<T>(fetchData: FormControllerProps) {
     const { objects, ...rest } = preparedData;
     const newObjects = objects.map((object: unknown) => plainToClass(VmsFormObjectDTO, object).data());
 
-    console.log(newObjects);
     _setVmsForm(FORM_SELECTOR_CONST_KEY.FORM_DATA, rest);
 
     _setVmsForm(FORM_SELECTOR_CONST_KEY.OBJECTS, newObjects);

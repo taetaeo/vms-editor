@@ -1,3 +1,3 @@
-import { ThemeVariant } from "./theme-variant";
+import { ThemeVariant } from "./theme-variant.type";
 
 export type Theme = ThemeVariant;
