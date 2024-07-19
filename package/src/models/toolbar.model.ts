@@ -235,7 +235,7 @@ class ToolbarModel {
     }
   };
 
-  handleChangeObjectWidth = (e: ChangeEvent<HTMLInputElement>) => {
+  handleChangeObjectBorderWidth = (e: ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
 
     const [object, border, width] = id.split("_");
