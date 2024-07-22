@@ -1,23 +1,7 @@
 import * as R from "react";
 
-import { classNames as cn } from "../../../shared/lib/utils";
-import type { ButtonGroupButtonProps, ButtonGroupSelectorProps, ButtonGroupWrapperProps } from "../../ui";
-import { ButtonGroupButton as Button, ButtonGroupSelector } from "../../ui";
-
-interface TextStyleButtonGroupProps extends R.PropsWithChildren, ButtonGroupWrapperProps {
-  groupClass?: string;
-}
-
-const ButtonGroupWrapper = R.forwardRef<HTMLDivElement, TextStyleButtonGroupProps>(function Components(
-  { id = "", className = "edit_btline", groupClass = "", style, children, ...rest },
-  fordedRef
-) {
-  return (
-    <div id={id} className={cn(className, groupClass)} ref={fordedRef} style={style} {...rest}>
-      {children}
-    </div>
-  );
-});
+import type { ButtonGroupButtonProps, ButtonGroupSelectorProps } from "../../ui";
+import { ButtonGroupButton as Button, ButtonGroupSelector, ButtonGroupWrapper } from "../../ui";
 
 const TextStyleWidget = Object.assign(ButtonGroupWrapper, {
   Bold: R.forwardRef<HTMLButtonElement, ButtonGroupButtonProps>(

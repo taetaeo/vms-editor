@@ -1,7 +1,7 @@
 import * as R from "react";
 
-import type { ButtonGroupColorButtonProps } from "../../../components/ui";
-import { ButtonGroupWrapper, ButtonGroupColorButton as ColorButton } from "../../../components/ui";
+import type { ButtonGroupColorButtonProps } from "../../ui/";
+import { ButtonGroupWrapper, ButtonGroupColorButton as ColorButton } from "../../ui/";
 
 const TextColorWidget = Object.assign(ButtonGroupWrapper, {
   Color: R.forwardRef<HTMLButtonElement, ButtonGroupColorButtonProps>(

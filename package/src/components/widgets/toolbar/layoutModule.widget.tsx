@@ -1,7 +1,7 @@
 import * as R from "react";
 
-import type { ButtonGroupButtonProps } from "../../../components/ui";
-import { ButtonGroupButton as Button, ButtonGroupWrapper } from "../../../components/ui";
+import type { ButtonGroupButtonProps } from "../../ui/";
+import { ButtonGroupButton as Button, ButtonGroupWrapper } from "../../ui/";
 
 const LayoutModuleWidget = Object.assign(ButtonGroupWrapper, {
   SizeButton: R.forwardRef<HTMLButtonElement, ButtonGroupButtonProps>(

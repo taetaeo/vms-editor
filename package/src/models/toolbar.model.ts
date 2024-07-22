@@ -154,9 +154,7 @@ class ToolbarModel {
     const { id, value } = e.target as HTMLButtonElement;
     const [object, size, wh, dir] = id.split("_");
 
-    console.log(dir);
-
-    let targetWidth = Number(this.toolbarCtx.selectedOptions?.object.size.w);
+    let targetWidth = Number(value);
 
     if (dir === "up") {
       targetWidth += 1;
@@ -164,7 +162,6 @@ class ToolbarModel {
       targetWidth -= 1;
     }
 
-    console.log(targetWidth);
     if (this.canvasCtx.canvas!.selectedObjects) {
       this.checkFunctionAfterExecute(this.toolbarCtx.onchangeObjectWidth, this.canvasCtx.canvas!, value);
     }
@@ -245,6 +242,48 @@ class ToolbarModel {
         coord: { ...this.toolbarCtx.selectedOptions?.object.coord, y: targetValue },
       });
     }
+  };
+
+  handleClickObjectX = (e: MouseEvent<HTMLButtonElement>) => {
+    const { id, value } = e.target as HTMLButtonElement;
+    const [object, size, coord, dir] = id.split("_");
+
+    let targetX = Number(value);
+
+    if (dir === "up") {
+      targetX += 1;
+    } else if (dir === "down") {
+      targetX -= 1;
+    }
+
+    if (this.canvasCtx.canvas!.selectedObjects) {
+      this.checkFunctionAfterExecute(this.toolbarCtx.onchangeObjectCoordX, this.canvasCtx.canvas!, targetX);
+    }
+    this.checkFunctionAfterExecute(this.toolbarCtx.onchangeValue, object as TOOLBAR_CONST_KEY, {
+      ...this.toolbarCtx.selectedOptions?.object,
+      coord: { ...this.toolbarCtx.selectedOptions?.object.coord, x: targetX },
+    });
+  };
+
+  handleClickObjectY = (e: MouseEvent<HTMLButtonElement>) => {
+    const { id, value } = e.target as HTMLButtonElement;
+    const [object, size, coord, dir] = id.split("_");
+
+    let targetY = Number(value);
+
+    if (dir === "up") {
+      targetY += 1;
+    } else if (dir === "down") {
+      targetY -= 1;
+    }
+
+    if (this.canvasCtx.canvas!.selectedObjects) {
+      this.checkFunctionAfterExecute(this.toolbarCtx.onchangeObjectCoordY, this.canvasCtx.canvas!, targetY);
+    }
+    this.checkFunctionAfterExecute(this.toolbarCtx.onchangeValue, object as TOOLBAR_CONST_KEY, {
+      ...this.toolbarCtx.selectedOptions?.object,
+      coord: { ...this.toolbarCtx.selectedOptions?.object.coord, y: targetY },
+    });
   };
 
   handleChangeObjectBgColor = (e: MouseEvent<HTMLButtonElement>) => {

@@ -1,7 +1,7 @@
 import * as R from "react";
 
-import type { ButtonGroupButtonProps } from "../../../components/ui";
-import { ButtonGroupWrapper, ButtonGroupButton as Button } from "../../../components/ui";
+import type { ButtonGroupButtonProps } from "../../ui/";
+import { ButtonGroupWrapper, ButtonGroupButton as Button } from "../../ui/";
 
 const ObjectAlignWidget = Object.assign(ButtonGroupWrapper, {
   HorizonLeft: R.forwardRef<HTMLButtonElement, ButtonGroupButtonProps>(
