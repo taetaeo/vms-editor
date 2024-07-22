@@ -1,6 +1,5 @@
 "use strict";
 import { fabric } from "fabric";
-import uuid from "react-uuid";
 // Types
 import type { ObjectConfigs, ObjectConfigsImageObject, ObjectConfigsTextObject, ObjectConfigsVideoObject, CanvasConfigs } from "../configs";
 import type { AnyModelType, AnyModelListType, ObjectVariant, SelectedImage, ToolbarSelectedOptionConfigs, Image, KeyAble } from "../types";
@@ -8,6 +7,8 @@ import type { AnyModelType, AnyModelListType, ObjectVariant, SelectedImage, Tool
 import { ImageModel, TextBoxModel, TextModel, VideoModel, GridDrawModel } from "../models";
 // Utils
 import { Utils } from "../shared/lib/utils";
+// Helpers
+import { Helper } from "../shared/lib/helpers";
 // State
 import { ObjectConfigState } from "../shared/lib/states";
 
@@ -28,6 +29,7 @@ export default class CanvasModel<T extends object, I extends object, V extends o
   public matchedObjectsFromConfigs?: any;
 
   private utils?: Utils; // 공통으로 사용할 함수
+  private valueHelper?: Helper;
   private configs?: ObjectConfigState<T, I, V> | null;
   private callbackFn?: () => void;
 
@@ -42,6 +44,7 @@ export default class CanvasModel<T extends object, I extends object, V extends o
 
     this.needObjectList = [];
     this.utils = new Utils();
+    this.valueHelper = new Helper();
     this.configs = null;
 
     /**
@@ -78,7 +81,7 @@ export default class CanvasModel<T extends object, I extends object, V extends o
       }
 
       // 이미지 객체 모델 생성
-      this._createImageModel(this.selectedImage.src!, { objectId: uuid() });
+      this._createImageModel(this.selectedImage.src!, { objectId: this.valueHelper?.getUid() });
 
       // 선택한 이미지 비우기
       this._clearSelectedImage();
@@ -103,10 +106,6 @@ export default class CanvasModel<T extends object, I extends object, V extends o
       params?.selectedUpdatedFn(selected! as AnyModelListType);
 
       this._updateSelectedObjects(selected! as AnyModelListType);
-    });
-
-    this.on("object:selected", (e) => {
-      console.log("🟥 \t object:selected :", e);
     });
 
     /**

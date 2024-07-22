@@ -1,29 +1,49 @@
 import { useState } from "react";
+// Types
+import type { CanvasModel, ObjectConfigsImageObject, ObjectConfigsTextObject, ObjectConfigsVideoObject } from "vms-editor";
+// Hooks
+import { objectConfigs, toolbarConfigs, useFetch, vmsConfigs } from "vms-editor";
+// Components
+import { CanvasProvider, EditorProvider, FormProvider, ImageSelectorProvider, ToolbarProvider, VideoProvider, VmsProvider, VmsTabProvider } from "vms-editor";
+import VmsContainer from "./vmsContainer";
 
-import envConfig from "@/app/configs/env.config";
+import "vms-editor/dist/css/vms-editor.css";
+
+type CanvasProps = CanvasModel<ObjectConfigsTextObject, ObjectConfigsImageObject, ObjectConfigsVideoObject> | null;
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [canvas, setCanvas] = useState<CanvasProps>(null); // canvas 상태 추가
 
-  console.log(envConfig);
+  const { data, loading, error } = useFetch("http://localhost:8080/api/v1/vms/form/form-1");
+
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          {/* <img src={viteLogo} className="logo" alt="Vite logo" /> */}
-        </a>
-        <a href="https://react.dev" target="_blank">
-          {/* <img src={reactLogo} className="logo react" alt="React logo" /> */}
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>count is {count}</button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
+      {/* Canvas Provider */}
+      <CanvasProvider canvas={canvas!} setCanvas={setCanvas}>
+        {/* Form Provider */}
+        <FormProvider data={data} loading={loading} error={error}>
+          {/* Video Provider */}
+          <VideoProvider>
+            {/* Image Provider */}
+            <ImageSelectorProvider>
+              {/* Toolbar Provider */}
+              <ToolbarProvider toolbarUiConfig={toolbarConfigs}>
+                {/* Vms Tab Provider */}
+                <VmsTabProvider>
+                  {/* Vms Provider */}
+                  <VmsProvider vmsConfigs={vmsConfigs}>
+                    {/* Editor Provider */}
+                    <EditorProvider editorConfigs={objectConfigs}>
+                      {/* Vms Container */}
+                      <VmsContainer />
+                    </EditorProvider>
+                  </VmsProvider>
+                </VmsTabProvider>
+              </ToolbarProvider>
+            </ImageSelectorProvider>
+          </VideoProvider>
+        </FormProvider>
+      </CanvasProvider>
     </>
   );
 }

@@ -14,5 +14,6 @@
     "Canvas"
   ],
   "author": "ohtaekwon",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {}
 }

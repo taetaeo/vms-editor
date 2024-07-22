@@ -1,2 +1,10 @@
 .vms-editor {
+  border: 1px solid #000;
+}
+.upper-canvas {
+  z-index: 3;
+}
+
+.lower-canvas {
+  z-index: 1;
 }

@@ -1,6 +1,6 @@
 import * as R from "react";
-import cn from "classnames";
-import { VmsFormObjectDTO } from "../../shared/dto";
+import { classNames as cn } from "../../../shared/lib/utils";
+import { VmsFormObjectDTO } from "../../../shared/dto";
 
 interface Props extends R.HTMLAttributes<HTMLElement>, R.PropsWithChildren {
   selectedData?: VmsFormObjectDTO;
@@ -21,7 +21,7 @@ const InfoBoxWidget: React.FC<Props> = ({
   ...rest
 }) => {
   return (
-    <div className={cn("vms-editor-info-box-wrapper", className)} style={style} {...rest}>
+    <div className={cn("vms-editor-info-box-wrap", className)} style={style} {...rest}>
       {selectedData?._id && (
         <label className={cn("info-box-item-label", labelClass)}>
           <span className={cn("info-box-item-title", titleClass)}>아이디</span>

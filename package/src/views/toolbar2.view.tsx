@@ -1,38 +1,42 @@
+import type { ChangeEvent, MouseEvent } from "react";
+import * as R from "react";
 import { fabric } from "fabric";
-import { type FC, type ChangeEvent, type MouseEvent, useRef } from "react";
-import uuid from "react-uuid";
-// import { ColorPicker, ColorPickerChangeEvent } from "primereact/colorpicker";
 
-// Lib
-import { Utils } from "../shared/lib/utils";
-
-// Functions
-import { useToolbarCtxHandler, useVideoCtxHandler, useCanvasCtxHandler } from "../shared/handlers";
-
-import { useToggleToolbar, useToggle } from "../shared/hooks";
 // Types
 import type { Align, Direction, ObjectVariant } from "../types";
+// Handlers
+import { useToolbarCtxHandler, useVideoCtxHandler, useCanvasCtxHandler } from "../shared/handlers";
+// Models
+import { TextInteractiveModel } from "../models";
+// Lib
+import { Utils } from "../shared/lib/utils";
+// Helpers
+import { Helper } from "../shared/lib/helpers";
+// Hooks
+import { useToggle } from "../shared/hooks";
+// Components
+import { ColorPicker } from "../components/widgets";
 // Enums
 import { TOOLBAR_CONST_KEY } from "../shared/enums";
 
-import { TextInteractiveModel } from "../models";
-
 const utils = new Utils();
+const valueHelper = new Helper();
 
-const ToolbarView = () => {
+interface Props extends R.HtmlHTMLAttributes<HTMLElement>, R.PropsWithChildren {}
+
+const ToolbarView: R.FC<Props> = () => {
   const videoCtx = useVideoCtxHandler();
   const canvasCtx = useCanvasCtxHandler();
   const toolbarCtx = useToolbarCtxHandler();
 
-  const { pixelActive, frameActive, addActive, textActive, objectActive, previewActive, groupActive, toggle } = useToggleToolbar();
+  const { isOpen: isShowFontColorPicker, onToggle: toggleFontColorPicker } = useToggle();
+  const { isOpen: isShowObjColorPicker, onToggle: toggleObjectColorPicker } = useToggle();
 
-  const { isOpen: isShowFontColor, onToggle: onToggleAboutFontColor } = useToggle();
-
-  const videoInputRef = useRef<HTMLInputElement>(null);
+  const videoInputRef = R.useRef<HTMLInputElement>(null);
 
   if (!canvasCtx.canvas) return null;
 
-  const onChangePixel = (e: MouseEvent<HTMLButtonElement>) => {
+  const handleChangePixel = (e: MouseEvent<HTMLButtonElement>) => {
     const { id, value } = e.target as HTMLButtonElement;
 
     if (id !== "pixel" || !value) return; // 에외처리
@@ -46,7 +50,7 @@ const ToolbarView = () => {
     canvasCtx.canvas!.updatePixel(pixel);
   };
 
-  const onChangeEditorSize = (e: MouseEvent<HTMLButtonElement>) => {
+  const handleChangeEditorSize = (e: MouseEvent<HTMLButtonElement>) => {
     const { id, value } = e.target as HTMLButtonElement;
 
     const [h, w] = value.split("_");
@@ -66,7 +70,7 @@ const ToolbarView = () => {
   };
 
   /**글씨 사이즈 설정 */
-  const onChangeObjectType = (e: MouseEvent<HTMLButtonElement>) => {
+  const handleChangeObjectType = (e: MouseEvent<HTMLButtonElement>) => {
     const { id, value } = e.target as HTMLButtonElement;
 
     if (toolbarCtx.onchangeValue && typeof toolbarCtx.onchangeValue === "function") {
@@ -90,7 +94,7 @@ const ToolbarView = () => {
     });
 
     const textObject = canvasCtx.canvas!.createObjectByType(value as ObjectVariant, "" || "텍스트입력", {
-      id: uuid(),
+      id: valueHelper.getUid(),
       left: toolbarCtx.selectedOptions?.object.coord.x, // x 축
       top: toolbarCtx.selectedOptions?.object.coord.y, // Y축
       width: toolbarCtx.selectedOptions?.object.size.w, // 너비
@@ -117,7 +121,7 @@ const ToolbarView = () => {
   };
 
   /** 글씨 굵기 설정 */
-  const onChangeFontBold = (e: MouseEvent<HTMLButtonElement>) => {
+  const handleChangeFontBold = (e: MouseEvent<HTMLButtonElement>) => {
     if (!canvasCtx.canvas) return;
 
     const { id, value } = e.target as HTMLButtonElement;
@@ -136,7 +140,7 @@ const ToolbarView = () => {
   };
 
   /** 글씨 사이즈 설정 */
-  const onChangeFontSize = (e: ChangeEvent<HTMLSelectElement>) => {
+  const handleChangeFontSize = (e: ChangeEvent<HTMLSelectElement>) => {
     if (!canvasCtx.canvas) return;
 
     const { id, value } = e.target;
@@ -155,7 +159,7 @@ const ToolbarView = () => {
   };
 
   /** 글씨 밑줄 설정 */
-  const onChangeFontUnderline = (e: MouseEvent<HTMLButtonElement>) => {
+  const handleChangeFontUnderline = (e: MouseEvent<HTMLButtonElement>) => {
     const { id, value } = e.target as HTMLButtonElement;
 
     const [font, underline] = id.split("_");
@@ -172,7 +176,7 @@ const ToolbarView = () => {
   };
 
   /** 글씨 정렬 설정 */
-  const onChangeFontAlign = (e: MouseEvent<HTMLButtonElement>) => {
+  const handleChangeFontAlign = (e: MouseEvent<HTMLButtonElement>) => {
     const { id, value } = e.target as HTMLButtonElement;
     console.log(id, value);
 
@@ -188,7 +192,7 @@ const ToolbarView = () => {
   };
 
   /** 글자 색상 변경 */
-  const onChangeFontColor = (e: MouseEvent<HTMLButtonElement>) => {
+  const handleChangeFontColor = (e: MouseEvent<HTMLButtonElement>) => {
     const { id, value } = e.target as HTMLButtonElement;
 
     const [font, color] = id.split("_");
@@ -203,7 +207,7 @@ const ToolbarView = () => {
   };
 
   /**객체 사이즈 설정 */
-  const onChangeObjectSize = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChangeObjectSize = (e: ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
 
     const [object, size, wh] = id.split("_");
@@ -233,7 +237,7 @@ const ToolbarView = () => {
   };
 
   /** 객체 좌표 설정 */
-  const onChangeObjectCoord = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChangeObjectCoord = (e: ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
 
     const [object, size, coord] = id.split("_");
@@ -262,7 +266,7 @@ const ToolbarView = () => {
   };
 
   /**객체 배경색 설정 */
-  const onChangeObjectBgColor = (e: MouseEvent<HTMLButtonElement>) => {
+  const handleChangeObjectBgColor = (e: MouseEvent<HTMLButtonElement>) => {
     const { id, value } = e.target as HTMLButtonElement;
 
     const [object, style, background, color] = id.split("_");
@@ -278,7 +282,7 @@ const ToolbarView = () => {
   };
 
   /** 객체 테두리 색상 설정 */
-  const onChangeObjectBorderColor = (e: MouseEvent<HTMLButtonElement>) => {
+  const handleChangeObjectBorderColor = (e: MouseEvent<HTMLButtonElement>) => {
     const { id, value } = e.target as HTMLButtonElement;
 
     const [object, style, border, color] = id.split("_");
@@ -298,7 +302,7 @@ const ToolbarView = () => {
   };
 
   /**객체 테두리 스타일 설정 */
-  const onChangeObjectBorderStyle = (e: MouseEvent<HTMLButtonElement>) => {
+  const handleChangeObjectBorderStyle = (e: MouseEvent<HTMLButtonElement>) => {
     const { id, value } = e.target as HTMLButtonElement;
 
     const [object, style, border, borderStyle] = id.split("_");
@@ -318,7 +322,7 @@ const ToolbarView = () => {
   };
 
   /**객체 테두리 너비 설정 */
-  const onChangeObjectBorderWidth = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChangeObjectBorderWidth = (e: ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
 
     const [object, border, width] = id.split("_");
@@ -338,7 +342,7 @@ const ToolbarView = () => {
   };
 
   /**객체 정렬 설정 */
-  const onChangeObjectSorting = (e: MouseEvent<HTMLButtonElement>) => {
+  const handleChangeObjectSorting = (e: MouseEvent<HTMLButtonElement>) => {
     const { id, value } = e.target as HTMLButtonElement;
 
     const [obj, align, direction] = id.split("_") as [string, Align, Direction];
@@ -380,7 +384,244 @@ const ToolbarView = () => {
     }
   };
 
-  return <div>ToolbarView</div>;
+  return (
+    <div>
+      {/* 객체 추가 버튼 Start */}
+      <div className="vms-editor-flx">
+        <button id="type" value="textBox" onClick={handleChangeObjectType}>
+          텍스트 추가하기
+        </button>
+        <button id="type" value="image" onClick={handleChangeObjectType}>
+          이미지 추가하기
+        </button>
+        <button id="type" value="video" onClick={handleChangeObjectType}>
+          동영상 추가하기
+        </button>
+      </div>
+      {/* 객체 추가 버튼 End */}
+
+      {/* 텍스트 스타일 Start */}
+      <div className="vms-editor-flx">
+        <button id="font_bold" value={toolbarCtx.selectedOptions?.font.bold} onClick={handleChangeFontBold}>
+          굵기
+        </button>
+        <button id="font_underline" value={Number(toolbarCtx.selectedOptions?.font.underLine)} onClick={handleChangeFontUnderline}>
+          밑줄
+        </button>
+        <select id="font_size" value={toolbarCtx.selectedOptions?.font.size} onChange={handleChangeFontSize}>
+          {Object.values(toolbarCtx.toolbarUiConfig?.fontSizes || []).map((fontSize, index) => (
+            <option key={`${fontSize}-${index}`} value={fontSize}>
+              {fontSize ? fontSize : 0}
+            </option>
+          ))}
+        </select>
+      </div>
+      {/* 텍스트 스타일 End */}
+
+      {/* 정렬 스타일 Start*/}
+      <div className="vms-editor-flx">
+        <button id="font_align" value="left" onClick={handleChangeFontAlign}>
+          왼쪽 정렬
+        </button>
+        <button id="font_align" value="center" onClick={handleChangeFontAlign}>
+          가운데 정렬
+        </button>
+        <button id="font_align" value="right" onClick={handleChangeFontAlign}>
+          오른쪽 정렬
+        </button>
+      </div>
+      {/* 정렬 스타일 End */}
+
+      {/* 텍스트 색상 설정 Start */}
+      <div className="vms-editor-flx">
+        {Object.values(toolbarCtx.toolbarUiConfig?.colors || []).map((color, index) => {
+          // [더보기] x
+          if (color !== "more") {
+            return (
+              <button key={`font_color-${index}`} id={`font_${color}`} value={color} onClick={handleChangeFontColor}>
+                {color}
+              </button>
+            );
+          }
+          // [더보기] o
+          else {
+            return (
+              <button key={`font_color_${index}`} onClick={toggleFontColorPicker}>
+                더보기
+              </button>
+            );
+          }
+        })}
+      </div>
+
+      {/* 텍스트 색상 설정 End */}
+
+      {/* 객체 사이즈 설정 Start */}
+      <div className="vms-editor-flx">
+        <label htmlFor="object_size_w">
+          너비
+          <input
+            type="number"
+            name="object_size_w"
+            id="object_size_w"
+            value={Number(toolbarCtx.selectedOptions?.object.size.w)}
+            onChange={handleChangeObjectSize}
+            min={0} // 최소값 설정
+            max={2000} // 최대값 설정
+            step={1} // 단계 설정
+          />
+          <span>{toolbarCtx.selectedOptions?.object.size.w + " px"}</span>
+        </label>
+
+        <label htmlFor="object_size_h">
+          높이
+          <input
+            type="number"
+            name="object_size_h"
+            id="object_size_h"
+            value={Number(toolbarCtx.selectedOptions?.object.size.h)}
+            onChange={handleChangeObjectSize}
+            min={0} // 최소값 설정
+            max={2000} // 최대값 설정
+            step={1} // 단계 설정
+          />
+          <span>{toolbarCtx.selectedOptions?.object.size.h + " px"}</span>
+        </label>
+      </div>
+      {/* 객체 사이즈 설정 End */}
+
+      {/* 객체 이동 설정 Start*/}
+      <div className="vms-editor-flx">
+        <label htmlFor="object_coord_x">
+          수평 이동
+          <input
+            type="number"
+            name="object_coord_x"
+            id="object_coord_x"
+            value={Number(toolbarCtx.selectedOptions?.object.coord.x)}
+            onChange={handleChangeObjectCoord}
+            min={0} // 최소값 설정
+            max={2000} // 최대값 설정
+            step={1} // 단계 설정
+          />
+          <span>{toolbarCtx.selectedOptions?.object.coord.x + " px"}</span>
+        </label>
+
+        <label htmlFor="object_coord_y">
+          수직 이동
+          <input
+            type="range"
+            name="object_coord_y"
+            id="object_coord_y"
+            value={Number(toolbarCtx.selectedOptions?.object.coord.y)}
+            onChange={handleChangeObjectCoord}
+            min={0} // 최소값 설정
+            max={2000} // 최대값 설정
+            step={1} // 단계 설정
+          />
+          <span>{toolbarCtx.selectedOptions?.object.coord.y + " px"}</span>
+        </label>
+      </div>
+      {/* 객체 이동 설정 End*/}
+
+      {/* 객체 채우기 - 색상  Start*/}
+      <div className="vms-editor-flx">
+        {Object.values(toolbarCtx.toolbarUiConfig?.colors || []).map((color, index) => {
+          // [더보기] x
+          if (color !== "more") {
+            return (
+              <button key={`bg_color_${index}`} id={`object_style_background_${color}`} value={color} onClick={handleChangeObjectBgColor}>
+                {color}
+              </button>
+            );
+          }
+          // [더보기] o
+          else {
+            return (
+              <button key={`font_color_${index}`} onClick={toggleObjectColorPicker}>
+                더보기
+              </button>
+            );
+          }
+        })}
+      </div>
+      {/* 객체 채우기 - 색상  End*/}
+
+      {/* 객체 테두리 - 색상 Start */}
+      <div className="vms-editor-flx">
+        {Object.values(toolbarCtx.toolbarUiConfig?.colors || []).map((color, index) => {
+          return (
+            <button key={`border_color_${index}`} id={`object_style_border_${color}`} value={color} onClick={handleChangeObjectBorderColor}>
+              {color}
+            </button>
+          );
+        })}
+      </div>
+
+      <div className="vms-editor-flx">
+        {Object.values(toolbarCtx.toolbarUiConfig?.borders || []).map((border, index) => {
+          return (
+            <button key={`border_style_${index}`} id={`object_style_border_${border}`} onClick={handleChangeObjectBorderStyle}>
+              {border}
+            </button>
+          );
+        })}
+      </div>
+      {/* 객체 테두리 - 색상 End */}
+
+      {/* 객체 테두리 - 두께 Start */}
+      <div className="vms-editor-flx">
+        <label htmlFor="">
+          설정
+          <input
+            type="number"
+            name="object_border_width"
+            id="object_border_width"
+            inputMode="numeric"
+            value={toolbarCtx.selectedOptions?.object.style.border.width || 1}
+            min={0}
+            max={10}
+            onChange={handleChangeObjectBorderWidth}
+          />
+          <span>{toolbarCtx.selectedOptions?.object.style.border.width + " px"}</span>
+        </label>
+      </div>
+      {/* 객체 테두리 - 두께 End */}
+
+      {/* 객체 정렬 Start */}
+      <div className="vms-editor-flx">
+        <button id="object_horizon_left" value="left" onClick={handleChangeObjectSorting}>
+          수평 왼쪽 정렬
+        </button>
+        <button id="object_horizon_right" value="right" onClick={handleChangeObjectSorting}>
+          수평 오른쪽 정렬
+        </button>
+        <button id="object_horizon_center" value="center" onClick={handleChangeObjectSorting}>
+          수평 가운데 정렬
+        </button>
+        <button id="object_vertical_top" value="top" onClick={handleChangeObjectSorting}>
+          수직 위 정렬
+        </button>
+        <button id="object_vertical_bottom" value="bottom" onClick={handleChangeObjectSorting}>
+          수직 아래 정렬
+        </button>
+        <button id="object_vertical_center" value="center" onClick={handleChangeObjectSorting}>
+          수직 가운데 정렬
+        </button>
+      </div>
+      {/* 객체 정렬 End */}
+
+      {/* {isShowFontColorPicker && (
+        <ColorPicker type="chrome" initialColor={toolbarCtx.selectedOptions?.font.color!} onColorChange={handleChangeFontColorPicker} />
+      )}
+
+      {isShowObjColorPicker && (
+        <ColorPicker type="chrome" initialColor={toolbarCtx.selectedOptions?.object.style.background!} onColorChange={handleChangeObjectBgColorPicker} />
+      )} */}
+
+      <video ref={videoCtx.videoRef} style={{ display: "none" }} />
+    </div>
+  );
 };
 
 export default ToolbarView;

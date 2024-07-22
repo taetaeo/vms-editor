@@ -1,9 +1,9 @@
 import * as R from "react";
-import cn from "classnames";
 
-import type { CanvasModelType } from "../../types";
-import { useCanvasCtxHandler } from "../../shared/handlers";
-import { CanvasContextType } from "../contexts";
+import type { CanvasModelType } from "../../../types";
+import { classNames as cn } from "../../../shared/lib/utils";
+import { useCanvasCtxHandler } from "../../../shared/handlers";
+import { CanvasContextType } from "../../contexts";
 
 interface Props extends R.HTMLAttributes<HTMLElement>, R.PropsWithChildren {
   canvas?: CanvasModelType;

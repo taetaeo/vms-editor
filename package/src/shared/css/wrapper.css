@@ -1,5 +1,23 @@
+/** Main Wrapper */
+.vms-editor-main-wrap {
+  position: relative;
+  max-width: 1280px;
+  height: 100vh;
+  display: flex;
+  flex: 1;
+  /* justify-content: space-between; */
+  flex-direction: column;
+
+  background-color: #f0f1f2;
+
+  border: 1px solid #b6b6b8;
+  border-radius: 4px;
+  box-sizing: border-box;
+  gap: 8px;
+}
+
 /* Canvas Wrapper */
-.vms-editor-canvas-wrapper {
+.vms-editor-canvas-wrap {
   position: relative;
   width: 100%;
   min-height: 450px;
@@ -13,7 +31,7 @@
   box-sizing: border-box;
 }
 
-.vms-editor-info-box-wrapper {
+.vms-editor-info-box-wrap {
   position: absolute;
   left: 0;
   bottom: 0;

@@ -1,0 +1,399 @@
+/* theme scss 분리 테스트 */
+
+@charset "utf-8";
+@import "mixin.scss";
+
+:root{
+    --bg_02: #04091A;
+    --bg_01_40: rgba(10, 11, 20, 0.40);
+    --bg_01_80: rgba(10, 15, 36, 0.80);
+    --primary-pri-100: #{$ui_sky};
+    --primary-pri-60: #{$ui_sky60};
+    --primary-pri-50: #{$ui_sky50};
+    --primary-pri-40: #{$ui_sky40};
+    --primary-pri-30: #{$ui_sky30};
+    --primary-pri-20: #{$ui_sky20};
+    --primary-pri-12: #{$ui_sky12};
+    --primary-pri-06: #{$ui_sky06};
+    --white-w-100: #{$fc_white};
+    --white-w-87: #{$bg_grey87};
+    --white-w-60: #{$bg_grey60};
+    --white-w-30: #{$bg_grey30};
+    --white-w-40: #{$bg_grey40};
+    --white-w-20: #{$bg_grey20};
+    --white-w-16: #{$bg_grey16};
+    --white-w-12: #{$bg_grey12};
+    --btn-btn-default: #{$ui_blue};
+    --btn-btn-hover: #{$ui_blue_hover};
+    --btn-btn-selected: #{$ui_blue_more};
+
+    --box1-border:rgba(39, 212, 255, 0.4);
+    --title-color:#{$ui_sky};
+    --select-color: #0A0F24;
+
+    --more-visible-wh-16-to-6: #{$bg_grey16};
+    --more-visible-wh-12-to-6: #{$bg_grey12};
+    --more-visible-wh-6-to-100: #{$bg_grey06};
+    --primary-to-grayscale-to-bk: #{$ui_sky};
+    --white-w-6: #{$bg_grey06};
+    --etc-popup-tit: #{$ui_sky60};
+    --line-pri-40-to-bk-40: #{$ui_sky40};
+}
+:root[data-theme=light] {
+    --bg_02: #fff;
+    --bg_01_40: #F3F5FD;
+    --bg_01_80: rgba(245, 246, 250, 0.90);
+    --primary-pri-100: #{$ui_blue_more};
+    --primary-pri-60: #{$ui_blue_more60};
+    --primary-pri-50: #{$ui_blue_more50};
+    --primary-pri-40: #{$ui_blue_more40};
+    --primary-pri-30: #{$ui_blue_more30};
+    --primary-pri-20: #{$ui_blue_more20};
+    --primary-pri-12: #{$ui_blue_more12};
+    --primary-pri-06: #{$ui_blue_more06};
+    --white-w-100: #{$fc_white};
+    --white-w-87: #{$bg_black100};
+    --white-w-60: #{$bg_black60};
+    --white-w-40: #{$bg_black40};
+    --white-w-30: #{$bg_black30};
+    --white-w-20: #{$bg_black20};
+    --white-w-16: #{$bg_black16};
+    --white-w-12: #{$bg_black12};
+    --btn-btn-default: #{$ui_blue_hover};
+    --btn-btn-hover: #{$ui_blue_more};
+    --btn-btn-selected: #{$fc_normal};
+
+    --box1-border:#fff;
+    --title-color: #{$ui_blue_more};
+    --select-color: #fff;
+
+    --more-visible-wh-16-to-6: #{$bg_black16};
+    --more-visible-wh-12-to-6: #{$bg_black06};
+    --more-visible-wh-6-to-100: #fff;
+    --primary-to-grayscale-to-bk :#000;
+    --white-w-6: #{$bg_black06};
+    --etc-popup-tit: #{$ui_blue_more80};
+    --line-pri-40-to-bk-40: #{$bg_black40};
+}
+
+.img_dark{display: block;}
+.img_light{display: none;}
+
+/*mode button*/
+.lightmode > .inner{
+    position: relative;
+    display: inline-flex;
+    padding: 5px;
+    border-radius: 1.5em;
+    background-color: rgb(237,237,237, 0.3);
+}
+html[data-theme=light] .lightmode > .inner{
+    background-color: rgba(0,0,0,0.25);
+}
+.lightmode label {
+    cursor: pointer;
+}
+.lightmode label:first-of-type{
+    padding: 5px 5px 5px 10px;
+    border-radius: 50% 0 0 50%;
+}
+.lightmode label:last-of-type{
+    padding: 5px 10px 5px 5px;
+    border-radius: 0 50% 50% 0;
+}
+.lightmode i{
+    font-size: 1.2em;
+    color: #aaa;
+}
+.lightmode input[type=radio]{
+    display: none;
+}
+.lightmode input[type=radio]:checked + label > i {
+    color: #fff;
+    transition: all 0.35s ease-in-out;
+}
+
+
+/* html data-theme */
+html[data-theme=light] {
+    .img_dark{display: none;}
+    .img_light{display: block;}
+    header{
+        background: #F3F5FD;
+    }
+    .sub_header{
+        background: rgba(255, 255, 255, 0.60);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    }
+    .sp_logo_uniplus{
+        background: url('../../public/images/logo_uniplus_light.svg') no-repeat left center;
+        background-size: cover;
+    }
+    .gnb{
+        ul li a{
+            color: $bg_black60;
+            &.on,&:hover,&:focus{
+                color:$ui_blue_more;
+            }
+        }
+    }
+    .guide_top h1{color: #000;}
+
+    //img filter
+    button{
+        &.lgmode{
+            img{filter: invert(0%) sepia(91%) saturate(7463%) hue-rotate(15deg) brightness(0%) contrast(108%);}
+            .img_on{filter: invert(43%) sepia(95%) saturate(6415%) hue-rotate(204deg) brightness(96%) contrast(101%);}
+        }
+    }
+    .btn_srch28{
+        &.lgmode{
+            &.on, &:active{
+                img{filter: none;}
+            }
+        }
+    }
+    .put_delete, .put_check{
+        img{@include filter_black;}
+    }
+    .arrow img{@include filter_black;}
+    .icon_download{@include filter_black;}
+    .btn_floating{
+        .put_drop img{@include filter_blue;}
+        .put_see img{@include filter_blue;}
+        .put_see .img_seeoff{filter: invert(100%) sepia(100%) saturate(1%) hue-rotate(306deg) brightness(104%) contrast(101%);}
+        &:hover,&.hover,&.selected{
+            .put_drop img{filter:none;}
+            .put_see img{filter:none;}
+        }
+        &.disabled{
+            img{
+                opacity: 0.3;
+                filter: invert(100%) sepia(100%) saturate(1%) hue-rotate(306deg) brightness(104%) contrast(101%);
+            }
+            .img_see{opacity: 0.2; filter:none;}
+        }
+    }
+
+    //layout
+    .back{
+        background-color: #fff;
+    }
+    .board{
+        &.main{
+            background: url(../../public/images/bg_map_main_light.png) no-repeat center bottom;
+            background-size: cover;
+        }
+    }
+    .indicator{
+        box-shadow: 0px 4px 12px 0px rgba(0, 18, 41, 0.16);
+    }
+    .arr_up img{@include filter_blue;}
+    .indi_top{
+        &.accord,&.primary_tobk{
+            .arr_up img{@include filter_black;}
+        }
+    }
+    .tmbox{
+        background-color: #fff;
+    }
+    .btn_arrow_l{
+        img{@include filter_blue;}
+        &:hover, &.selected{
+            background: rgba(0, 104, 230, 0.4);
+        }
+    }
+    .diagon_cont{
+        background: url(../../public/images/bg_tract_light.svg) no-repeat left top;
+        background-size: 100% 100%;
+        &.sm{
+            background: url(../../public/images/bg_tract_sm_light.svg) no-repeat left top;
+            background-size: 100% 100%;
+        }
+    }
+    .bd_title{
+        background: linear-gradient(90deg, rgba(255, 255, 255, 0.00) 0%, rgba(255, 255, 255, 0.50) 19.27%, #FFF 50.52%, rgba(255, 255, 255, 0.50) 80.73%, rgba(255, 255, 255, 0.00) 100%);
+    }
+    .bd_title{
+        .tp_line{
+            background: linear-gradient(89.94deg, rgba(0, 104, 230, 0) 0.05%, #0068E6 51.56%, rgba(0, 104, 230, 0) 99.95%);
+        }
+    }
+    .label{
+        &.etc{color: $bg_black100;}
+    }
+    .btn_fnb_tab{
+        button, a{
+            border: 1px solid $bg_grey60;
+        }
+        .selected, button:hover:not(.selected), a:hover:not(.selected),button:focus:not(.selected), a:focus:not(.selected){
+            border: 1px solid $bg_grey60;
+            background: linear-gradient(0deg, rgba(0, 104, 230, 0.20) 0%, rgba(0, 104, 230, 0.20) 100%), #FFF;
+        }
+    }
+    .infowindow_box{
+        background: #F3F5FD;
+        box-shadow: 0px 4px 12px 0px rgba(0, 18, 41, 0.16);
+        &:hover:not(.with_marker), &.on, &:focus:not(.with_marker){
+            border: 1px solid #fff;
+        }
+    }
+    .label_tag{
+        &.grade_color02{color: #fff;}
+        &.bg_grey{background-color: $bg_black20;}
+    }
+    .board_line{
+        .btn_arrow_l{border: 1px solid #fff;}
+    }
+    .scroll::-webkit-scrollbar-thumb,.textarea::-webkit-scrollbar-thumb {
+        background-color: rgba(0, 0, 0, 0.38);
+    }
+    .indi_etc{box-shadow: 0px 4px 12px 0px rgba(0, 18, 41, 0.24);}
+    .dash_box{background-color: #fff;}
+    .record_back{background-color: #E1E2E5;}
+    .record_top{border: none;}
+    .record_contain{
+        box-shadow: 0px 4px 12px 0px rgba(0, 18, 41, 0.16);
+    }
+    .profile20{
+        background: url('../../public/images/member_fff_20_light.svg') no-repeat center center;
+        background-size: cover;
+    }
+    .comma_under8{
+        background: url('../../public/images/arrow_down_fill_fff_12_light.svg') no-repeat center center;
+        background-size: cover;
+    }
+
+    .accordion_block {
+        div{
+            button{
+                img{@include filter_black;}
+            }
+        }
+        &.select{
+            .accordion_title {
+                &.on, &.hover, &:hover, &:focus {                
+                    img {@include filter_blue;}
+                }
+            }
+        }
+    }
+    //
+    .accordion_title {
+        div{
+            img{@include filter_black;}
+        }
+        div.on{
+            img{
+                filter: brightness(0) saturate(100%) invert(25%) sepia(93%) saturate(1829%) hue-rotate(200deg) brightness(98%) contrast(107%);
+            }
+        }
+    }
+    .toggle {
+        img{@include filter_black;}
+        &.on{
+            img{
+                filter: brightness(0) saturate(100%) invert(25%) sepia(93%) saturate(1829%) hue-rotate(200deg) brightness(98%) contrast(107%);
+            }
+        }
+    }
+    .popover_close{
+        img{@include filter_black;}
+    }
+    .tree_button {
+        button{
+            img{
+                filter: brightness(0) saturate(100%) invert(28%) sepia(100%) saturate(3798%) hue-rotate(204deg) brightness(95%) contrast(101%);
+            }
+        }
+    }
+    .tod{
+        img{@include filter_black;}
+    }
+    .selector{
+        background-color: transparent;
+        background-image: url('../../public/images/arrow_down_bk_16.svg');
+    }
+    .bg_track{
+        &.track01{
+            background: url('../../public/images/bg_map_light1.png') no-repeat center center;
+            background-size: cover;
+        }
+    }
+    .users_wrap{
+        background: #E1E2E5;
+    }
+    .selectbox_arrow{@include filter_black;}
+    .photo_circle{
+        img{
+            &.img_prof{@include filter_black;}
+        }
+    }
+    .circle_g32{
+        img{@include filter_black;}
+    }
+    .datepicker{
+        background-image: url(../../public/images/calendar_fff_24_light.svg);
+        &.on{background-image: url(../../public/images/calendar_sky_24_light.svg) }
+    }
+    .react-datepicker__navigation-icon--next::before{
+        background:url('../../public/images/arrow_right_fill_fff_16_light.svg') center center;
+        background-size: 1rem auto;
+    }
+    .react-datepicker__navigation-icon--previous::before{
+        background:url('../../public/images/arrow_left_fill_fff_16_light.svg') center center;
+        background-size: 1rem auto;
+    }
+    .checkbox_type{
+        input[type=checkbox]:checked + label {
+            &:after {   
+                background: url(../../public/images/checkbox_checked_light.svg) 2px center no-repeat;
+                background-size: 0.625rem auto;
+            }
+        }
+    }
+
+    // sp_icon
+    .sp_search24{
+        background: url('../../public/images/search_fff_24_light.svg') no-repeat center center;
+        background-size: cover;
+    }
+    .sp_download20{
+        background: url('../../public/images/icon_download_20_light.svg') no-repeat center center;
+        background-size: cover;
+    }
+    .sp_cctv20{
+        background: url('../../public/images/icon_camera_20_light.svg') no-repeat center center;
+        background-size: cover;
+    }
+    .btn_toggle_icon{
+        &:hover, &:focus, &.selected{
+            .sp_cctv20{
+                background: url('../../public/images/icon_camera_sky_20_light.svg') no-repeat center center;
+                background-size: cover;
+            }
+        }
+    }
+    .sp_x20{
+        background: url('../../public/images/icon_x_20_light.svg') no-repeat center center;
+        background-size: cover;
+    }
+    .sp_layer24{
+        background: url('../../public/images/layer_fff_24_light.svg') no-repeat center center;
+        background-size: cover;
+        opacity: 1 !important;
+    }
+    .icon_ffb{
+        &:hover, &.selected{
+            .sp_layer24{
+                background: url('../../public/images/layer_sky_24_light.svg') no-repeat center center;
+                background-size: cover;
+            }
+        }
+    }
+    .mark_trig_down12 {
+        background: url('../../public/images/triangle_down12_light.svg') no-repeat center center;
+        background-size: contain;
+    }
+}
+/* html data-theme End */

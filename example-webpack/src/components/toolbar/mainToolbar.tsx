@@ -1,10 +1,10 @@
 import type { FC, ChangeEvent, MouseEvent } from "react";
-import uuid from "react-uuid";
-// import { ColorPicker, ColorPickerChangeEvent } from "primereact/colorpicker";
 import { CanvasModel, ObjectVariant, Utils, useToggle, useToolbar, useToolbarToggle } from "vms-editor";
+
 import { TOOLBAR_CONST_KEY } from "vms-editor/dist/src/enums";
 import React from "react";
 import * as Icon from "../icons/icons";
+
 type Props = {
   canvas: CanvasModel<any, any, any>;
 };
@@ -41,7 +41,7 @@ const ToolbarContainer: FC<Props> = ({ canvas }) => {
       onchangeValue(id as TOOLBAR_CONST_KEY, selectedOptions?.type === "image" ? undefined : value);
     }
     const textObject = canvas.onCreateObject(value as ObjectVariant, "" || "텍스트를 입력해주세요", {
-      id: uuid(),
+      id: "",
       left: selectedOptions?.object.coord.x, // x 축
       top: selectedOptions?.object.coord.y, // Y축
       width: selectedOptions?.object.size.w, // 너비

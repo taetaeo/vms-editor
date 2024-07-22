@@ -1,12 +1,5 @@
 import * as R from "react";
-// Models
-import { ToolbarModel } from "../models";
-// Handlers
-import { useToolbarCtxHandler, useVideoCtxHandler, useCanvasCtxHandler } from "../shared/handlers";
-// Hooks
-import { useToggle } from "../shared/hooks";
-// Widgets
-import { ColorPicker, ObjectAddWidget, TextStyleWidget } from "../components/widgets";
+import { ToolbarModel, useCanvasCtxHandler, useToggle, useToolbarCtxHandler, useVideoCtxHandler } from "vms-editor";
 
 interface Props extends R.HtmlHTMLAttributes<HTMLElement>, R.PropsWithChildren {}
 
@@ -19,11 +12,11 @@ const ToolbarView: R.FC<Props> = ({ style, children, ...rest }) => {
   const { isOpen: isShowObjColorPicker, onToggle: toggleObjectColorPicker } = useToggle();
 
   const toolbarModel = new ToolbarModel(videoCtx, canvasCtx, toolbarCtx);
-  const re = R.useRef<HTMLButtonElement>(null);
+
   return (
     <div>
       {/* 객체 추가 버튼 Start */}
-      {/* <div className="vms-editor-flx">
+      <div className="vms-editor-flx">
         <button id="type" value="textBox" onClick={toolbarModel.handleChangeObjectType}>
           텍스트 추가하기
         </button>
@@ -33,38 +26,11 @@ const ToolbarView: R.FC<Props> = ({ style, children, ...rest }) => {
         <button id="type" value="video" onClick={toolbarModel.handleChangeObjectType}>
           동영상 추가하기
         </button>
-      </div> */}
-      <ObjectAddWidget>
-        <ObjectAddWidget.Text onClick={toolbarModel.handleChangeObjectType} />
-        <ObjectAddWidget.Image onClick={toolbarModel.handleChangeObjectType} />
-        <ObjectAddWidget.Video onClick={toolbarModel.handleChangeObjectType} />
-      </ObjectAddWidget>
+      </div>
       {/* 객체 추가 버튼 End */}
 
       {/* 텍스트 스타일 Start */}
-      <TextStyleWidget>
-        <TextStyleWidget.Bold
-          // 굵기 버튼
-          variant="primary"
-          value={toolbarModel.toolbarCtx.selectedOptions?.font.bold}
-          onClick={toolbarModel.handleChangeObjectType}
-        />
-        <TextStyleWidget.Underline
-          // 밑줄 버튼
-          variant="primary"
-          value={Number(toolbarModel.toolbarCtx.selectedOptions?.font.underLine)}
-          onClick={toolbarModel.handleChangeFontUnderline}
-        />
-        <TextStyleWidget.FontSize
-          // 폰트 사이즈
-          list={Object.values(toolbarModel.toolbarCtx.toolbarUiConfig?.fontSizes || [])}
-          defaultValue={0}
-          value={toolbarModel.toolbarCtx.selectedOptions?.font.size}
-          onChange={toolbarModel.handleChangeFontSize}
-        />
-      </TextStyleWidget>
-
-      {/* <div className="vms-editor-flx">
+      <div className="vms-editor-flx">
         <button id="font_bold" value={toolbarModel.toolbarCtx.selectedOptions?.font.bold} onClick={toolbarModel.handleChangeFontBold}>
           굵기
         </button>
@@ -78,7 +44,7 @@ const ToolbarView: R.FC<Props> = ({ style, children, ...rest }) => {
             </option>
           ))}
         </select>
-      </div> */}
+      </div>
       {/* 텍스트 스타일 End */}
 
       {/* 정렬 스타일 Start*/}
@@ -274,7 +240,7 @@ const ToolbarView: R.FC<Props> = ({ style, children, ...rest }) => {
       </div>
       {/* 객체 정렬 End */}
 
-      {isShowFontColorPicker && (
+      {/* {isShowFontColorPicker && (
         <ColorPicker
           type="chrome"
           initialColor={toolbarModel.toolbarCtx.selectedOptions?.font.color!}
@@ -288,7 +254,7 @@ const ToolbarView: R.FC<Props> = ({ style, children, ...rest }) => {
           initialColor={toolbarModel.toolbarCtx.selectedOptions?.object.style.background!}
           onColorChange={toolbarModel.handleChangeObjectBgColorPicker}
         />
-      )}
+      )} */}
 
       <video ref={toolbarModel.videoCtx.videoRef} style={{ display: "none" }} />
     </div>

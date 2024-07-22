@@ -42,4 +42,4 @@ export * from "./shared/lib/states";
 
 // Css
 import "./shared/css/index.css";
-import "./styles/index.css";
+// import "./styles/index.css";

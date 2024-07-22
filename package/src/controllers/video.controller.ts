@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { fabric } from "fabric";
 import React from "react";
-import uuid from "react-uuid";
 
 // Configs
 import type { ObjectConfigsImageObject, ObjectConfigsTextBoxObject, ObjectConfigsVideoObject } from "../configs";
@@ -9,8 +8,11 @@ import type { ObjectConfigsImageObject, ObjectConfigsTextBoxObject, ObjectConfig
 import { useCanvasCtxHandler } from "../shared/handlers";
 // Models
 import { CanvasModel } from "../models";
+import { Helper } from "@/shared/lib/helpers";
 
 type CanvasProps = CanvasModel<ObjectConfigsTextBoxObject, ObjectConfigsImageObject, ObjectConfigsVideoObject>;
+
+const valueHelper = new Helper();
 
 export default function useVideoController() {
   const { canvas } = useCanvasCtxHandler();
@@ -74,7 +76,7 @@ export default function useVideoController() {
       top: 100,
       angle: 0,
       opacity: 1.0,
-      objectId: uuid(),
+      objectId: valueHelper.getUid(),
     });
 
     // 예외처리3

@@ -1,21 +1,29 @@
-import { MouseEvent, ChangeEvent } from "react";
-import uuid from "react-uuid";
+import type { MouseEvent, ChangeEvent } from "react";
 import { fabric } from "fabric";
-import { TextInteractiveModel } from ".";
+
+// Types
 import type { TOOLBAR_CONST_KEY } from "../shared/enums";
 import type { Align, Direction, ObjectVariant } from "../types";
-import { useCanvasCtxHandler, useToolbarCtxHandler, useVideoCtxHandler } from "@/shared/handlers";
+// Helpers
+import { Helper } from "../shared/lib/helpers";
+// Handlers
+import { useCanvasCtxHandler, useToolbarCtxHandler, useVideoCtxHandler } from "../shared/handlers";
+// Models
+import { TextInteractiveModel } from "../models";
 
 class ToolbarModel {
   videoCtx: ReturnType<typeof useVideoCtxHandler>;
   canvasCtx: ReturnType<typeof useCanvasCtxHandler>;
   toolbarCtx: ReturnType<typeof useToolbarCtxHandler>;
 
+  private _valueHelper: Helper;
+
   constructor(
     videoCtx: ReturnType<typeof useVideoCtxHandler>,
     canvasCtx: ReturnType<typeof useCanvasCtxHandler>,
     toolbarCtx: ReturnType<typeof useToolbarCtxHandler>
   ) {
+    this._valueHelper = new Helper();
     this.videoCtx = videoCtx;
     this.canvasCtx = canvasCtx;
     this.toolbarCtx = toolbarCtx;
@@ -61,7 +69,7 @@ class ToolbarModel {
     });
 
     const textObject = this.canvasCtx.canvas?.createObjectByType(value as ObjectVariant, "텍스트입력", {
-      id: uuid(),
+      id: this._valueHelper.getUid(),
       left: this.toolbarCtx.selectedOptions?.object.coord.x,
       top: this.toolbarCtx.selectedOptions?.object.coord.y,
       width: this.toolbarCtx.selectedOptions?.object.size.w,
@@ -133,6 +141,15 @@ class ToolbarModel {
     this.checkFunctionAfterExecute(this.toolbarCtx.onchangeValue, font as TOOLBAR_CONST_KEY, { ...this.toolbarCtx.selectedOptions?.font, color: value });
   };
 
+  handleChangeFontColorPicker = (color?: string) => {
+    if (!color) return;
+
+    if (this.canvasCtx.canvas!.selectedObjects) {
+      this.checkFunctionAfterExecute(this.toolbarCtx.onchangeObjectFontColor, this.canvasCtx.canvas!, color);
+    }
+    this.checkFunctionAfterExecute(this.toolbarCtx.onchangeValue, "font" as TOOLBAR_CONST_KEY, { ...this.toolbarCtx.selectedOptions?.font, color });
+  };
+
   handleChangeObjectSize = (e: ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
     const [object, size, wh] = id.split("_");
@@ -194,6 +211,18 @@ class ToolbarModel {
     }
 
     this.checkFunctionAfterExecute(this.toolbarCtx.onchangeValue, object as TOOLBAR_CONST_KEY, {
+      ...this.toolbarCtx.selectedOptions?.object,
+      style: { ...this.toolbarCtx.selectedOptions?.object.style, background: color },
+    });
+  };
+
+  handleChangeObjectBgColorPicker = (color?: string) => {
+    if (!color) return;
+
+    if (this.canvasCtx.canvas!.selectedObjects) {
+      this.checkFunctionAfterExecute(this.toolbarCtx.onchangeObjectFontColor, this.canvasCtx.canvas!, color);
+    }
+    this.checkFunctionAfterExecute(this.toolbarCtx.onchangeValue, "object" as TOOLBAR_CONST_KEY, {
       ...this.toolbarCtx.selectedOptions?.object,
       style: { ...this.toolbarCtx.selectedOptions?.object.style, background: color },
     });

@@ -1,5 +1,5 @@
 import * as R from "react";
-import cn from "classnames";
+import { classNames as cn } from "../../../shared/lib/utils";
 
 interface Props extends R.HTMLAttributes<HTMLDivElement> {
   scale?: number;
