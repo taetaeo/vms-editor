@@ -40,8 +40,8 @@ class ToolbarModel {
 
   handleChangeEditorSize = (e: MouseEvent<HTMLButtonElement>) => {
     const { id, value } = e.target as HTMLButtonElement;
-    const [h, w] = value.split("_");
-    if (!h || !w) return;
+    const [w, h] = value.split("_");
+    if (!w || !h) return;
     const width = Number(w);
     const height = Number(h);
 
@@ -148,6 +148,51 @@ class ToolbarModel {
       this.checkFunctionAfterExecute(this.toolbarCtx.onchangeObjectFontColor, this.canvasCtx.canvas!, color);
     }
     this.checkFunctionAfterExecute(this.toolbarCtx.onchangeValue, "font" as TOOLBAR_CONST_KEY, { ...this.toolbarCtx.selectedOptions?.font, color });
+  };
+
+  handleClickObjectWidth = (e: MouseEvent<HTMLButtonElement>) => {
+    const { id, value } = e.target as HTMLButtonElement;
+    const [object, size, wh, dir] = id.split("_");
+
+    console.log(dir);
+
+    let targetWidth = Number(this.toolbarCtx.selectedOptions?.object.size.w);
+
+    if (dir === "up") {
+      targetWidth += 1;
+    } else if (dir === "down") {
+      targetWidth -= 1;
+    }
+
+    console.log(targetWidth);
+    if (this.canvasCtx.canvas!.selectedObjects) {
+      this.checkFunctionAfterExecute(this.toolbarCtx.onchangeObjectWidth, this.canvasCtx.canvas!, value);
+    }
+    this.checkFunctionAfterExecute(this.toolbarCtx.onchangeValue, object as TOOLBAR_CONST_KEY, {
+      ...this.toolbarCtx.selectedOptions?.object,
+      size: { ...this.toolbarCtx.selectedOptions?.object.size, w: targetWidth },
+    });
+  };
+
+  handleClickObjectHeight = (e: MouseEvent<HTMLButtonElement>) => {
+    const { id, value } = e.target as HTMLButtonElement;
+    const [object, size, wh, dir] = id.split("_");
+
+    let targetHeight = Number(this.toolbarCtx.selectedOptions?.object.size.h);
+
+    if (dir === "up") {
+      targetHeight += 1;
+    } else if (dir === "down") {
+      targetHeight -= 1;
+    }
+
+    if (this.canvasCtx.canvas!.selectedObjects) {
+      this.checkFunctionAfterExecute(this.toolbarCtx.onchangeObjectHeight, this.canvasCtx.canvas!, value);
+    }
+    this.checkFunctionAfterExecute(this.toolbarCtx.onchangeValue, object as TOOLBAR_CONST_KEY, {
+      ...this.toolbarCtx.selectedOptions?.object,
+      size: { ...this.toolbarCtx.selectedOptions?.object.size, h: targetHeight },
+    });
   };
 
   handleChangeObjectSize = (e: ChangeEvent<HTMLInputElement>) => {

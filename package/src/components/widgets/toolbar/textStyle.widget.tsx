@@ -34,8 +34,8 @@ const TextStyleWidget = Object.assign(ButtonGroupWrapper, {
       </Button>
     )
   ),
-  FontSize: ({ id = "font_size", list = [], value = "", defaultValue = 0, style, children = "밑줄", ...rest }: ButtonGroupSelectorProps) => (
-    <ButtonGroupSelector list={list} id={id} value={value} defaultValue={defaultValue} style={style} {...rest} />
+  FontSize: ({ id = "font_size", size = "sm", list = [], value = "", defaultValue = 0, style, children, ...rest }: ButtonGroupSelectorProps) => (
+    <ButtonGroupSelector list={list} id={id} size={size} value={value} defaultValue={defaultValue} style={style} {...rest} />
   ),
 });
 

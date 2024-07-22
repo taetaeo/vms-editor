@@ -6,7 +6,17 @@ import { useToolbarCtxHandler, useVideoCtxHandler, useCanvasCtxHandler } from ".
 // Hooks
 import { useToggle } from "../shared/hooks";
 // Widgets
-import { ColorPicker, ObjectAddWidget, ObjectAlignWidget, ObjectBgColorWidget, TextAlignWidget, TextColorWidget, TextStyleWidget } from "../components/widgets";
+import {
+  ColorPicker,
+  LayoutModuleWidget,
+  ObjectAddWidget,
+  ObjectAlignWidget,
+  ObjectBgColorWidget,
+  ObjectSizeWidget,
+  TextAlignWidget,
+  TextColorWidget,
+  TextStyleWidget,
+} from "../components/widgets";
 
 interface Props extends R.HtmlHTMLAttributes<HTMLElement>, R.PropsWithChildren {
   isTextAlign?: boolean;
@@ -42,6 +52,37 @@ const ToolbarView: R.FC<Props> = ({
     <dl className="comp_dl m-0">
       <dd>
         <article className="">
+          <div className="dflx_ac gap_colm8 m-b-12">
+            <LayoutModuleWidget>
+              <LayoutModuleWidget.SizeButton value="40_16" onClick={toolbarModel.handleChangeEditorSize}>
+                40 x 16
+              </LayoutModuleWidget.SizeButton>
+              <LayoutModuleWidget.SizeButton value="384_96" onClick={toolbarModel.handleChangeEditorSize}>
+                384 x 96
+              </LayoutModuleWidget.SizeButton>
+              <LayoutModuleWidget.SizeButton value="384_96" onClick={toolbarModel.handleChangeEditorSize}>
+                384 x 96
+              </LayoutModuleWidget.SizeButton>
+              <LayoutModuleWidget.SizeButton value="480_96" onClick={toolbarModel.handleChangeEditorSize}>
+                480 x 96
+              </LayoutModuleWidget.SizeButton>
+              <LayoutModuleWidget.SizeButton value="64_32" onClick={toolbarModel.handleChangeEditorSize}>
+                64 x 32
+              </LayoutModuleWidget.SizeButton>
+              <LayoutModuleWidget.SizeButton value="176_32" onClick={toolbarModel.handleChangeEditorSize}>
+                176 x 32
+              </LayoutModuleWidget.SizeButton>
+              <LayoutModuleWidget.SizeButton value="1440_192" onClick={toolbarModel.handleChangeEditorSize}>
+                1440 x 192
+              </LayoutModuleWidget.SizeButton>
+              <LayoutModuleWidget.SizeButton value="384_288" onClick={toolbarModel.handleChangeEditorSize}>
+                384 x 288
+              </LayoutModuleWidget.SizeButton>
+              <LayoutModuleWidget.SizeButton value="416_320" onClick={toolbarModel.handleChangeEditorSize}>
+                416 x 320
+              </LayoutModuleWidget.SizeButton>
+            </LayoutModuleWidget>
+          </div>
           {/* 객체 추가 버튼 - 시작 */}
           <div className="dflx_ac gap_colm8 m-b-12">
             <ObjectAddWidget>
@@ -66,6 +107,7 @@ const ToolbarView: R.FC<Props> = ({
                 onClick={toolbarModel.handleChangeFontUnderline}
               />
               <TextStyleWidget.FontSize
+                size="md"
                 list={Object.values(toolbarModel.toolbarCtx.toolbarUiConfig?.fontSizes || [])}
                 defaultValue={0}
                 value={toolbarModel.toolbarCtx.selectedOptions?.font.size}
@@ -113,37 +155,19 @@ const ToolbarView: R.FC<Props> = ({
           </div>
 
           {/* 객체 사이즈 설정 - 시작 */}
-          <div className="dflx_ac gap_colm8 m-b-12">
-            <label htmlFor="object_size_w">
-              너비
-              <input
-                type="number"
-                name="object_size_w"
-                id="object_size_w"
-                value={Number(toolbarModel.toolbarCtx.selectedOptions?.object.size.w)}
-                onChange={toolbarModel.handleChangeObjectSize}
-                min={0} // 최소값 설정
-                max={2000} // 최대값 설정
-                step={1} // 단계 설정
-              />
-              <span>{toolbarModel.toolbarCtx.selectedOptions?.object.size.w + " px"}</span>
-            </label>
+          <ObjectSizeWidget>
+            <ObjectSizeWidget.Width
+              width="140"
+              value={Number(toolbarModel.toolbarCtx.selectedOptions?.object.size.w)}
+              onClick={toolbarModel.handleClickObjectWidth}
+            />
+            <ObjectSizeWidget.Height
+              width="140"
+              value={Number(toolbarModel.toolbarCtx.selectedOptions?.object.size.h)}
+              onClick={toolbarModel.handleClickObjectHeight}
+            />
+          </ObjectSizeWidget>
 
-            <label htmlFor="object_size_h">
-              높이
-              <input
-                type="number"
-                name="object_size_h"
-                id="object_size_h"
-                value={Number(toolbarModel.toolbarCtx.selectedOptions?.object.size.h)}
-                onChange={toolbarModel.handleChangeObjectSize}
-                min={0} // 최소값 설정
-                max={2000} // 최대값 설정
-                step={1} // 단계 설정
-              />
-              <span>{toolbarModel.toolbarCtx.selectedOptions?.object.size.h + " px"}</span>
-            </label>
-          </div>
           {/* 객체 사이즈 설정 - 끝 */}
 
           {/* 객체 이동 설정 - 시작 */}
@@ -256,6 +280,7 @@ const ToolbarView: R.FC<Props> = ({
             <ObjectAlignWidget.HorizonLeft />
             <ObjectAlignWidget.HorizonCenter />
             <ObjectAlignWidget.HorizonRight />
+            <span className="pipe28" />
             <ObjectAlignWidget.VerticalTop />
             <ObjectAlignWidget.VerticalCenter />
             <ObjectAlignWidget.VerticalBottom />
@@ -399,5 +424,38 @@ export default ToolbarView;
                 );
               }
             })}
+          </div> */
+}
+{
+  /* <div className="dflx_ac gap_colm8 m-b-12">
+            <label htmlFor="object_size_w">
+              너비
+              <input
+                type="number"
+                name="object_size_w"
+                id="object_size_w"
+                value={Number(toolbarModel.toolbarCtx.selectedOptions?.object.size.w)}
+                onChange={toolbarModel.handleChangeObjectSize}
+                min={0} // 최소값 설정
+                max={2000} // 최대값 설정
+                step={1} // 단계 설정
+              />
+              <span>{toolbarModel.toolbarCtx.selectedOptions?.object.size.w + " px"}</span>
+            </label>
+
+            <label htmlFor="object_size_h">
+              높이
+              <input
+                type="number"
+                name="object_size_h"
+                id="object_size_h"
+                value={Number(toolbarModel.toolbarCtx.selectedOptions?.object.size.h)}
+                onChange={toolbarModel.handleChangeObjectSize}
+                min={0} // 최소값 설정
+                max={2000} // 최대값 설정
+                step={1} // 단계 설정
+              />
+              <span>{toolbarModel.toolbarCtx.selectedOptions?.object.size.h + " px"}</span>
+            </label>
           </div> */
 }
