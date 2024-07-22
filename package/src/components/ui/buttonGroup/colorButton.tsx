@@ -2,17 +2,18 @@ import * as R from "react";
 
 import { classNames as cn } from "../../../shared/lib/utils";
 
-export interface ButtonGroupButtonProps extends R.HTMLAttributes<HTMLButtonElement>, R.PropsWithChildren {
+export interface ButtonGroupColorButtonProps extends R.HTMLAttributes<HTMLButtonElement>, R.PropsWithChildren {
   id?: string;
   value?: string | number;
 
   variant?: "primary" | "secondary";
+  color?: string;
   /** Key : class-name , value : active state (true : active, false : inactive) */
   optionsClass?: { [key in string]: boolean };
 }
 
-const Button = R.forwardRef<HTMLButtonElement, ButtonGroupButtonProps>(function Component(
-  { id, value, variant = "primary", className = "btn", optionsClass, style, children, ...rest },
+const Button = R.forwardRef<HTMLButtonElement, ButtonGroupColorButtonProps>(function Component(
+  { id, value, variant = "secondary", className = "btn", optionsClass, color = "red", style, children, ...rest },
   forwardedRef
 ) {
   return (
@@ -20,7 +21,7 @@ const Button = R.forwardRef<HTMLButtonElement, ButtonGroupButtonProps>(function 
       id={id}
       value={value}
       ref={forwardedRef}
-      className={cn(`${className}_${variant}`, ["btn_ms", { editor: true, ...optionsClass }])}
+      className={cn(`${className}_${variant}`, ["btn_s_w28h28", { [`edit_${color}`]: true, ...optionsClass }])}
       style={style}
       {...rest}
     >
